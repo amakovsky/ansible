@@ -6,12 +6,11 @@
     image: gitlab/gitlab-ee:latest    
     state: started
     restart_policy: always
-    ports:
-      - 443:443
-      - 80:80
-      - 2222:22
+    published_ports:
+      - "443:443"
+      - "80:80"
+      - "2222:22"
     volumes:
       - /srv/gitlab/config:/etc/gitlab
       - /srv/gitlab/logs:/var/log/gitla
-      - /srv/gitlab/data:/var/opt/gitlab   
-      
+      - /srv/gitlab/data:/var/opt/gitlab
