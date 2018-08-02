@@ -1,0 +1,25 @@
+---
+- name: add key for docker repositories
+  apt_key:
+    keyserver: "hkp://pgp.mit.edu:80"
+    id: "58118E89F3A912897C070ADBF76221572C52609D"
+    state: present
+
+- name: add docker repositories
+  apt_repository:
+    repo: 'deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main'
+    state: present
+  when: ansible_distribution_release != "bionic"
+
+- name: Install common docker package
+  apt: name={{ item }} update_cache=yes state=latest
+  with_items:
+    - docker-engine
+    - python-setuptools
+    - python-pip
+
+- name: install docker python
+  pip: name={{ item }}
+  with_items:
+    - docker
+    - docker-compose

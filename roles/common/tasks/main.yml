@@ -1,0 +1,37 @@
+---
+- name: Install common programm
+  apt: name={{ item }} update_cache=yes state=latest
+  with_items:
+    - git
+    - vim       
+    - gzip
+    - wget    
+    - curl    
+    - unzip
+    - zip
+    - htop
+    - iotop
+    - nload
+    - iftop
+    - screen
+    - apt-transport-https
+    - dmidecode
+    - gnupg
+    - build-essential
+    - libcurl4-openssl-dev
+    - ca-certificates 
+    - software-properties-common 
+    - imagemagick 
+    - tzdata 
+    - ntp
+
+- name: set timezone to Europe/Moscow
+  timezone:
+    name: Europe/Moscow
+  notify: restart rsyslog
+
+
+ 
+
+
+

@@ -1,0 +1,28 @@
+---
+- name: Workstation for developers
+  hosts: 127.0.0.1
+  connection: local
+  become: yes
+  become_method: sudo
+  become_user: root
+  
+  roles:
+    - common
+    - docker
+    - gitlab
+  
+
+  vars_prompt:
+    - name: "ansible_user"
+      prompt: "remote login"
+      private: no
+    - name: "ansible_become_pass"
+      prompt: "Sudo password"
+      private: yes
+#    - name: "githubuser"
+#      prompt: "Enter your github username"
+#      private: no
+#    - name: "githubpassword"
+#      prompt: "Enter your github password"
+#      private: yes
+ 
