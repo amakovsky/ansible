@@ -29,11 +29,9 @@
     - tzdata 
     - ntp
 
-- name: set timezone to Europe/Moscow
-  timezone:
-    name: Europe/Moscow
-  notify: restart rsyslog
 
+- import_tasks: bash.yml
+- import_tasks: defaults.yml
 
  
 

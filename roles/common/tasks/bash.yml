@@ -1,0 +1,26 @@
+- name: Search for bashrc Backup
+  stat: path=/etc/bash.bashrc.backup
+  register: bashrc_backup
+
+- name: Backup current bashrc
+  copy:
+    remote_src: True
+    src: /etc/bash.bashrc
+    dest: /etc/bash.bashrc.backup
+  when: not bashrc_backup.stat.exists
+
+- name: Copy new bashrc
+  copy:
+    src: bash.bashrc
+    dest: /etc/bash.bashrc
+
+- name: Copy new bashrc to skel folder
+  copy:
+    src: bash.bashrc
+    dest: /etc/skel/.bashrc
+
+- name: Remove local bashrc files
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items: "{{ bashrc_list }}"

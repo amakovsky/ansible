@@ -1,0 +1,11 @@
+---
+bashrc_list:
+  - /root/.bashrc
+
+defaults:
+  timezone: Europe/Moscow
+  editor: /usr/bin/vim.basic
+
+locales:
+  - ru_RU
+  - ru_RU.UTF-8
