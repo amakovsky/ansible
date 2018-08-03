@@ -1,0 +1,41 @@
+---
+- name: Install requirements
+  apt: name={{item}} force=yes
+  with_items:
+    - openvpn
+    - udev
+    - openssl
+    - easy-rsa
+
+- name: create needed easy-rsa directories
+  shell: 'make-cadir {{ cadir }}'
+  args:
+    creates: '{{ cadir }}'
+  register: cadir_create
+
+- name: edit zabbix-server config file
+  lineinfile:
+    backup: no
+    path: "{{ cadir }}/vars"
+    regexp: "{{ item.path }}"
+    line: "{{ item.regexp }}"
+  with_items:
+    - { path: '^export KEY_COUNTRY=*', regexp: 'export KEY_COUNTRY="RU"' }
+    - { path: '^export KEY_PROVINCE=*', regexp: 'export KEY_PROVINCE="MO"' }
+    - { path: '^export KEY_CITY=*', regexp: 'export KEY_CITY="Moscow"' }
+    - { path: '^export KEY_ORG=*', regexp: 'export KEY_ORG="GettWiFi"' }
+    - { path: '^export KEY_EMAIL=*', regexp: 'export KEY_EMAIL="mak@getteifi.com"' }
+    - { path: '^export KEY_OU=*', regexp: 'export KEY_OU="Community"' }
+    - { path: '^export KEY_NAME=*', regexp: 'export KEY_NAME="server"' }
+
+- name: create needed easy-rsa directories
+  shell: 'cd {{ cadir }} && source vars && ./clean-all && ./build-ca'
+  args:
+    creates: '{{ cadir }}'
+  when: cadir_create is changed
+
+
+#- name: Install bridge dependencies
+#  apt: name={{item}}
+#  when: openvpn_bridge
+#  with_items: [bridge-utils]

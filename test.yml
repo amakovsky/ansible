@@ -7,6 +7,4 @@
 
   roles:
     - common
-    - ufw
-    - nginx
-    -
+    - openvpn
