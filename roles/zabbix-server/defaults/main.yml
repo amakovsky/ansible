@@ -1,1 +1,5 @@
 ---
+db_name: zabbix
+db_user: zabbix
+db_pass: zabbix
+db_host: localhost

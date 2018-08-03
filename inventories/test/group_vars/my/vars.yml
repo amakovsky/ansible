@@ -1,2 +1,3 @@
 ---
 ansible_user: root
+php_proxy: "127.0.0.1:9010"

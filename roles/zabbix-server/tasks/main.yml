@@ -1,25 +1,56 @@
 ---
-- name: add key for docker repositories
-  apt_key:
-    keyserver: "hkp://pgp.mit.edu:80"
-    id: "58118E89F3A912897C070ADBF76221572C52609D"
+- name: Download zabbix apt source
+  get_url:
+    url: https://repo.zabbix.com/zabbix/3.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.4-1+{{ ansible_distribution_release }}_all.deb
+    dest: /tmp/zabbix-release_3.2-1+{{ ansible_distribution_release }}_all.deb
+    mode: 0740
+
+- name: Install apt repo
+  apt: deb="/tmp/zabbix-release_3.4-1+{{ ansible_distribution_release }}_all.deb"
+
+- name: Install common
+  apt: name={{ item }} update_cache=yes state=present
+  with_items:
+    - zabbix-server-mysql
+    - zabbix-frontend-php
+    - zabbix-agent
+
+- mysql_db:
+    name: "{{ db_name }}"
+    state: import
+    target: /usr/share/doc/zabbix-server-mysql/create.sql.gz
+
+- mysql_user:
+    name: "{{ db_user }}"
+    host: localhost
+    password: "{{ db_pass }}"
+    priv: "{{ db_name }}.*:ALL"
     state: present
 
-- name: add docker repositories
-  apt_repository:
-    repo: 'deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main'
-    state: present
-  when: ansible_distribution_release != "bionic"
-
-- name: Install common docker package
-  apt: name={{ item }} update_cache=yes state=latest
+- name: edit zabbix-server config file
+  lineinfile:
+    backup: no
+    path: /etc/zabbix/zabbix_server.conf
+    regexp: "{{ item.path }}"
+    line: "{{ item.regexp }}"
   with_items:
-    - docker-engine
-    - python-setuptools
-    - python-pip
+    - { path: 'DBHost=*', regexp: 'DBHost={{ db_host }}' }
+    - { path: 'DBName=*', regexp: 'DBName={{ db_name }}' }
+    - { path: 'DBUser=*', regexp: 'DBUser={{ db_user }}' }
+    - { path: 'DBPassword=*', regexp: 'DBPassword={{ db_pass }}' }
+  notify: restart zabbix-server
 
-- name: install docker python
-  pip: name={{ item }}
-  with_items:
-    - docker
-    - docker-compose
+- name: starte zabbix-server
+  systemd:
+    state: started
+    name: zabbix-server
+
+- name: enable zabbix-client
+  systemd:
+    enabled: yes
+    name: zabbix-agent.service
+
+- name: starte zabbix-client
+  systemd:
+    state: started
+    name: zabbix-agent
