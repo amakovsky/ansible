@@ -11,7 +11,6 @@
     proto: "{{ item.proto }}"
   with_items:
     - { rule: 'allow', port: 22, proto: 'tcp' }
-#    - { rule: 'allow', port: 123, proto: 'udp' }
 
 - name: Configure default incoming/outgoing rules with ufw.
   ufw:

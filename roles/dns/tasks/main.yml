@@ -37,15 +37,6 @@
     mode: 0660
   notify: restart bind9
 
-#- name: Copy named conf local file
-#  template:
-#    src: named.conf.local.j2
-#    dest: /etc/bind/named.conf.local
-#    owner: root
-#    group: bind
-#    mode: 0660
-#  notify: restart bind9
-
 - name: Copy named conf local file
   template:
     src: named.conf.local.j2
@@ -83,3 +74,12 @@
     group: bind
     mode: 0640
   notify: restart bind9
+
+- name: Configure open ports for bind9
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items:
+    - { rule: 'allow', port: 53, proto: 'tcp' }
+    - { rule: 'allow', port: 53, proto: 'udp' }
