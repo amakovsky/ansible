@@ -1,0 +1,10 @@
+zone "{{ domain }}" IN {
+    type master;
+    file "/etc/bind/zones/db.{{ domain }}";
+};
+
+zone "{{ rev_domain }}" IN {
+    type master;
+    file "/etc/bind/zones/db.{{ rev_domain }}";
+    allow-update {key rndc-key; };
+};

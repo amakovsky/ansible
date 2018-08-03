@@ -9,6 +9,7 @@
     - common
     - docker
     - gitlab
+    - dns
   
 
 #  vars_prompt:
