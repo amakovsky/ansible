@@ -1,0 +1,44 @@
+---
+- apt_repository:
+    repo: 'ppa:nginx/stable'
+    state: present
+    update_cache: True
+
+- name: Install nginx
+  apt: name=nginx state=present
+
+- name: copy nginx configs
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - {
+      src: 'nginx.conf',
+      dest: '/etc/nginx/nginx.conf'
+    }
+    - {
+      src: 'expires.conf',
+      dest: '/etc/nginx/expires.conf'
+    }
+  notify: restart nginx
+
+- name: unlink default config
+  file:    
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+    force: yes
+  notify: restart nginx
+
+- name: Configure open ports for nginx.
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items:
+    - { rule: 'allow', port: 80, proto: 'tcp' }
+    - { rule: 'allow', port: 443, proto: 'tcp' }
+
+- name: enable nginx
+  systemd:
+    enabled: yes
+    name: nginx

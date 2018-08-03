@@ -35,6 +35,7 @@
     owner: root
     group: bind
     mode: 0660
+    validate: 'named-checkconf %s'
   notify: restart bind9
 
 - name: Copy named conf local file
@@ -44,6 +45,7 @@
     owner: root
     group: bind
     mode: 0660
+    validate: 'named-checkconf %s'
   notify: restart bind9
 
 - name: Make zones Directory
@@ -61,6 +63,7 @@
     owner: root
     group: bind
     mode: 0640
+    validate: "named-checkzone /etc/bind/zones/db.{{ item.value.name }} %s"
   with_dict:
     - "{{ zones }}"
   notify: restart bind9
@@ -73,6 +76,7 @@
     owner: root
     group: bind
     mode: 0640
+    validate: "named-checkzone /etc/bind/zones/db.{{ rev_domain }} %s"
   notify: restart bind9
 
 - name: Configure open ports for bind9
