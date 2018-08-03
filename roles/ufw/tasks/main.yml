@@ -1,0 +1,23 @@
+---
+- name: Install ufw
+  apt: name={{ item }} update_cache=yes state=latest
+  with_items:
+    - ufw
+
+- name: open port for ssh
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items:
+    - { rule: 'allow', port: 22, proto: 'tcp' }
+#    - { rule: 'allow', port: 123, proto: 'udp' }
+
+- name: Configure default incoming/outgoing rules with ufw.
+  ufw:
+    direction: "{{ item.direction }}"
+    policy: "{{ item.policy }}"
+    state: enabled
+  with_items:
+    - { direction: outgoing, policy: allow }
+    - { direction: incoming, policy: deny }

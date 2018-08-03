@@ -1,10 +1,19 @@
-zone "{{ domain }}" IN {
-    type master;
-    file "/etc/bind/zones/db.{{ domain }}";
+{% for key, value in zones.iteritems() %}
+zone "{{ value.name }}" IN {
+type master;
+file "/etc/bind/zones/db.{{ value.name }}";
 };
+
+{% endfor %}
 
 zone "{{ rev_domain }}" IN {
     type master;
     file "/etc/bind/zones/db.{{ rev_domain }}";
     allow-update {key rndc-key; };
+};
+
+zone "gettwifi.com" {
+    type forward;
+    forward only;
+    forwarders { 8.8.8.8; };
 };

@@ -3,8 +3,22 @@ domain: gw.local
 rev_domain: 135.10.in-addr.arpa
 host_name: ns1.{{ domain }}
 records:
-  ns1:
-    forward: 10.135.96.185
-    type: A
-    last: 185.96
-    rev: 135.10.in-addr.arpa
+  local:
+    ns1:
+      forward: 10.135.96.185
+      type: A
+      last: 185.96
+      rev: 135.10.in-addr.arpa
+
+  gettwifi:
+    "@":
+      forward: 10.135.96.185
+      type: A
+      last: 185.96
+      rev: 135.10.in-addr.arpa
+
+zones:
+  local:
+    name: gw.local
+  gettwifi:
+    name: gitlab.gettwifi.com

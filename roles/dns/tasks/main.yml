@@ -37,6 +37,15 @@
     mode: 0660
   notify: restart bind9
 
+#- name: Copy named conf local file
+#  template:
+#    src: named.conf.local.j2
+#    dest: /etc/bind/named.conf.local
+#    owner: root
+#    group: bind
+#    mode: 0660
+#  notify: restart bind9
+
 - name: Copy named conf local file
   template:
     src: named.conf.local.j2
@@ -57,12 +66,14 @@
 - name: Copy forward file
   template:
     src: db.forward.j2
-    dest: /etc/bind/zones/db.{{ domain }}
+    dest: /etc/bind/zones/db.{{ item.value.name }}
     owner: root
     group: bind
     mode: 0640
-  with_dict: "{{ records }}"
+  with_dict:
+    - "{{ zones }}"
   notify: restart bind9
+
 
 - name: Copy reverse file
   template:
@@ -71,5 +82,4 @@
     owner: root
     group: bind
     mode: 0640
-  with_dict: "{{ records }}"
   notify: restart bind9
