@@ -29,3 +29,4 @@ zones:
     name: gitlab.gettwifi.com
 
 private_ip: 10.135.62.157
+private_interface: eth1

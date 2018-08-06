@@ -1,17 +1,17 @@
 ---
 - name: Update SSH configuration to be more secure.
-  lineinfile:
-    dest: /etc/ssh/sshd_config
+  replace:
+    path: /etc/ssh/sshd_config
     regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-    state: present
+    replace: "{{ item.line }}"
   with_items:
     - {
-      regexp: "^PasswordAuthentication",
+      regexp: "^PasswordAuthentication yes",
       line: "PasswordAuthentication no"
     }
     - {
       regexp: "^#ListenAddress 0.0.0.0",
-      line: "ListenAddress {{ inventory_hostname }}"
+      line: "ListenAddress {{ hostvars[inventory_hostname][interface_fact_var].ipv4.address }}"
+#      line: "ListenAddress {{ inventory_hostname }}"
     }
   notify: restart ssh
