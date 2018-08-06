@@ -5,7 +5,7 @@ domain: gw.local
 rev_domain: 135.10.in-addr.arpa
 host_name: ns1.{{ domain }}
 
-list_public: true
+list_public: false
 
 records:
   local:
@@ -28,4 +28,4 @@ zones:
   gettwifi:
     name: gitlab.gettwifi.com
 
-private_ip: 142.93.100.101
+private_ip: 10.135.62.157
