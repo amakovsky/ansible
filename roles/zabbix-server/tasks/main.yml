@@ -51,15 +51,37 @@
     - { path: 'DBPassword=*', regexp: 'DBPassword={{ db_pass }}' }
   notify: restart zabbix-server
 
-#- name: edit apache2 config file
-#  lineinfile:
-#    backup: no
-#    path: /etc/apache2/conf-enabled/zabbix.conf
-#    regexp: "{{ item.path }}"
-#    line: "{{ item.regexp }}"
-#  with_items:
-#    - { path: '^# php_value date', regexp: 'php_value date.timezone Europe/Moscow' }
-#  notify: restart zabbix-server
+- name: edit apache2 config file
+  lineinfile:
+    backup: no
+    path: /etc/apache2/conf-enabled/zabbix.conf
+    regexp: "{{ item.path }}"
+    line: "{{ item.regexp }}"
+  with_items:
+    - { path: 'Alias /zabbix*', regexp: '#Alias /zabbix /usr/share/zabbix' }
+  notify: restart apache2
+
+- name: copy mariadb config
+  template:
+    src: 'mysqld.cnf'
+    dest: '/etc/mysql/conf.d/mariadb.cnf'
+    force: yes
+  notify: restart mariadb
+
+- name: copy telegramm config
+  template:
+    src: 'telegram.sh'
+    dest: '/usr/lib/zabbix/alertscripts/telegram.sh'
+    force: yes
+    owner: zabbix
+    group: zabbix
+    mode: 0760
+
+- name: copy zabbix-server config
+  template:
+    src: 'zabbix.conf.php'
+    dest: '/usr/share/zabbix/conf/zabbix.conf.php'
+    force: yes
 
 - name: starte zabbix-server
   systemd:

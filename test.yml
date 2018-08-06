@@ -7,7 +7,6 @@
 
   roles:
     - common
-    - nginx
     - mariadb
 #    - php-fpm
     - zabbix-server
