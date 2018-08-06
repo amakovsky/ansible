@@ -10,3 +10,4 @@
     - mariadb
     - ufw
     - zabbix-server
+    - xtrabackup

@@ -1,0 +1,6 @@
+---
+xtra_dir: "xtrabackup"
+backup_dir: "backup"
+root_dir: "/root"
+cron_hour: "2"
+mariadb_mysqld_root_password: 'pleasepickabetterpassword'

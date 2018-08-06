@@ -1,0 +1,62 @@
+---
+- name: Download xtrabackup
+  get_url:
+    url: https://repo.percona.com/apt/percona-release_0.1-4.{{ ansible_distribution_release }}_all.deb
+    dest: /tmp/percona-release_0.1-6.{{ ansible_distribution_release }}_all.deb
+    mode: 0740
+  when: ansible_distribution_release != "bionic"
+
+- name: Install apt repo
+  apt: deb="/tmp/percona-release_0.1-6.{{ ansible_distribution_release }}_all.deb"
+  when: ansible_distribution_release != "bionic"
+
+- name: Install xtrabackup
+  apt: name=percona-xtrabackup-24 state=present update_cache=yes
+
+- name: create folder for docker files
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0700
+  with_items:
+    - "{{ root_dir }}/{{ xtra_dir }}"
+    - "{{ root_dir }}/{{ backup_dir }}"
+
+- name: copy nginx configs
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0700
+  with_items:
+    - {
+      src: 'create_backup.sh',
+      dest: '{{ root_dir }}/create_backup.sh'
+    }
+    - {
+      src: 'extract_backup.sh',
+      dest: '{{ root_dir }}/extract_backup.sh'
+    }
+    - {
+      src: '.mysql',
+      dest: '{{ root_dir }}/.mysql'
+    }
+    - {
+      src: 'del_old_backup.sh',
+      dest: '{{ root_dir }}/del_old_backup.sh'
+    }
+
+- name: cron for backup
+  cron:
+    name: "xtrabackup"
+    minute: "0"
+    hour: "*/{{ cron_hour }}"
+    job: "{{ root_dir }}/create_backup.sh"
+
+- name: cron for backup
+  cron:
+    name: "del old backup"
+    minute: "0"
+    hour: "1"
+    job: "{{ root_dir }}/del_old_backup.sh"
+
+
