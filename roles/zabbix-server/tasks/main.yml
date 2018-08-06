@@ -1,8 +1,12 @@
 ---
+- name: check exist zabbix-agent
+  stat: path=/usr/sbin/zabbix_server
+  register: zabbix_available
+
 - name: Download zabbix apt source
   get_url:
     url: https://repo.zabbix.com/zabbix/3.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.4-1+{{ ansible_distribution_release }}_all.deb
-    dest: /tmp/zabbix-release_3.2-1+{{ ansible_distribution_release }}_all.deb
+    dest: /tmp/zabbix-release_3.4-1+{{ ansible_distribution_release }}_all.deb
     mode: 0740
 
 - name: Install apt repo
@@ -15,10 +19,17 @@
     - zabbix-frontend-php
     - zabbix-agent
 
+- name: Copy zabbix-server database dump
+  copy:
+    src: zabbix.gz
+    dest: /tmp/zabbix.gz
+  when: zabbix_available.stat.exists == false
+
 - mysql_db:
     name: "{{ db_name }}"
     state: import
-    target: /usr/share/doc/zabbix-server-mysql/create.sql.gz
+    target: /tmp/zabbix.gz
+  when: zabbix_available.stat.exists == false
 
 - mysql_user:
     name: "{{ db_user }}"
@@ -40,6 +51,16 @@
     - { path: 'DBPassword=*', regexp: 'DBPassword={{ db_pass }}' }
   notify: restart zabbix-server
 
+#- name: edit apache2 config file
+#  lineinfile:
+#    backup: no
+#    path: /etc/apache2/conf-enabled/zabbix.conf
+#    regexp: "{{ item.path }}"
+#    line: "{{ item.regexp }}"
+#  with_items:
+#    - { path: '^# php_value date', regexp: 'php_value date.timezone Europe/Moscow' }
+#  notify: restart zabbix-server
+
 - name: starte zabbix-server
   systemd:
     state: started
@@ -54,3 +75,18 @@
   systemd:
     state: started
     name: zabbix-agent
+
+- name: copy nginx configs
+  template:
+    src: 'apache.conf'
+    dest: '/etc/apache2/sites-available/000-default.conf'
+    force: yes
+  notify: restart apache2
+
+- name: link nginx config
+  file:
+    src: '/etc/apache2/sites-available/000-default.conf'
+    dest: '/etc/apache2/sites-enabled/000-default.conf'
+    state: link
+    force: yes
+  notify: restart apache2

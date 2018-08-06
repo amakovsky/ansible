@@ -7,4 +7,7 @@
 
   roles:
     - common
-    - openvpn
+    - nginx
+    - mariadb
+#    - php-fpm
+    - zabbix-server

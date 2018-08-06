@@ -3,3 +3,5 @@ db_name: zabbix
 db_user: zabbix
 db_pass: zabbix
 db_host: localhost
+domain: gw.local
+host_name: zabbix.{{ domain }}
