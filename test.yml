@@ -7,6 +7,5 @@
 
   roles:
     - common
-    - mariadb
-#    - php-fpm
-    - zabbix-server
+    - ufw
+    - { role: ansible-role-openvpn-master, clients: [client1, client2]}

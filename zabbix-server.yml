@@ -1,0 +1,12 @@
+---
+- name: zabbix-server
+  hosts: my
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - common
+    - mariadb
+    - ufw
+    - zabbix-server

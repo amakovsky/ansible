@@ -63,7 +63,7 @@
     owner: root
     group: bind
     mode: 0640
-    validate: "named-checkzone /etc/bind/zones/db.{{ item.value.name }} %s"
+#    validate: "named-checkzone /etc/bind/zones/db.{{ item.value.name }} %s"
   with_dict:
     - "{{ zones }}"
   notify: restart bind9
@@ -76,7 +76,7 @@
     owner: root
     group: bind
     mode: 0640
-    validate: "named-checkzone /etc/bind/zones/db.{{ rev_domain }} %s"
+#    validate: "named-checkzone /etc/bind/zones/db.{{ rev_domain }} %s"
   notify: restart bind9
 
 - name: Configure open ports for bind9
