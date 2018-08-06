@@ -1,6 +1,5 @@
----
-- name: Workstation for developers
-  hosts: my
+- name: openvpn server
+  hosts: openvpn
   become: yes
   become_method: sudo
   become_user: root
