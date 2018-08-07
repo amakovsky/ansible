@@ -1,6 +1,6 @@
 ---
 - name: zabbix-server
-  hosts: my
+  hosts: zabbix
   become: yes
   become_method: sudo
   become_user: root

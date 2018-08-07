@@ -1,7 +1,7 @@
 ---
 ansible_user: root
 
-domain: gw.local
+domain: gw.lan
 rev_domain: 135.10.in-addr.arpa
 host_name: ns1.{{ domain }}
 
@@ -10,9 +10,14 @@ list_public: false
 records:
   local:
     ns1:
-      forward: 10.135.101.209
+      forward: 10.135.1.24
       type: A
-      last: 185.96
+      last: 24.1
+      rev: 135.10.in-addr.arpa
+    zabbix:
+      forward: 10.135.81.75
+      type: A
+      last: 75.81
       rev: 135.10.in-addr.arpa
 
   gettwifi:
@@ -24,6 +29,6 @@ records:
 
 zones:
   local:
-    name: gw.local
+    name: gw.lan
   gettwifi:
     name: gitlab.gettwifi.com

@@ -7,4 +7,5 @@
   roles:
     - common
     - ufw
-    - { role: openvpn, clients: [client1, client2]}
+    - fail2ban
+    - openvpn

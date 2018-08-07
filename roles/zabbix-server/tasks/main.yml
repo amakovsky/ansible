@@ -120,3 +120,4 @@
     proto: "{{ item.proto }}"
   with_items:
     - { rule: 'allow', port: 10051, proto: 'tcp' }
+    - { rule: 'allow', port: 80, proto: 'tcp' }
