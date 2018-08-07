@@ -1,18 +1,5 @@
 ---
-- name: Update DNS server
-  lineinfile:
-    path: /etc/resolv.conf
-    regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-    firstmatch: yes
-  with_items:
-    - {
-      regexp: "^nameserver*",
-      line: "nameserver {{ groups['dns'][0] }}"
-    }
-  when: inventory_hostname != groups['dns'][0]
-
-- name: Update DNS server
+- name: Update DNS server for all servers
   lineinfile:
     path: /etc/network/interfaces.d/50-cloud-init.cfg
     regexp: "{{ item.regexp }}"
@@ -24,21 +11,9 @@
       line: "dns-nameservers {{ groups['dns'][0] }} 67.207.67.3"
     }
   when: inventory_hostname != groups['dns'][0]
+  register: change_dns
 
-- name: Update DNS server
-  lineinfile:
-    path: /etc/resolv.conf
-    regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-    firstmatch: yes
-  with_items:
-    - {
-      regexp: "^nameserver*",
-      line: "nameserver 127.0.0.1"
-    }
-  when: inventory_hostname == groups['dns'][0]
-
-- name: Update DNS server
+- name: Update nameserver for DNS server
   lineinfile:
     path: /etc/network/interfaces.d/50-cloud-init.cfg
     regexp: "{{ item.regexp }}"
@@ -50,3 +25,37 @@
       line: "dns-nameservers 127.0.0.1 67.207.67.3"
     }
   when: inventory_hostname == groups['dns'][0]
+  register: change_dns_2
+
+- name: delete /etc/resolv.conf file
+  file:
+    path: /etc/resolv.conf
+    state: absent
+  when: change_dns is changed or change_dns_2 is changed
+
+- name: Update resolv.conf for all servers
+  lineinfile:
+    path: /etc/resolv.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    create: yes
+  with_items:
+    - {
+      regexp: "^nameserver*",
+      line: "nameserver {{ groups['dns'][0] }}"
+    }
+  when: inventory_hostname != groups['dns'][0] and change_dns is changed
+
+- name: Update resolv.conf for DNS servers
+  lineinfile:
+    path: /etc/resolv.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    create: yes
+  with_items:
+    - {
+      regexp: "^nameserver*",
+      line: "nameserver 127.0.0.1"
+    }
+  when: inventory_hostname == groups['dns'][0] and change_dns is changed
+

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TOKEN='447015973:AAF3qCIgsTyW8NUeeJFI1EZ4XuMHwPCfXSY'
+TOKEN='{{ telegram_bot }}'
 
 which curl &>/dev/null
 if [ $? -ne 0 ] ; then echo 'FAIL: curl not found.' && exit 1 ; fi

@@ -8,9 +8,11 @@
     url: https://repo.zabbix.com/zabbix/3.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.4-1+{{ ansible_distribution_release }}_all.deb
     dest: /tmp/zabbix-release_3.4-1+{{ ansible_distribution_release }}_all.deb
     mode: 0740
+  when: zabbix_available.stat.exists == false
 
 - name: Install apt repo
   apt: deb="/tmp/zabbix-release_3.4-1+{{ ansible_distribution_release }}_all.deb"
+  when: zabbix_available.stat.exists == false
 
 - name: Install common
   apt: name={{ item }} update_cache=yes state=present
@@ -87,6 +89,11 @@
   systemd:
     state: started
     name: zabbix-server
+
+- name: enable zabbix-server
+  systemd:
+    enabled: yes
+    name: zabbix-server.service
 
 - name: enable zabbix-client
   systemd:

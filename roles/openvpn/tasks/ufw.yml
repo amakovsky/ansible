@@ -4,10 +4,10 @@
     enabled: true
     state: started
 
-- name: Enable ufw
-  ufw:
-    state: enabled
-    policy: allow
+#- name: Enable ufw
+#  ufw:
+#    state: enabled
+#    policy: allow
 
 - name: ufw - enable forwarding
   lineinfile:
