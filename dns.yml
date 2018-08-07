@@ -11,3 +11,4 @@
     - ufw
     - ssh
     - dns
+    - zabbix

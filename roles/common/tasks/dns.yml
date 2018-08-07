@@ -1,0 +1,52 @@
+---
+- name: Update DNS server
+  lineinfile:
+    path: /etc/resolv.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    firstmatch: yes
+  with_items:
+    - {
+      regexp: "^nameserver*",
+      line: "nameserver {{ groups['dns'][0] }}"
+    }
+  when: inventory_hostname != groups['dns'][0]
+
+- name: Update DNS server
+  lineinfile:
+    path: /etc/network/interfaces.d/50-cloud-init.cfg
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    firstmatch: yes
+  with_items:
+    - {
+      regexp: "dns-nameservers*",
+      line: "dns-nameservers {{ groups['dns'][0] }} 67.207.67.3"
+    }
+  when: inventory_hostname != groups['dns'][0]
+
+- name: Update DNS server
+  lineinfile:
+    path: /etc/resolv.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    firstmatch: yes
+  with_items:
+    - {
+      regexp: "^nameserver*",
+      line: "nameserver 127.0.0.1"
+    }
+  when: inventory_hostname == groups['dns'][0]
+
+- name: Update DNS server
+  lineinfile:
+    path: /etc/network/interfaces.d/50-cloud-init.cfg
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    firstmatch: yes
+  with_items:
+    - {
+      regexp: "dns-nameservers*",
+      line: "dns-nameservers 127.0.0.1 67.207.67.3"
+    }
+  when: inventory_hostname == groups['dns'][0]

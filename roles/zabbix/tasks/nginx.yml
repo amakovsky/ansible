@@ -1,0 +1,26 @@
+---
+- name: Copy zabbix configuration for nginx
+  copy: src=zabbix.conf dest=/etc/nginx/sites-available/zabbix.conf
+
+- name: link zabbix.conf
+  file:
+    src: /etc/nginx/sites-available/zabbix.conf
+    dest: /etc/nginx/sites-enabled/zabbix.conf 
+    state: link
+    force: yes
+  notify: restart nginx
+
+- name: copy zabbix user parameter for nginx
+  template: src=nginx_parameter.conf.j2 dest=/etc/zabbix/zabbix_agentd.d/nginx_parameter.conf
+  notify: restart zabbix
+ 
+- name: copy nginx script for zabbix
+  copy: src=php-fpm-check.sh dest={{ directory ~ '/nginx-check.sh' }}
+
+- name: chown script nginx-check.sh
+  file:
+    path: "{{ directory ~ '/nginx-check.sh' }}"
+    state: file
+    owner: zabbix
+    group: zabbix
+    mode: 0770

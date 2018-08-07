@@ -32,6 +32,7 @@
 
 - import_tasks: bash.yml
 - import_tasks: defaults.yml
+- import_tasks: dns.yml
 
  
 

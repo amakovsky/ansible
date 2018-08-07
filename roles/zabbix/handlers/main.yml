@@ -1,0 +1,12 @@
+---
+- name: restart nginx
+  service: name=nginx state=restarted enabled=yes  
+
+- name: restart zabbix
+  service: name=zabbix-agent state=restarted enabled=yes
+
+- name: restart iptables
+  service: name=netfilter-persistent state=restarted
+
+- name: restart fail2ban
+  service: name=fail2ban state=restarted enabled=yes

@@ -1,0 +1,187 @@
+---
+- name: check exist zabbix-agent
+  stat: path=/usr/sbin/zabbix_agentd
+  register: zabbix_available
+
+- name: Download zabbix apt source
+  get_url:
+    url: http://repo.zabbix.com/zabbix/3.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.2-1+{{ ansible_distribution_release }}_all.deb
+    dest: /tmp/zabbix-release_3.2-1+{{ ansible_distribution_release }}_all.deb
+    mode: 0740
+  when: ansible_distribution_release != "bionic"
+
+- name: Install apt repo
+  apt: deb="/tmp/zabbix-release_3.2-1+{{ ansible_distribution_release }}_all.deb"
+  when: ansible_distribution_release != "bionic"
+
+- name: Install common
+  apt: name={{ item }} update_cache=yes state=present
+  with_items:
+    - python-pip
+    - libcurl3
+    - zabbix-agent
+
+- name: install pip-zabbix
+  pip:
+    name: py-zabbix
+
+- name: check exist nginx
+  stat: path=/usr/sbin/nginx
+  register: nginx_available
+
+- name: Set variable 'nginx'
+  set_fact:
+    nginx: 1
+  when: nginx_available.stat.exists == true
+
+- name: check exist mysql-server
+  stat: path=/usr/sbin/mysqld
+  register: mysql_available
+
+- name: Set variable 'mysql'
+  set_fact:
+    mysql: 1
+  when: mysql_available.stat.exists == true
+
+#- name: copy zabbix_agent
+#  copy: src=zabbix-agent.deb dest=/tmp/zabbix-agent.deb
+#  when: zabbix_available.stat.exists == false
+#
+#- name: Install zabbix package
+#  apt:
+#    deb: /tmp/zabbix-agent.deb
+#  when: zabbix_available.stat.exists == false
+
+- name: create folder for project zabbix script
+  file:
+    path: '{{ directory }}'
+    state: directory
+    owner: root
+    group: root
+#    mode: 0755
+
+- name: create folder for project zabbix script
+  file:
+    path: /etc/zabbix/zabbix_agentd.d
+    state: directory
+    owner: root
+
+- name: copy zabbix_agent auto register script
+  template: src=autoreg-enable-tls-psk_comm.py.j2 dest=/usr/lib/zabbix/externalscripts/autoreg-enable-tls-psk_comm.py
+  when: zabbix_available.stat.exists == false
+
+- name: copy clear scripts
+  copy: src=clear.sh dest=/usr/lib/zabbix/externalscripts/
+  when: zabbix_available.stat.exists == false
+
+- name: add scripts to sudo
+  lineinfile:
+    state: present
+    path: /etc/sudoers
+    line: 'zabbix ALL=(ALL) NOPASSWD:/usr/lib/zabbix/externalscripts/clear.sh'
+  when: zabbix_available.stat.exists == false
+
+#- name: add iptables rule
+#  lineinfile:
+#    path: /etc/iptables/rules.v4
+#    insertafter: '#tcp ports'
+#    line: '-A INPUT -p tcp -m state --state NEW -m tcp --dport 10050 -j ACCEPT'
+#    state: present
+#  notify:
+#    - restart iptables
+#    - restart fail2ban
+
+- name: Configure open ports with ufw.
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items:
+    - { rule: 'allow', port: "{{ zabbix_port }}", proto: 'tcp' }
+
+- name: chown script
+  file:
+    path: /usr/lib/zabbix/externalscripts/clear.sh
+    state: file
+    owner: root
+    group: zabbix
+    mode: 0770
+  when: zabbix_available.stat.exists == false
+
+#- name: check exist psk
+#  stat: path=/etc/zabbix/zabbix_agentd.psk
+#  register: psk_available
+
+- name: gen psk
+  shell: openssl rand -hex 32 > /etc/zabbix/zabbix_agentd.psk
+  args:
+    creates: /etc/zabbix/zabbix_agentd.psk
+#  when: psk_available.stat.exists == false
+- name: edit config file
+  lineinfile:
+    backup: yes
+    path: /etc/zabbix/zabbix_agentd.conf
+    regexp: "{{ item.path }}"
+    line: "{{ item.regexp }}"
+  with_items:
+    - { path: '^ServerActive=', regexp: 'ServerActive={{ zabbix_server }}' }
+    - { path: '^Hostname=', regexp: 'Hostname={{ ansible_nodename }}' }
+    - { path: '^Server=', regexp: 'Server={{ zabbix_server }}' }
+    - { path: '^(.*)ListenPort=', regexp: 'ListenPort={{ zabbix_port }}' }
+    - { path: '^(.*)HostMetadataItem=', regexp: 'HostMetadataItem=system.uname' }
+    - { path: '^(.*)TLSConnect=unencrypted', regexp: 'TLSConnect=unencrypted' }
+    - { path: '^(.*)TLSAccept=unencrypted', regexp: 'TLSAccept=unencrypted,psk' }
+    - { path: '^(.*)TLSPSKIdentity=', regexp: 'TLSPSKIdentity=PSK {{ ansible_nodename }}' }
+    - { path: '^(.*)TLSPSKFile=', regexp: 'TLSPSKFile=/etc/zabbix/zabbix_agentd.psk' }
+    - { path: '^(.*)Include=/etc/zabbix/zabbix_agentd.conf.d/', regexp: 'Include=/etc/zabbix/zabbix_agentd.d/\*\.conf' }
+  when: zabbix_available.stat.exists == false
+
+- name: copy zabbix_agent auto register script
+  template: src=userparameter.conf.j2 dest=/etc/zabbix/zabbix_agentd.d/userparameter.conf
+  when: zabbix_available.stat.exists == false
+  
+- name: get contents of PSK file
+  command: cat /etc/zabbix/zabbix_agentd.psk
+  register: filename
+  when: zabbix_available.stat.exists == false
+  
+- name: insert PSK into autoconfig
+  lineinfile: 
+    path: /usr/lib/zabbix/externalscripts/autoreg-enable-tls-psk_comm.py
+    regexp: '^(.*)PSK=""' 
+    line: 'PSK="{{filename.stdout}}"'
+  when: zabbix_available.stat.exists == false
+
+- name: chown script autoreg
+  file:
+    path: /usr/lib/zabbix/externalscripts/autoreg-enable-tls-psk_comm.py
+    state: file
+    owner: zabbix
+    group: zabbix
+    mode: 0755
+  when: zabbix_available.stat.exists == false
+
+- name: enable zabbix
+  systemd:
+    enabled: yes
+    name: zabbix-agent.service
+
+- name: starte zabbix
+  systemd:
+    state: started
+    name: zabbix-agent
+
+- include_tasks: "nginx.yml"
+  when: nginx_available.stat.exists == true
+
+- include_tasks: "netstat.yml"
+  when: netstat == 1
+
+- include_tasks: "smartctl.yml"
+  when: smartctl == 1
+
+- include_tasks: "mysql.yml"
+  when: mysql_available.stat.exists == true
+
+- include_tasks: "mysql_slave.yml"
+  when: mysql_slave == 1

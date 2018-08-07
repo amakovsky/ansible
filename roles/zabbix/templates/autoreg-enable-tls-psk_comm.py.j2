@@ -1,0 +1,61 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import sys
+import subprocess
+from zabbix.api import ZabbixAPI
+#import time
+#time.sleep(5)
+PSK="" 
+nginx={{ nginx }}
+netstat={{ netstat }}
+smartctl={{ smartctl }}
+mysql={{ mysql }}
+#templ=[{"templateid":"10001"}]
+
+#Установка параметров подключения
+zapi = ZabbixAPI(url='{{ zabbix_URL }}', user='{{ zabbix_user }}', password='{{ zabbix_pass }}')
+
+#Получение id значения шаблона 
+res1 = zapi.do_request('template.get', { 'filter': {'name': '{{ zabbix_linux_template }}'}, 'output': 'hostid'})
+res2 = str(res1.get(u'result')).split('\'')
+zabbix_templid = res2[3]
+templ=[{"templateid": zabbix_templid}]
+
+#Получение id значения узла сети
+res1 = zapi.do_request('host.get', { 'filter': {'name': sys.argv[1]}, 'output': 'hostid'})
+res2 = str(res1.get(u'result')).split('\'')
+zabbix_hostid = res2[3]
+
+#Добавление шаблона nginx если он установлен
+if nginx == 1:
+   res1 = zapi.do_request('template.get', { 'filter': {'name': '{{ zabbix_nginx_template }}' }, 'output': 'hostid'})
+   res2 = str(res1.get(u'result')).split('\'')
+   zabbix_templid = res2[3]
+   templ.append({"templateid": zabbix_templid})
+
+#Добавление шаблона netstat
+if netstat == 1:
+   res1 = zapi.do_request('template.get', { 'filter': {'name': '{{ zabbix_netstat_template }}' }, 'output': 'hostid'})
+   res2 = str(res1.get(u'result')).split('\'')
+   zabbix_templid = res2[3]
+   templ.append({"templateid": zabbix_templid})
+
+#Добавление шаблона smartctl
+if smartctl == 1:
+   res1 = zapi.do_request('template.get', { 'filter': {'name': '{{ zabbix_smartctl_template }}' }, 'output': 'hostid'})
+   res2 = str(res1.get(u'result')).split('\'')
+   zabbix_templid = res2[3]
+   templ.append({"templateid": zabbix_templid})
+
+#Добавление шаблона mysql
+if mysql == 1:
+   res1 = zapi.do_request('template.get', { 'filter': {'name': '{{ zabbix_mysql_template }}' }, 'output': 'hostid'})
+   res2 = str(res1.get(u'result')).split('\'')
+   zabbix_templid = res2[3]
+   templ.append({"templateid": zabbix_templid})
+
+#Запрос на редактирование узла сети
+zapi.do_request('host.update', {'hostid': zabbix_hostid, 'tls_connect': 2, 'tls_accept': 2, 'tls_psk_identity': 'PSK {{ ansible_nodename }}', 'tls_psk': PSK, 'templates': templ })
+
+#Удаление скриптов в целях безопасности
+subprocess.call("/usr/lib/zabbix/externalscripts/clear.sh")

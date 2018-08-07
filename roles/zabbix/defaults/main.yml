@@ -1,0 +1,20 @@
+---
+zabbix_user: Admin
+zabbix_pass: gonQuancajes
+zabbix_URL: http://zabbix.gw.lan
+zabbix_server: zabbix.gw.lan
+zabbix_linux_template: 'Template OS Linux'
+zabbix_nginx_template: Template_Nginx
+zabbix_netstat_template: 'Template TCP Stats'
+zabbix_smartctl_template: 'Template_HDD_SMARTMONTOOLS_2_WITH_LLD'
+zabbix_mysql_template: 'Template App MySQL'
+zabbix_mysql_slave_template: 'Template_MySQL_Slave'
+zabbix_mysql_pass: 'Vy8XKARa3sqivR'
+nginx: 0
+netstat: 1
+smartctl: 0
+mysql: 0
+mysql_slave: 0
+directory: '/usr/lib/zabbix/externalscripts'
+another_port: false
+zabbix_port: 10050

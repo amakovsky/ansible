@@ -1,0 +1,28 @@
+---
+- name: copy zabbix user parameter for netstat
+  template: src=userparameter_tcpstats.conf.j2 dest=/etc/zabbix/zabbix_agentd.d/userparameter_tcpstats.conf
+  notify: restart zabbix
+
+- name: copy netstat script for zabbix
+  copy: src=tcpstats.sh dest={{ directory ~ '/tcpstats.sh' }}
+
+- name: check exist sender
+  stat: path=/usr/bin/zabbix_sender
+  register: sender_available
+
+- name: copy sender_agent
+  copy: src=zabbix-sender_3.2.0-1+trusty_amd64.deb dest=/tmp/zabbix-sender_3.2.0-1+trusty_amd64.deb
+  when: sender_available.stat.exists == false
+
+- name: Install sender package
+  apt:
+    deb: /tmp/zabbix-sender_3.2.0-1+trusty_amd64.deb
+  when: sender_available.stat.exists == false
+
+- name: chown script tcpstats.sh
+  file:
+    path: "{{ directory ~ '/tcpstats.sh' }}"
+    state: file
+    owner: zabbix
+    group: zabbix
+    mode: 0770
