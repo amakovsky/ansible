@@ -1,0 +1,3 @@
+---
+allow_ip:
+  - "{{ hostvars[groups['openvpn'][0]].private_ip }}/32"

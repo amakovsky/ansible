@@ -4,13 +4,18 @@
   with_items:
     - ufw
 
+#- debug:
+#    msg: "{{ hostvars[groups['openvpn'][0]] }}"
+
 - name: open port for ssh
   ufw:
-    rule: "{{ item.rule }}"
-    port: "{{ item.port }}"
-    proto: "{{ item.proto }}"
+    rule: allow
+    port: 22
+    proto: tcp
+    src: "{{ item }}"
   with_items:
-    - { rule: 'allow', port: 22, proto: 'tcp' }
+    - "{{ hostvars[groups['openvpn'][0]].private_ip }}/32"
+    - "{{ allow_ip }}"
 
 - name: Configure default incoming/outgoing rules with ufw.
   ufw:
