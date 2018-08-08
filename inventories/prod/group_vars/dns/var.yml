@@ -19,6 +19,11 @@ records:
       type: A
       last: 75.81
       rev: 135.10.in-addr.arpa
+    runner1:
+      forward: 10.135.8.173
+      type: A
+      last: 173.8
+      rev: 135.10.in-addr.arpa
 
   gettwifi:
     "@":

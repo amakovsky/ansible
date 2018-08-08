@@ -9,3 +9,6 @@
 
 [gitlab]
 10.135.95.216 ansible_port=2222
+
+[gitlab-runner]
+10.135.8.173

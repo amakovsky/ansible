@@ -1,1 +1,11 @@
 ---
+- name: Copy site configuration
+  template:
+    src: docker-compose.yml
+    dest: ~/docker-compose.yml
+
+- name: build and start docker containers
+  docker_service:
+    project_src: /root
+    build: yes
+    restarted: true

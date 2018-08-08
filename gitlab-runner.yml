@@ -1,0 +1,13 @@
+---
+- name: gitlab-runner
+  hosts: gitlab-runner
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - common
+    - docker
+    - ufw
+    - gitlab-runner
+    - zabbix
