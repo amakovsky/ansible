@@ -1,0 +1,10 @@
+---
+- name: postgresql server
+  hosts: postgresql
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - common
+    - postgresql

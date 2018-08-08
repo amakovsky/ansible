@@ -6,3 +6,6 @@
 
 [gitlab]
 10.135.74.65 ansible_port=2222
+
+[postgresql]
+10.135.102.140

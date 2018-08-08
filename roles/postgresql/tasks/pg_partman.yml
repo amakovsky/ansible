@@ -1,0 +1,22 @@
+---
+- name: check exist pg_partman
+  stat: path=/usr/share/postgresql/9.5/extension/pg_partman.control
+  register: pg_partman_available
+
+- name: download pg_partman
+  get_url:
+    url: https://github.com/keithf4/pg_partman/archive/v3.1.1.tar.gz
+    dest: /tmp/v3.1.1.tar.gz
+    mode: 0740
+  when: pg_partman_available.stat.exists == false
+
+- name: Extract pg_partman
+  unarchive:
+    src: /tmp/v3.1.1.tar.gz
+    dest: /tmp
+    remote_src: yes
+  when: pg_partman_available.stat.exists == false
+
+- name: Install pg_partman
+  shell: cd pg_partman-3.1.1 && make install
+  when: pg_partman_available.stat.exists == false
