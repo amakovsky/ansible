@@ -1,0 +1,33 @@
+dind:
+    restart: always
+    privileged: true
+    volumes:
+    - /var/lib/docker
+    image: docker:17.09.0-ce-dind
+    command:
+    - --storage-driver=overlay2
+
+  runner:
+    restart: always
+    image: gitlab/gitlab-runner:alpine
+    volumes:
+    - ./gitlab/runner:/etc/gitlab-runner:Z
+    environment:
+    - DOCKER_HOST=tcp://dind:2375
+
+  register-runner:
+    restart: 'no'
+    image: gitlab/gitlab-runner:alpine
+    volumes:
+    - ./gitlab/runner:/etc/gitlab-runner:Z
+    command:
+    - register
+    - --non-interactive
+    - --locked=false
+    - --name=Docker Runner
+    - --executor=docker
+    - --docker-image=docker:17.09.0-ce-dind
+    - --docker-volumes=/var/run/docker.sock:/var/run/docker.sock
+    environment:
+    - CI_SERVER_URL=https://gitlab.example.com/
+    - REGISTRATION_TOKEN=see_gitlab_admin_runner_setup

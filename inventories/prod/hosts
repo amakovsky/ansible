@@ -6,3 +6,6 @@
 
 [zabbix]
 10.135.81.75
+
+[gitlab]
+10.135.95.216 ansible_port=2222

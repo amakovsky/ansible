@@ -1,16 +1,53 @@
 ---
-- name: create gitlab container
-  docker_container:
-    name: gitlab
-    hostname: gitlab.example.com
-    image: gitlab/gitlab-ee:latest    
-    state: started
-    restart_policy: always
-    published_ports:
-      - "443:443"
-      - "80:80"
-      - "2222:22"
-    volumes:
-      - /srv/gitlab/config:/etc/gitlab
-      - /srv/gitlab/logs:/var/log/gitla
-      - /srv/gitlab/data:/var/opt/gitlab
+- name: Copy ssl cert for gitlab
+  copy: src=ssl dest=/srv
+
+#- name: check exist gitlab
+#  stat: path=/srv/gitlab
+#  register: gitlab_installed
+
+#- name: create gitlab container
+#  docker_container:
+#    name: gitlab
+#    hostname: gitlab.example.com
+#    image: gitlab/gitlab-ee:latest
+#    state: started
+#    restart_policy: always
+#    published_ports:
+#      - "443:443"
+#      - "80:80"
+#      - "2222:22"
+#    volumes:
+#      - /srv/gitlab/config:/etc/gitlab
+#      - /srv/gitlab/logs:/var/log/gitla
+#      - /srv/gitlab/data:/var/opt/gitlab
+- name: Copy site configuration
+  template:
+    src: gitlab-compose.yml
+    dest: ~/docker-compose.yml
+
+- name: build and start docker containers
+  docker_service:
+    project_src: /root
+    build: yes
+    restarted: true
+
+- name: Configure open ports for nginx.
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items:
+    - { rule: 'allow', port: 80, proto: 'tcp' }
+    - { rule: 'allow', port: 443, proto: 'tcp' }
+
+#- name: edit config file
+#  lineinfile:
+#    backup: yes
+#    path: /srv/gitlab/config/gitlab.rb
+#    regexp: "{{ item.path }}"
+#    line: "{{ item.regexp }}"
+#  with_items:
+#    - { path: '^external_url *', regexp: "external_url 'https://{{ gitlab_name }}'" }
+#    - { path: "^letsencrypt['enable']*", regexp: "letsencrypt['enable'] = false" }
+#  when: gitlab_installed.stat.exists == true

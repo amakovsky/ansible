@@ -1,0 +1,13 @@
+---
+- name: gitlab server
+  hosts: gitlab
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - common
+    - docker
+    - ufw
+    - gitlab
+    - zabbix

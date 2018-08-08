@@ -17,6 +17,17 @@
     - "{{ hostvars[groups['openvpn'][0]].private_ip }}/32"
     - "{{ allow_ip }}"
 
+- name: open ssh port for gitlab
+  ufw:
+    rule: allow
+    port: 2222
+    proto: tcp
+    src: "{{ item }}"
+  with_items:
+    - "{{ hostvars[groups['openvpn'][0]].private_ip }}/32"
+    - "{{ allow_ip }}"
+  when: inventory_hostname == groups['gitlab'][0]
+
 - name: Configure default incoming/outgoing rules with ufw.
   ufw:
     direction: "{{ item.direction }}"
