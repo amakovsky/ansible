@@ -1,0 +1,13 @@
+---
+- name: List objects in Space
+  aws_s3:
+    aws_access_key: "{{ spaces_access_key }}"
+    aws_secret_key: "{{ spaces_secret_key }}"
+    s3_url: "{{ spaces_endpoint }}"
+    bucket: "{{ space_name }}"
+    mode: list
+    rgw: true
+  register: spaces_items
+
+- debug:
+    msg: "Contents of {{ space_name }}: {{ spaces_items.s3_keys }}"
