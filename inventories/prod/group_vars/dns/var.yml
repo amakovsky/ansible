@@ -27,9 +27,9 @@ records:
 
   gettwifi:
     "@":
-      forward: 10.135.95.216
+      forward: 10.135.55.36
       type: A
-      last: 216.95
+      last: 36.55
       rev: 135.10.in-addr.arpa
 
 zones:
