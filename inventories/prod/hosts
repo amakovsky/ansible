@@ -12,3 +12,7 @@
 
 [gitlab-runner]
 10.135.8.173
+
+[postgresql]
+10.135.102.140 postgresrep_role=master
+10.135.102.72  postgresrep_role=slave

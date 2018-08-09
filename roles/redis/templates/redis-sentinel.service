@@ -1,0 +1,12 @@
+[Unit]
+Description=Redis-sential for Redis In-Memory Data Store
+After=network.target
+
+[Service]
+User=redis
+Group=redis
+ExecStart=/usr/local/bin/redis-sentinel /etc/redis/sentinel.conf --daemonize no
+
+
+[Install]
+WantedBy=multi-user.target
