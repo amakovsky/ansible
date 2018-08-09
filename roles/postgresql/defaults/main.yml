@@ -6,10 +6,16 @@ postgresql_enablerepo: ""
 # `restarted` or `reloaded`
 postgresql_restarted_state: "restarted"
 
+private_interface: eth1
+interface_fact_var: ansible_{{ private_interface }}
+
 postgresql_python_library: python-psycopg2
 postgresql_user: postgres
 postgresql_group: postgres
 
+rep_user: replication
+rep_password: taimoaphee3Ri4ah
+rep_db: replication
 postgresql_unix_socket_directories:
   - /var/run/postgresql
 
@@ -17,6 +23,8 @@ postgresql_unix_socket_directories:
 postgresql_global_config_options:
   - option: unix_socket_directories
     value: '{{ postgresql_unix_socket_directories | join(",") }}'
+  - option: listen_addresses
+    value: '{{ hostvars[inventory_hostname][interface_fact_var].ipv4.address }}, localhost'
   - option: shared_buffers
     value: '{{ (ansible_memtotal_mb * 0.25)|int|abs }}MB'
   - option: max_connections
@@ -34,6 +42,22 @@ postgresql_global_config_options:
   - option: random_page_cost
     value: '2.0'
 
+postgresrep_postgres_conf_lines:
+  - option: wal_level
+    value: 'hot_standby'
+  - option: max_wal_senders
+    value: '10'
+  - option: wal_keep_segments
+    value: '100'
+  - option: hot_standby
+    value: 'on'
+  - option: archive_mode
+    value: 'on'
+  - option: archive_command
+    value: '/bin/true'
+  - option: max_replication_slots
+    value: '4'
+
 # Host based authentication (hba) entries to be added to the pg_hba.conf. This
 # variable's defaults reflect the defaults that come with a fresh installation.
 postgresql_hba_entries:
@@ -41,6 +65,7 @@ postgresql_hba_entries:
   - { type: local, database: all, user: all, auth_method: peer }
   - { type: host, database: all, user: all, address: '127.0.0.1/32', auth_method: md5 }
   - { type: host, database: all, user: all, address: '::1/128', auth_method: md5 }
+#  - { type: host, database: {{ rep_db }}, user: {{ rep_db }}, address: '::1/128', auth_method: md5 }
 
 # Debian only. Used to generate the locales used by PostgreSQL databases.
 postgresql_locales:
@@ -75,4 +100,9 @@ postgresql_users: []
   #   login_unix_socket: # defaults to 1st of postgresql_unix_socket_directories
   #   port: # defaults to not set
   #   state: # defaults to 'present'
+
+#allow_ip:
+#  - "{{ hostvars[groups['openvpn'][0]].private_ip }}/32"
+
+getbase_from_master: false
 

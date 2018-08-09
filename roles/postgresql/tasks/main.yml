@@ -9,10 +9,23 @@
 - include_tasks: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
+- name: open port for postgres
+  ufw:
+    rule: allow
+    port: 5432
+    proto: tcp
+    src: "{{ item }}/32"
+  with_items:
+    - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+    - "{{ groups['postgresql'] }}"
+
 - include_tasks: pg_partman.yml
 
 - include_tasks: initialize.yml
 - include_tasks: configure.yml
+
+- include: "{{ postgresrep_role }}.yml"
+  when: postgresrep_role != 'skip'
 
 - name: Ensure PostgreSQL is started and enabled on boot.
   service:
@@ -22,4 +35,7 @@
 
 # Configure PostgreSQL.
 - import_tasks: databases.yml
+  when: postgresrep_role != 'slave'
+
 - import_tasks: users.yml
+  when: postgresrep_role != 'slave'
