@@ -1,0 +1,40 @@
+---
+redis_global_config_options:
+  - option: supervised
+    value: 'systemd'
+  - option: dir
+    value: '/var/lib/redis'
+  - option: logfile
+    value: '/var/log/redis/redis-server.log'
+  - option: protected-mode
+    value: 'no'
+  - option: bind
+    value: '127.0.0.1 {{ inventory_hostname }}'
+#  - option: shared_preload_libraries
+#    value: 'pg_partman_bgw'
+#  - option: pg_partman_bgw.interval
+#    value: '3600'
+#  - option: pg_partman_bgw.dbname
+#    value: 'hotspot'
+#  - option: effective_io_concurrency
+#    value: '6'
+#  - option: seq_page_cost
+#    value: '1.0'
+#  - option: random_page_cost
+#    value: '2.0'
+
+redis_slave_config_options:
+  - option: slaveof
+    value: "{{ groups['redis'][0] }} 6379"
+
+sentinel_global_config_options:
+  - option: bind
+    value: '127.0.0.1 {{ inventory_hostname }}'
+  - option: supervised
+    value: 'systemd'
+  - option: daemonize
+    value: 'no'
+  - option: logfile
+    value: '/var/log/redis/redis-sentinel.log'
+#  - option: protected-mode
+#    value: 'no'

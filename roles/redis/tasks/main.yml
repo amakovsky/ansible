@@ -1,0 +1,180 @@
+---
+#- name: Install common
+#  apt: name={{ item }} update_cache=yes state=latest
+#  with_items:
+#    - redis-server
+
+- name: Install common
+  apt: name={{ item }} update_cache=yes state=latest
+  with_items:
+    - build-essential
+    - tcl
+
+- name: check exist node
+  stat: path=/usr/local/bin/redis-server
+  register: redis_available
+
+#- name: Download source
+#  get_url:
+#    url: http://download.redis.io/redis-stable.tar.gz
+#    dest: /tmp/redis-stable.tar.gz
+#    mode: 0755
+#  when: redis_available.stat.exists == false
+
+- unarchive:
+    src: redis-stable.tar.gz
+    dest: /tmp
+#    copy: no
+  when: redis_available.stat.exists == false
+
+- name: build
+  shell: make && make test && make install
+  args:
+    chdir: /tmp/redis-stable
+#    creates: /etc/zabbix/zabbix_agentd.psk
+  when: redis_available.stat.exists == false
+
+#- name: install redis
+#  shell: echo -n | sudo utils/install_server.sh
+#  args:
+#    chdir: /tmp/redis-stable
+#  when: redis_available.stat.exists == false
+
+- name: create redis config folder
+  file:
+    path: /etc/redis
+    state: directory
+    mode: 0755
+
+- name: create redis config folder
+  file:
+    path: /var/log/redis
+    state: directory
+    mode: 0755
+
+- name: copy config
+  shell: cp /tmp/redis-stable/{{ item }}.conf /etc/redis/{{ item }}.conf && chown redir:redis /etc/redis/*
+#  args:
+#    creates: /etc/redis/redis.conf
+  with_items:
+    - redis
+    - sentinel
+  when: redis_available.stat.exists == false
+
+- name: redis configure global settings.
+  lineinfile:
+    dest: "/etc/redis/redis.conf"
+    regexp: "^#?{{ item.option }}.+$"
+    line: "{{ item.option }} {{ item.value }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ redis_global_config_options }}"
+  notify: restart redis-server
+
+- name: sentinel configure global settings.
+  lineinfile:
+    dest: "/etc/redis/sentinel.conf"
+    regexp: "^#?{{ item.option }}.+$"
+    line: "{{ item.option }} {{ item.value }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ sentinel_global_config_options }}"
+  notify: restart redis-sentinel
+
+- name: Configure settings for slave.
+  lineinfile:
+    dest: "/etc/redis/redis.conf"
+    regexp: "^#?{{ item.option }}.+$"
+    line: "{{ item.option }} {{ item.value }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ redis_slave_config_options }}"
+  notify: restart redis-server
+  when: inventory_hostname != groups['redis'][0]
+
+#- name: ensure supervised systemd
+#  lineinfile:
+#    path: /etc/redis/redis.conf
+#    line: '^supervised no'
+#    state: absent
+#
+#- name: ensure supervised systemd
+#  lineinfile:
+#    path: /etc/redis/redis.conf
+#    insertafter: 'daemonize no'
+#    line: 'supervised systemd'
+#    state: present
+##  when: redis_available.stat.exists == false
+#
+#- name: ensure /etc/redis/redis.conf
+#  lineinfile:
+#    path: /etc/redis/redis.conf
+#    regexp: '^(.*)dir'
+#    line: 'dir /var/lib/redis'
+
+- name: Copy systemd configuration
+  template:
+    src: "{{ item }}.service"
+    dest: /etc/systemd/system/{{ item }}.service
+  with_items:
+    - redis-server
+    - redis-sentinel
+
+- name: create  user redis
+  user:
+    name: redis
+    system: yes
+    createhome: no
+
+- name: create redis config folder
+  file:
+    path: /var/log/redis
+    state: directory
+    owner: redis
+    group: redis
+    mode: 0775
+
+- name: create dir for redis cash
+  file:
+    path: /var/lib/redis
+    state: directory
+    owner: redis
+    group: redis
+    mode: 0770
+
+- name: start redis
+  systemd:
+    state: started
+    name: redis-server
+
+- name: enable redis
+  systemd:
+    enabled: yes
+    name: redis-server
+
+- name: start redis sentinel
+  systemd:
+    state: started
+    name: redis-sentinel
+
+- name: enable redis sentinel
+  systemd:
+    enabled: yes
+    name: redis-sentinel
+
+- name: open port for redis
+  ufw:
+    rule: allow
+    port: 6379
+    proto: tcp
+    src: "{{ item }}/32"
+  with_items:
+#    - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+    - "{{ groups['redis'] }}"
+
+- name: open port for sentinel
+  ufw:
+    rule: allow
+    port: 26379
+    proto: tcp
+    src: "{{ item }}/32"
+  with_items:
+    - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+    - "{{ groups['redis'] }}"
