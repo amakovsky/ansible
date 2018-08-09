@@ -1,0 +1,31 @@
+---
+- name: Configure master server
+  lineinfile:
+    dest: "{{ postgresql_config_path }}/postgresql.conf"
+    regexp: "^#?{{ item.option }}.+$"
+    line: "{{ item.option }} = '{{ item.value }}'"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ postgresrep_postgres_conf_lines }}"
+  register: master_config
+
+- name: Create replication user account
+  postgresql_user:
+    name: "{{ rep_user }}"
+#    password: "{{ rep_password }}"
+    role_attr_flags: "{{ rep_db }}"
+  become: True
+  become_user: postgres
+
+#- name: Add trust in pg_hba.conf
+#  lineinfile:
+#    state: present
+#    dest: "{{ postgresql_config_path }}/pg_hba.conf"
+#    line: 'host    {{ rep_db }}    {{ rep_user }}  {{ item }}/32 md5'
+#  with_items: "{{ groups['postgresql'] }}"
+#  register: pg_hba_conf
+
+- name: Start and enable PostgreSQL
+  service:
+    name: "{{ postgresql_daemon }}"
+    state: restarted
+  when: master_config is changed #or pg_hba_conf is changed

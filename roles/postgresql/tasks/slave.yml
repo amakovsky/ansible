@@ -1,0 +1,48 @@
+---
+- name: Stop PostgreSQL
+  service:
+    name: "{{ postgresql_daemon }}"
+    state: stopped
+  when: getbase_from_master
+
+#- name: Clear out data directory
+#  shell: rm -rf {{ __postgresql_data_dir }}/*
+#  when: getbase_from_master
+
+- name: Clear out data directory
+  file:
+    state: absent
+    path: "{{ __postgresql_data_dir }}/"
+  when: getbase_from_master
+
+- name: Create base backup
+  command: pg_basebackup -D {{ __postgresql_data_dir }} -h {{ groups['postgresql'][0] }} -R -P -U {{ rep_user }} --xlog-method=stream
+  become: yes
+  become_user: postgres
+  when: getbase_from_master
+
+#- name: Create recovery.conf
+#  template:
+#    src: recovery.conf.j2
+#    dest: /var/lib/pgsql/9.4/data/recovery.conf
+#    owner: postgres
+#    group: postgres
+#    mode: 0644
+
+- name: Enable hot standby
+  lineinfile:
+    state: present
+    backup: yes
+    dest: "{{ postgresql_config_path }}/postgresql.conf"
+    regexp: '^#?hot_standby = \w+(\s+#.*)'
+    line: 'hot_standby = yes\1'
+    backrefs: yes
+  become: yes
+  become_user: postgres
+  notify: restart postgresql
+
+- name: Start and enable PostgreSQL
+  service:
+    name: "{{ postgresql_daemon }}"
+    state: started
+    enabled: yes

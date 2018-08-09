@@ -2,10 +2,6 @@
 - name: Copy ssl cert for gitlab
   copy: src=ssl dest=/srv
 
-#- name: check exist gitlab
-#  stat: path=/srv/gitlab
-#  register: gitlab_installed
-
 #- name: create gitlab container
 #  docker_container:
 #    name: gitlab
@@ -21,6 +17,7 @@
 #      - /srv/gitlab/config:/etc/gitlab
 #      - /srv/gitlab/logs:/var/log/gitla
 #      - /srv/gitlab/data:/var/opt/gitlab
+
 - name: Copy site configuration
   template:
     src: gitlab-compose.yml
@@ -41,13 +38,9 @@
     - { rule: 'allow', port: 80, proto: 'tcp' }
     - { rule: 'allow', port: 443, proto: 'tcp' }
 
-#- name: edit config file
-#  lineinfile:
-#    backup: yes
-#    path: /srv/gitlab/config/gitlab.rb
-#    regexp: "{{ item.path }}"
-#    line: "{{ item.regexp }}"
-#  with_items:
-#    - { path: '^external_url *', regexp: "external_url 'https://{{ gitlab_name }}'" }
-#    - { path: "^letsencrypt['enable']*", regexp: "letsencrypt['enable'] = false" }
-#  when: gitlab_installed.stat.exists == true
+- name: cron for backup gitlab
+  cron:
+    name: "gitlab backup"
+    minute: "0"
+    hour: "0"
+    job: "docker exec -t root_web_1 gitlab-rake gitlab:backup:create"
