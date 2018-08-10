@@ -22,6 +22,7 @@ web:
     - '443:443'
     - '22:22'
   volumes:
+    - '/etc/localtime:/etc/localtime'
     - '/srv/gitlab/config:/etc/gitlab'
     - '/srv/gitlab/logs:/var/log/gitlab'
     - '/srv/gitlab/data:/var/opt/gitlab'
