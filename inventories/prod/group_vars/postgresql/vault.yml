@@ -1,0 +1,18 @@
+---
+postgresql_users:
+  - name: hotspot
+    password: wv3vH3fOtKSd
+  - name: radius
+    password: mZph5AXJOsGv
+
+postgresql_databases:
+  - name: hotspot
+    owner: hotspot
+  - name: radius_users_mikrotik
+    owner: radius
+  - name: radius_users_cisco
+    owner: radius
+  - name: radius_users_cisco
+    owner: radius
+  - name: radius_access_points
+    owner: radius

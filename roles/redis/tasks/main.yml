@@ -10,6 +10,12 @@
     - build-essential
     - tcl
 
+- name: create  user redis
+  user:
+    name: redis
+    system: yes
+    createhome: no
+
 - name: check exist node
   stat: path=/usr/local/bin/redis-server
   register: redis_available
@@ -20,6 +26,24 @@
 #    dest: /tmp/redis-stable.tar.gz
 #    mode: 0755
 #  when: redis_available.stat.exists == false
+
+- name: stop redis sentinel
+  systemd:
+    state: stopped
+    name: redis-sentinel
+  when: redis_available.stat.exists == true and recreate_cluster
+
+- name: stop redis server
+  systemd:
+    state: stopped
+    name: redis-server
+  when: redis_available.stat.exists == true and recreate_cluster
+
+- name: Clear out data directory
+  file:
+    state: absent
+    path: "/var/lib/redis/"
+  when: redis_available.stat.exists == true and recreate_cluster
 
 - unarchive:
     src: redis-stable.tar.gz
@@ -46,14 +70,16 @@
     state: directory
     mode: 0755
 
-- name: create redis config folder
+- name: create redis log folder
   file:
     path: /var/log/redis
     state: directory
+    owner: redis
+    group: redis
     mode: 0755
 
 - name: copy config
-  shell: cp /tmp/redis-stable/{{ item }}.conf /etc/redis/{{ item }}.conf && chown redir:redis /etc/redis/*
+  shell: cp /tmp/redis-stable/{{ item }}.conf /etc/redis/{{ item }}.conf && chown redis:redis /etc/redis/*
 #  args:
 #    creates: /etc/redis/redis.conf
   with_items:
@@ -68,6 +94,7 @@
     line: "{{ item.option }} {{ item.value }}"
     state: "{{ item.state | default('present') }}"
   with_items: "{{ redis_global_config_options }}"
+  when: redis_available.stat.exists == false or recreate_cluster
   notify: restart redis-server
 
 - name: sentinel configure global settings.
@@ -77,6 +104,7 @@
     line: "{{ item.option }} {{ item.value }}"
     state: "{{ item.state | default('present') }}"
   with_items: "{{ sentinel_global_config_options }}"
+  when: redis_available.stat.exists == false or recreate_cluster
   notify: restart redis-sentinel
 
 - name: Configure settings for slave.
@@ -87,7 +115,7 @@
     state: "{{ item.state | default('present') }}"
   with_items: "{{ redis_slave_config_options }}"
   notify: restart redis-server
-  when: inventory_hostname != groups['redis'][0]
+  when: inventory_hostname != groups['redis'][0] and (redis_available.stat.exists == false or recreate_cluster)
 
 #- name: ensure supervised systemd
 #  lineinfile:
@@ -117,19 +145,13 @@
     - redis-server
     - redis-sentinel
 
-- name: create  user redis
-  user:
-    name: redis
-    system: yes
-    createhome: no
-
-- name: create redis config folder
-  file:
-    path: /var/log/redis
-    state: directory
-    owner: redis
-    group: redis
-    mode: 0775
+#- name: create redis config folder
+#  file:
+#    path: /var/log/redis
+#    state: directory
+#    owner: redis
+#    group: redis
+#    mode: 0775
 
 - name: create dir for redis cash
   file:
@@ -139,20 +161,20 @@
     group: redis
     mode: 0770
 
-- name: start redis
-  systemd:
-    state: started
-    name: redis-server
+#- name: start redis
+#  systemd:
+#    state: started
+#    name: redis-server
 
 - name: enable redis
   systemd:
     enabled: yes
     name: redis-server
 
-- name: start redis sentinel
-  systemd:
-    state: started
-    name: redis-sentinel
+#- name: start redis sentinel
+#  systemd:
+#    state: started
+#    name: redis-sentinel
 
 - name: enable redis sentinel
   systemd:

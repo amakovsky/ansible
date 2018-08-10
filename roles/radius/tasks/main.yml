@@ -1,0 +1,31 @@
+---
+- name: add radius repo
+  apt_repository:
+    repo: 'ppa:freeradius/stable-3.0'
+    state: present
+    update_cache: True
+
+- name: Install radius
+  apt:
+    name: "{{ item }}"
+    state: present
+  ignore_errors: yes
+  with_items:
+    - 'freeradius=3.0.15-ppa1~xenial'
+    - 'freeradius-postgresql'
+  register: installed
+
+- replace:
+    path: /var/lib/dpkg/info/freeradius-postgresql.postinst
+    regexp: 'force-reload'
+    replace: 'restart'
+  when: installed is changed
+
+- shell: dpkg --configure -a
+  when: installed is changed
+
+- name: Copy galera configuration
+  template:
+    src: "freeradius"
+    dest: /etc/haproxy/haproxy.cfg
+  notify: restart haproxy

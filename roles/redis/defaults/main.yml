@@ -8,8 +8,10 @@ redis_global_config_options:
     value: '/var/log/redis/redis-server.log'
   - option: protected-mode
     value: 'no'
+#  - option: bind
+#    value: '127.0.0.1 {{ inventory_hostname }}'
   - option: bind
-    value: '127.0.0.1 {{ inventory_hostname }}'
+    value: '{{ inventory_hostname }} 127.0.0.1'
 #  - option: shared_preload_libraries
 #    value: 'pg_partman_bgw'
 #  - option: pg_partman_bgw.interval
@@ -28,13 +30,25 @@ redis_slave_config_options:
     value: "{{ groups['redis'][0] }} 6379"
 
 sentinel_global_config_options:
+#  - option: bind
+#    value: '127.0.0.1 {{ inventory_hostname }}'
   - option: bind
-    value: '127.0.0.1 {{ inventory_hostname }}'
+    value: '{{ inventory_hostname }} 127.0.0.1'
   - option: supervised
     value: 'systemd'
   - option: daemonize
     value: 'no'
   - option: logfile
     value: '/var/log/redis/redis-sentinel.log'
-#  - option: protected-mode
-#    value: 'no'
+  - option: protected-mode
+    value: 'no'
+  - option: sentinel monitor
+    value: "mymaster {{ groups['redis'][0] }} 6379 2"
+  - option: sentinel failover-timeout
+    value: "mymaster 10000"
+  - option: sentinel down-after-milliseconds
+    value: "mymaster 5000"
+#  - option: sentinel myid
+#    value: "11883c15aff687915cfea6d8e00a16ffd1b23f7e"
+
+recreate_cluster: false
