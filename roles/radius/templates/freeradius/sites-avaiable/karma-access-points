@@ -1,0 +1,39 @@
+server karma_access_points {
+  listen {
+    type = auth
+    ipaddr = 127.0.0.1
+    port = 17781
+  }
+
+  client vpn_server {
+    ipaddr = 127.0.0.1/32
+    secret = Jt0fOVD79dG0
+    nastype = other
+  }
+  
+  authorize {
+    preprocess
+    
+    sql_access_points
+    
+    pap
+  }
+  
+  authenticate {
+    Auth-Type PAP {
+      pap
+    }
+  }
+  
+  post-auth {
+    #  See "Authentication Logging Queries" in sql.conf
+    #  sql_access_points
+    
+    Post-Auth-Type REJECT {
+      # log failed authentications in SQL, too.
+      # sql_access_points
+      attr_filter.access_reject
+    }
+  }
+  
+}

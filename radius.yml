@@ -1,0 +1,11 @@
+---
+- name: postgresql server
+  hosts: radius
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - common
+    - ufw
+    - radius
