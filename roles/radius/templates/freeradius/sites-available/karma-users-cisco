@@ -1,19 +1,19 @@
 server karma_users_cisco {
   listen {
     type = auth
-    ipaddr = 10.1.240.227
+    ipaddr = {{ hostvars[inventory_hostname][interface_fact_var].ipv4.address }}
     port = 17761
   }
 
   listen {
     type = acct
-    ipaddr = 10.1.240.227
+    ipaddr = {{ hostvars[inventory_hostname][interface_fact_var].ipv4.address }}
     port = 17762
   }
 
   client access_points_cisco {
     ipaddr = 0.0.0.0/0
-    secret = Emv4fxD2YP9b
+    secret = {{ radius_secret }}
     nas_type = other
   }
   

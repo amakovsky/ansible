@@ -2,3 +2,4 @@
 ansible_user: root
 enable_local_dns: false
 postgrs_conf: "{{ inventory_dir }}/group_vars/postgresql/vault.yml"
+radius_secret: "nungeiThai6ieze"

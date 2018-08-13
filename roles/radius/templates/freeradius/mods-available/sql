@@ -145,10 +145,10 @@ sql sql_users_cisco {
 	dialect = "postgresql"
 
 	# Connection info:
-	server = "127.0.0.1"
-	port = 5432
-	login = "radius"
-	password = "mZph5AXJOsGv"
+	server = "{{ postgres_server }}"
+    port = 5432
+    login = "{{ postgresql.radius_user }}"
+    password = "{{ postgresql.radius_user_pass }}"
 
 	radius_db = "radius_users_cisco"
 
@@ -189,10 +189,10 @@ sql sql_users_chilli {
 	dialect = "postgresql"
 
 	# Connection info:
-	server = "127.0.0.1"
-	port = 5432
-	login = "radius"
-	password = "mZph5AXJOsGv"
+	server = "{{ postgres_server }}"
+    port = 5432
+    login = "{{ postgresql.radius_user }}"
+    password = "{{ postgresql.radius_user_pass }}"
 
 	radius_db = "radius_users_chilli"
 
@@ -233,10 +233,10 @@ sql sql_access_points {
 	dialect = "postgresql"
 
 	# Connection info:
-	server = "127.0.0.1"
-	port = 5432
-	login = "radius"
-	password = "mZph5AXJOsGv"
+	server = "{{ postgres_server }}"
+    port = 5432
+    login = "{{ postgresql.radius_user }}"
+    password = "{{ postgresql.radius_user_pass }}"
 
 	radius_db = "radius_access_points"
 

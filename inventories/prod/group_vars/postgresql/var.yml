@@ -1,2 +1,20 @@
 ---
 ansible_user: root
+
+postgresql_users:
+  - name: "{{ hotspot_user }}"
+    password: "{{ hotspot_user_pass }}"
+  - name: "{{ radius_user }}"
+    password: "{{ radius_user_pass }}"
+
+postgresql_databases:
+  - name: hotspot
+    owner: "{{ hotspot_user }}"
+  - name: radius_users_mikrotik
+    owner: "{{ radius_user }}"
+  - name: radius_users_cisco
+    owner: "{{ radius_user }}"
+  - name: radius_users_chilli
+    owner: "{{ radius_user }}"
+  - name: radius_access_points
+    owner: "{{ radius_user }}"

@@ -44,3 +44,7 @@ freeradius_include_options:
     value: 'proxy_requests  = no'
 
 postgres_server: "{{ groups['postgresql'][0] }}"
+
+private_interface: eth1
+interface_fact_var: ansible_{{ private_interface }}
+radius_secret: "nungeiThai6ieze"
