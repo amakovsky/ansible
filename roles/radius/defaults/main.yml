@@ -53,3 +53,18 @@ postgres_server: "{{ groups['postgresql'][0] }}"
 private_interface: eth1
 interface_fact_var: ansible_{{ private_interface }}
 radius_secret: "nungeiThai6ieze"
+
+karma_users_chilli_auth_port: 17751
+karma_users_chilli_acct_port: 17752
+karma_users_cisco_auth_port: 17761
+karma_users_cisco_acct_port: 17762
+karma_users_mikrotik_auth_port: 17771
+karma_users_mikrotik_acct_port: 17772
+
+public_port:
+  - "{{ karma_users_chilli_auth_port }}"
+  - "{{ karma_users_chilli_acct_port }}"
+  - "{{ karma_users_cisco_auth_port }}"
+  - "{{ karma_users_cisco_acct_port }}"
+  - "{{ karma_users_mikrotik_auth_port }}"
+  - "{{ karma_users_mikrotik_acct_port }}"

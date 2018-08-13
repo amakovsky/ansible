@@ -1,14 +1,14 @@
 server karma_users_mikrotik {
   listen {
     type = auth
-    ipaddr = {{ hostvars[inventory_hostname][interface_fact_var].ipv4.address }}
-    port = 17771
+    ipaddr = {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+    port = {{ karma_users_mikrotik_auth_port }}
   }
 
   listen {
     type = acct
-    ipaddr = {{ hostvars[inventory_hostname][interface_fact_var].ipv4.address }}
-    port = 17772
+    ipaddr = {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+    port = {{ karma_users_mikrotik_acct_port }}
   }
 
   client access_points_mikrotik {

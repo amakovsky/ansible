@@ -1,14 +1,14 @@
 server karma_users_cisco {
   listen {
     type = auth
-    ipaddr = {{ hostvars[inventory_hostname][interface_fact_var].ipv4.address }}
-    port = 17761
+    ipaddr = {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+    port = {{ karma_users_cisco_auth_port }}
   }
 
   listen {
     type = acct
-    ipaddr = {{ hostvars[inventory_hostname][interface_fact_var].ipv4.address }}
-    port = 17762
+    ipaddr = {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+    port = {{ karma_users_cisco_acct_port }}
   }
 
   client access_points_cisco {

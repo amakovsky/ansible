@@ -1,14 +1,14 @@
 server karma_users_chilli {
   listen {
     type = auth
-    ipaddr = {{ hostvars[inventory_hostname][interface_fact_var].ipv4.address }}
-    port = 17751
+    ipaddr = {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+    port = {{ karma_users_chilli_auth_port }}
   }
 
   listen {
     type = acct
-    ipaddr = {{ hostvars[inventory_hostname][interface_fact_var].ipv4.address }}
-    port = 17752
+    ipaddr = {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+    port = {{ karma_users_chilli_acct_port }}
   }
 
   client access_points_chilli {

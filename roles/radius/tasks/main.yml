@@ -23,8 +23,8 @@
     - 'freeradius-postgresql'
   register: installed
 
-- debug:
-    msg: "{{ installed }}"
+#- debug:
+#    msg: "{{ installed }}"
 
 - replace:
     path: /var/lib/dpkg/info/freeradius-postgresql.postinst
@@ -83,14 +83,13 @@
   with_items: "{{ freeradius_include_options }}"
   notify: restart freeradius
 
-#- name: open gloabal port for freeradius
-#  ufw:
-#    rule: allow
-#    port: 5432
-#    proto: udp
-#  with_items:
-#    -
-#
+- name: open publc port for freeradius
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: udp
+  with_items: "{{ public_port }}"
+
 #- name: open port for freeradius
 #  ufw:
 #    rule: allow
