@@ -58,6 +58,14 @@
   with_items: "{{ link_config }}"
   notify: restart freeradius
 
+- name: unlink default config
+  file:
+    path: "{{ item }}"
+    state: absent
+    force: yes
+  with_items: "{{ unlink_config }}"
+  notify: restart freeradius
+
 - name: radius configure global settings.
   lineinfile:
     dest: "/etc/freeradius/radiusd.conf"
@@ -74,3 +82,22 @@
     replace: "{{ item.value }}"
   with_items: "{{ freeradius_include_options }}"
   notify: restart freeradius
+
+#- name: open gloabal port for freeradius
+#  ufw:
+#    rule: allow
+#    port: 5432
+#    proto: udp
+#  with_items:
+#    -
+#
+#- name: open port for freeradius
+#  ufw:
+#    rule: allow
+#    port: 5432
+#    proto: tcp
+#    src: "{{ item }}/32"
+#  with_items:
+#    - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+#    - "{{ groups['postgresql'] }}"
+#    - "{{ groups['radius'] }}"

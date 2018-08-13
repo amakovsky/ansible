@@ -29,6 +29,11 @@ link_config:
   - src: '/etc/freeradius/mods-available/sql'
     dest: '/etc/freeradius/mods-enabled/sql'
 
+unlink_config:
+  - '/etc/freeradius/sites-enabled/default'
+  - '/etc/freeradius/sites-enabled/inner-tunnel'
+  - '/etc/freeradius/mods-enabled/eap'
+
 freeradius_config_options:
   - option: 'auth'
     value: 'yes'
