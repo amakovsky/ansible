@@ -28,3 +28,17 @@ link_config:
     dest: '/etc/freeradius/sites-enabled/karma-users-mikrotik'
   - src: '/etc/freeradius/mods-available/sql'
     dest: '/etc/freeradius/mods-enabled/sql'
+
+freeradius_config_options:
+  - option: 'auth'
+    value: 'yes'
+#  - option: proxy_requests
+#    value: 'no'
+
+freeradius_include_options:
+  - option: 'INCLUDE proxy.conf'
+    value: '#$INCLUDE proxy.conf'
+  - option: 'INCLUDE clients.conf'
+    value: '#$INCLUDE clients.conf'
+  - option: 'proxy_requests'
+    value: 'proxy_requests  = no'

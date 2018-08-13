@@ -49,3 +49,20 @@
     force: yes
   with_items: "{{ link_config }}"
   notify: restart freeradius
+
+- name: radius configure global settings.
+  lineinfile:
+    dest: "/etc/freeradius/radiusd.conf"
+    regexp: "^\t{{ item.option }}\\s.+$"
+    line: "\t{{ item.option }} = {{ item.value }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ freeradius_config_options }}"
+  notify: restart freeradius
+
+- name: radius include global settings.
+  replace:
+    path: "/etc/freeradius/radiusd.conf"
+    regexp: "^{{ item.option }}.+$"
+    replace: "{{ item.value }}"
+  with_items: "{{ freeradius_include_options }}"
+  notify: restart freeradius
