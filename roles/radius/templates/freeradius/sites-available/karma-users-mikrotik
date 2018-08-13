@@ -1,48 +1,48 @@
-server karma_users_chilli {
+server karma_users_mikrotik {
   listen {
     type = auth
-    ipaddr = 10.1.240.227
-    port = 17751
+    ipaddr = {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+    port = {{ karma_users_mikrotik_auth_port }}
   }
 
   listen {
     type = acct
-    ipaddr = 10.1.240.227
-    port = 17752
+    ipaddr = {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+    port = {{ karma_users_mikrotik_acct_port }}
   }
 
-  client access_points_chilli {
+  client access_points_mikrotik {
     ipaddr = 0.0.0.0/0
-    secret = Emv4fxD2YP9b
+    secret = {{ radius_secret }}
     nas_type = other
   }
-
+  
   authorize {
     preprocess
-
+    
     #auth_log
-    sql_users_chilli
-
+    sql_users_mikrotik
+    
     pap
   }
-
+  
   authenticate {
     Auth-Type PAP {
       pap
     }
   }
-
+  
   preacct {
   #  preprocess
     acct_unique
   }
-
+  
   accounting {
     #detail
     #sql_log
-    sql_users_chilli
+    sql_users_mikrotik
   }
-
+  
   #session {
   #  radutmp
 
@@ -53,12 +53,12 @@ server karma_users_chilli {
   post-auth {
     #  See "Authentication Logging Queries" in sql.conf
     #  sql_access_points
-
+    
     Post-Auth-Type REJECT {
       # log failed authentications in SQL, too.
       # sql_access_points
       attr_filter.access_reject
     }
   }
-
+  
 }

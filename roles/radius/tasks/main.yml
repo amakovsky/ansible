@@ -1,4 +1,12 @@
 ---
+- name: Include postgresql vars files
+  include_vars:
+    file: "{{ postgrs_conf }}"
+    name: postgresql
+
+#- debug:
+#    msg: "{{ postgresql.radius_user }}"
+
 - name: add radius repo
   apt_repository:
     repo: 'ppa:freeradius/stable-3.0'
@@ -15,17 +23,80 @@
     - 'freeradius-postgresql'
   register: installed
 
+#- debug:
+#    msg: "{{ installed }}"
+
 - replace:
     path: /var/lib/dpkg/info/freeradius-postgresql.postinst
     regexp: 'force-reload'
     replace: 'restart'
-  when: installed is changed
+  when: installed.failed is defined
 
 - shell: dpkg --configure -a
-  when: installed is changed
+  when: installed.failed is defined
 
-- name: Copy galera configuration
+- name: Copy freeradius template
   template:
-    src: "freeradius"
-    dest: /etc/haproxy/haproxy.cfg
-  notify: restart haproxy
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items: "{{ radius_template }}"
+  notify: restart freeradius
+
+- name: Copy freeradius config
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items: "{{ radius_file }}"
+  notify: restart freeradius
+
+- name: link freeradius config
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+    force: yes
+  with_items: "{{ link_config }}"
+  notify: restart freeradius
+
+- name: unlink default config
+  file:
+    path: "{{ item }}"
+    state: absent
+    force: yes
+  with_items: "{{ unlink_config }}"
+  notify: restart freeradius
+
+- name: radius configure global settings.
+  lineinfile:
+    dest: "/etc/freeradius/radiusd.conf"
+    regexp: "^\t{{ item.option }}\\s.+$"
+    line: "\t{{ item.option }} = {{ item.value }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ freeradius_config_options }}"
+  notify: restart freeradius
+
+- name: radius include global settings.
+  replace:
+    path: "/etc/freeradius/radiusd.conf"
+    regexp: "^{{ item.option }}.+$"
+    replace: "{{ item.value }}"
+  with_items: "{{ freeradius_include_options }}"
+  notify: restart freeradius
+
+- name: open publc port for freeradius
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: udp
+  with_items: "{{ public_port }}"
+
+#- name: open port for freeradius
+#  ufw:
+#    rule: allow
+#    port: 5432
+#    proto: tcp
+#    src: "{{ item }}/32"
+#  with_items:
+#    - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+#    - "{{ groups['postgresql'] }}"
+#    - "{{ groups['radius'] }}"

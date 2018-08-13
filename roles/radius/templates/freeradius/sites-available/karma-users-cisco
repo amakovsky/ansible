@@ -1,19 +1,19 @@
 server karma_users_cisco {
   listen {
     type = auth
-    ipaddr = 10.1.240.227
-    port = 17761
+    ipaddr = {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+    port = {{ karma_users_cisco_auth_port }}
   }
 
   listen {
     type = acct
-    ipaddr = 10.1.240.227
-    port = 17762
+    ipaddr = {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+    port = {{ karma_users_cisco_acct_port }}
   }
 
   client access_points_cisco {
     ipaddr = 0.0.0.0/0
-    secret = Emv4fxD2YP9b
+    secret = {{ radius_secret }}
     nas_type = other
   }
   
