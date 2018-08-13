@@ -33,10 +33,10 @@ sql sql_users_mikrotik {
 
 	# Connection info:
 	#
-	server = "127.0.0.1"
+	server = "{{ postgres_server }}"
 	port = 5432
-	login = "radius"
-	password = "mZph5AXJOsGv"
+	login = "{{ postgresql.radius_user }}"
+	password = "{{ postgresql.radius_user_pass }}"
 
 	# Database table configuration for everything except Oracle
 	radius_db = "radius_users_mikrotik"

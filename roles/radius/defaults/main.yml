@@ -42,3 +42,5 @@ freeradius_include_options:
     value: '#$INCLUDE clients.conf'
   - option: 'proxy_requests'
     value: 'proxy_requests  = no'
+
+postgres_server: "{{ groups['postgresql'][0] }}"

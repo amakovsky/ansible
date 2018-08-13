@@ -1,4 +1,12 @@
 ---
+- name: Include postgresql vars files
+  include_vars:
+    file: "{{ postgrs_conf }}"
+    name: postgresql
+
+#- debug:
+#    msg: "{{ postgresql.radius_user }}"
+
 - name: add radius repo
   apt_repository:
     repo: 'ppa:freeradius/stable-3.0'

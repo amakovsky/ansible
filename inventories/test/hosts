@@ -7,8 +7,8 @@
 [gitlab]
 10.135.74.65 ansible_port=2222
 
-#[postgresql]
-#10.135.102.140 postgresrep_role=master
+[postgresql]
+142.93.165.222 postgresrep_role=master
 #10.135.102.72  postgresrep_role=slave
 
 [redis]
@@ -17,4 +17,4 @@
 10.135.103.157
 
 [radius]
-142.93.164.47
+142.93.163.135

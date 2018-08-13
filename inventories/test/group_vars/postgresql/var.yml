@@ -1,19 +1,23 @@
 ---
 ansible_user: root
+#radius_user: radius
+#radius_user_pass: "mZph5AXJOsGv"
 postgresql_users:
   - name: hotspot
     password: wv3vH3fOtKSd
-  - name: radius
-    password: mZph5AXJOsGv
+  - name: "{{ radius_user }}"
+    password: "{{ radius_user_pass }}"
 
 postgresql_databases:
   - name: hotspot
     owner: hotspot
   - name: radius_users_mikrotik
-    owner: radius
+    owner: "{{ radius_user }}"
   - name: radius_users_cisco
-    owner: radius
+    owner: "{{ radius_user }}"
   - name: radius_users_cisco
-    owner: radius
+    owner: "{{ radius_user }}"
   - name: radius_access_points
-    owner: radius
+    owner: "{{ radius_user }}"
+
+enable_local_dns: false
