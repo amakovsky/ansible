@@ -1,1 +1,30 @@
 ---
+radius_template:
+  - src: 'freeradius/mods-available/sql'
+    dest: '/etc/freeradius/mods-available/sql'
+  - src: 'freeradius/mods-config/schema.sql'
+    dest: '/etc/freeradius/mods-config/schema.sql'
+  - src: 'freeradius/sites-available/karma-access-points'
+    dest: '/etc/freeradius/sites-available/karma-access-points'
+  - src: 'freeradius/sites-available/karma-users-chilli'
+    dest: '/etc/freeradius/sites-available/karma-users-chilli'
+  - src: 'freeradius/sites-available/karma-users-cisco'
+    dest: '/etc/freeradius/sites-available/karma-users-cisco'
+  - src: 'freeradius/sites-available/karma-users-mikrotik'
+    dest: '/etc/freeradius/sites-available/karma-users-mikrotik'
+
+radius_file:
+  - src: 'freeradius/mods-config/queries.conf'
+    dest: '/etc/freeradius/mods-config/queries.conf'
+
+link_config:
+  - src: '/etc/freeradius/sites-available/karma-access-points'
+    dest: '/etc/freeradius/sites-enabled/karma-access-points'
+  - src: '/etc/freeradius/sites-available/karma-users-chilli'
+    dest: '/etc/freeradius/sites-enabled/karma-users-chilli'
+  - src: '/etc/freeradius/sites-available/karma-users-cisco'
+    dest: '/etc/freeradius/sites-enabled/karma-users-cisco'
+  - src: '/etc/freeradius/sites-available/karma-users-mikrotik'
+    dest: '/etc/freeradius/sites-enabled/karma-users-mikrotik'
+  - src: '/etc/freeradius/mods-available/sql'
+    dest: '/etc/freeradius/mods-enabled/sql'

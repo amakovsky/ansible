@@ -1,2 +1,3 @@
 ---
 ansible_user: root
+enable_local_dns: false
