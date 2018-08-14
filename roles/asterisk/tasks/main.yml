@@ -5,9 +5,6 @@
   failed_when: False
   register: asterisk_available
 
-#- debug:
-#    msg: "{{ hostvars }}"
-
 - name: Install asterisk pre-requisites via apt
   apt:
     name: "{{item}}"
@@ -25,15 +22,18 @@
 
 - name: create  user asterisk
   user:
-    name: asterisk
+    name: "{{ asterisk_username }}"
     system: yes
     createhome: no
 
 - name: create asterisk folder
   file:
-    path: /var/lib/asterisk/phoneprov/
+    path: "{{item}}"
     state: directory
     mode: 0755
+  with_items:
+    - "{{ iasterisk_srcdir }}"
+    - /opt/asterisk
 
 - name: Download asterisk source
   get_url:
@@ -45,17 +45,16 @@
 - name: Extract asterisk
   unarchive:
     src: /tmp/asterisk-13-current.tar.gz
-    dest: /tmp
+    dest: "{{ iasterisk_srcdir }}"
     remote_src: yes
+    extra_opts: --strip-components=1
   register: extract
   when: asterisk_available.stat.exists == false
-
-
 
 - name: copy menuselect.makeopts file
   copy:
     src: test
-    dest: "/tmp/{{ version }}/menuselect.makeopts"
+    dest: "{{ iasterisk_srcdir }}/menuselect.makeopts"
   when: asterisk_available.stat.exists == false
 
 #- name: Install asterisk
@@ -70,7 +69,7 @@
 #  when: asterisk_available.stat.exists == false
 
 - name: Build Asterisk from tarball
-  command: "{{ item }} chdir=/tmp/{{ version }}"
+  command: "{{ item }} chdir={{ iasterisk_srcdir }}"
   with_items:
     - ./configure
     - make NOISY_BUILD=yes
@@ -80,14 +79,12 @@
     - make samples
   when: asterisk_available.stat.exists == false
 
-#- name: Install asterisk
-#  shell: cd /tmp/{{ version }} && ./configure; \
-#         make NOISY_BUILD=yes; \
-#         make install; \
-#         make config; \
-#         make install-logrotate; \
-#         make samples
-#  when: asterisk_available.stat.exists == false
+- name: Copy asterisk config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items: "{{ asterisk_template }}"
+  notify: restart asterisk
 
 - name: delete default config
   file:
@@ -114,11 +111,17 @@
     recurse: yes
   notify: restart asterisk
 
-- name: asterisk configure global settings.
-  lineinfile:
-    dest: "/etc/asterisk/asterisk.conf"
-    regexp: "^;?{{ item.option }}.+$"
-    line: "{{ item.option }} = {{ item.value }}"
-    state: "{{ item.state | default('present') }}"
-  with_items: "{{ asterisk_global_config_options }}"
-  notify: restart asterisk
+#- name: asterisk configure global settings.
+#  lineinfile:
+#    dest: "/etc/asterisk/asterisk.conf"
+#    regexp: "^;?{{ item.option }}.+$"
+#    line: "{{ item.option }} = {{ item.value }}"
+#    state: "{{ item.state | default('present') }}"
+#  with_items: "{{ asterisk_global_config_options }}"
+#  notify: restart asterisk
+
+- name: open port for asterisk
+  ufw:
+    rule: allow
+    port: 5060
+    proto: udp
