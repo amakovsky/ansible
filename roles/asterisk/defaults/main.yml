@@ -47,3 +47,7 @@ asterisk_template:
     dest: '/opt/asterisk/status.url'
 
 asterisk_username: asterisk
+
+asterisk_exec:
+  - /opt/asterisk/status.sh
+  - /opt/asterisk/dds.sh

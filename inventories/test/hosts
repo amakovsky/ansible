@@ -19,5 +19,8 @@
 [radius]
 142.93.163.135
 
-[asterisk]
+#[asterisk]
+#142.93.140.78
+
+[softether]
 142.93.140.78

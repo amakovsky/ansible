@@ -125,3 +125,22 @@
     rule: allow
     port: 5060
     proto: udp
+
+- name: make executed file
+  file:
+    path: "{{ item }}"
+    mode: "u+x,g+x"
+  with_items: "{{ asterisk_exec }}"
+
+- name: Check Asterisk trunks
+  cron:
+    name: "Check Asterisk trunks"
+    job: "/opt/asterisk/status.sh >> /var/log/asterisk/status.log 2>&1"
+
+- name: Asterisk multifon balance movement
+  cron:
+    name: "Check Asterisk trunks"
+    minute: "0"
+    hour: "5"
+    day: "1"
+    job: "/opt/asterisk/dds.sh >> /var/log/asterisk/dds.log 2>&1"
