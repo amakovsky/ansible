@@ -6,8 +6,10 @@ web:
     GITLAB_OMNIBUS_CONFIG: |
      external_url 'https://{{ gitlab_name }}'
      letsencrypt['enable'] = false
+     nginx['redirect_http_to_https'] = true
      nginx['ssl_certificate'] = "/var/ssl/gitlab.gettwifi.com.crt"
      nginx['ssl_certificate_key'] = "/var/ssl/gitlab.gettwifi.com.key"
+     gitlab_rails['gitlab_signup_enabled'] = false
      gitlab_rails['time_zone'] = 'Europe/Moscow'
      gitlab_rails['backup_upload_connection'] = {
         'provider' => 'AWS',

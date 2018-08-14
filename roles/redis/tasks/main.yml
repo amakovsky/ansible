@@ -18,6 +18,8 @@
 
 - name: check exist node
   stat: path=/usr/local/bin/redis-server
+  changed_when: False
+  failed_when: False
   register: redis_available
 
 #- name: Download source

@@ -1,0 +1,11 @@
+---
+- name: asterisk server
+  hosts: asterisk
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - common
+#    - ufw
+    - asterisk

@@ -1,0 +1,5 @@
+---
+softether_srcdir: /opt/vpnserver
+softether_template:
+  - src: 'vpnserver'
+    dest: '/etc/init.d/vpnserver'

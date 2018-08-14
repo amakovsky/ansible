@@ -15,10 +15,10 @@ dev tun
 resolv-retry {{ openvpn_resolv_retry }}
 nobind
 keepalive 5 30
-comp-lzo
 persist-key
 persist-tun
 verb 3
+auth-nocache
 
 route-method exe
 route-delay 2
