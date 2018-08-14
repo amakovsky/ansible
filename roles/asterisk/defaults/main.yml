@@ -1,1 +1,23 @@
 ---
+del_config:
+  - pjsip.conf
+  - queues.conf
+  - indications.conf
+  - confbridge.conf
+  - voicemail.conf
+  - musiconhold.conf
+
+asterisk_folders:
+  - /var/lib/asterisk
+  - /var/log/asterisk
+  - /var/run/asterisk
+  - /var/spool/asterisk
+  - /usr/lib/asterisk
+
+asterisk_global_config_options:
+  - option: runuser
+    value: 'asterisk'
+  - option: rungroup
+    value: 'asterisk'
+
+version: asterisk-13.22.0
