@@ -61,10 +61,48 @@ karma_users_cisco_acct_port: 17762
 karma_users_mikrotik_auth_port: 17771
 karma_users_mikrotik_acct_port: 17772
 
-public_port:
-  - "{{ karma_users_chilli_auth_port }}"
-  - "{{ karma_users_chilli_acct_port }}"
-  - "{{ karma_users_cisco_auth_port }}"
-  - "{{ karma_users_cisco_acct_port }}"
-  - "{{ karma_users_mikrotik_auth_port }}"
-  - "{{ karma_users_mikrotik_acct_port }}"
+#public_port:
+#  - "{{ karma_users_chilli_auth_port }}"
+#  - "{{ karma_users_chilli_acct_port }}"
+#  - "{{ karma_users_cisco_auth_port }}"
+#  - "{{ karma_users_cisco_acct_port }}"
+#  - "{{ karma_users_mikrotik_auth_port }}"
+#  - "{{ karma_users_mikrotik_acct_port }}"
+
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: "{{ karma_users_chilli_auth_port }}"
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: "{{ karma_users_chilli_acct_port }}"
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: "{{ karma_users_cisco_auth_port }}"
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: "{{ karma_users_cisco_acct_port }}"
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: "{{ karma_users_mikrotik_auth_port }}"
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: "{{ karma_users_mikrotik_acct_port }}"
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0

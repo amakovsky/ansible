@@ -120,11 +120,11 @@
     force: yes
   notify: restart apache2
 
-- name: Configure open ports for zabbix-server
-  ufw:
-    rule: "{{ item.rule }}"
-    port: "{{ item.port }}"
-    proto: "{{ item.proto }}"
-  with_items:
-    - { rule: 'allow', port: 10051, proto: 'tcp' }
-    - { rule: 'allow', port: 80, proto: 'tcp' }
+#- name: Configure open ports for zabbix-server
+#  ufw:
+#    rule: "{{ item.rule }}"
+#    port: "{{ item.port }}"
+#    proto: "{{ item.proto }}"
+#  with_items:
+#    - { rule: 'allow', port: 10051, proto: 'tcp' }
+#    - { rule: 'allow', port: 80, proto: 'tcp' }

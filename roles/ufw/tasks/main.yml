@@ -4,29 +4,66 @@
   with_items:
     - ufw
 
-#- debug:
-#    msg: "{{ hostvars[groups['openvpn'][0]] }}"
+#- set_fact:
+#      war_files_list_of_dicts: |
+#          {% set res = [] -%}
+#          {% for key in with_dict.keys() -%}
+#             {% for value in war_files[key] -%}
+#              {% set ignored = res.extend([{'Server': key, 'WAR':value}]) -%}
+#             {%- endfor %}
+#          {%- endfor %}
+#          {{ res }}
 
-- name: open port for ssh
+- name: Resetting firewall
   ufw:
-    rule: allow
-    port: 22
-    proto: tcp
-    src: "{{ item }}"
-  with_items:
-    - "{{ hostvars[groups['openvpn'][0]].private_ip }}/32"
-    - "{{ allow_ip }}"
+    state: reset
+  when: ufw_reset
 
-- name: open ssh port for gitlab
+- debug:
+    msg: "{{ ufw_rules }}"
+
+- name: Configuring port/protocol/network rules
   ufw:
-    rule: allow
-    port: 2222
-    proto: tcp
-    src: "{{ item }}"
-  with_items:
-    - "{{ hostvars[groups['openvpn'][0]].private_ip }}/32"
-    - "{{ allow_ip }}"
-  when: inventory_hostname == groups['gitlab'][0]
+    delete: "{{ item.0.delete | default(omit) }}"
+    direction: "{{ item.0.direction | default(omit) }}"
+    from_ip: "{{ item.1 | default(omit) }}"
+    from_port: "{{ item.0.from_port | default(omit) }}"
+    insert: "{{ item.0.insert | default(omit) }}"
+    interface: "{{ item.0.interface | default(omit) }}"
+    log: "{{ item.0.log | default(omit) }}"
+    logging: "{{ item.0.logging | default(omit) }}"
+    name: "{{ item.0.name | default(omit) }}"
+    policy: "{{ item.0.policy | default(omit) }}"
+    port: "{{ item.0.port | default(omit) }}"
+    proto: "{{ item.0.proto | default(omit) }}"
+    rule: "{{ item.0.rule | default('allow') }}"
+    state: "{{ item.0.state | default(omit) }}"
+    to_ip: "{{ item.0.to_ip | default(omit) }}"
+    to_port: "{{ item.0.to_port | default(omit) }}"
+  with_subelements:
+    - "{{ ufw_rules }}"
+    - from_ip
+
+#- name: open port for ssh
+#  ufw:
+#    rule: allow
+#    port: 22
+#    proto: tcp
+#    src: "{{ item }}"
+#  with_items:
+#    - "{{ hostvars[groups['openvpn'][0]].private_ip }}/32"
+#    - "{{ allow_ip }}"
+#
+#- name: open ssh port for gitlab
+#  ufw:
+#    rule: allow
+#    port: 2222
+#    proto: tcp
+#    src: "{{ item }}"
+#  with_items:
+#    - "{{ hostvars[groups['openvpn'][0]].private_ip }}/32"
+#    - "{{ allow_ip }}"
+#  when: inventory_hostname == groups['gitlab'][0]
 
 - name: Configure default incoming/outgoing rules with ufw.
   ufw:

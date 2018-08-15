@@ -29,14 +29,14 @@
     build: yes
     restarted: true
 
-- name: Configure open ports for nginx.
-  ufw:
-    rule: "{{ item.rule }}"
-    port: "{{ item.port }}"
-    proto: "{{ item.proto }}"
-  with_items:
-    - { rule: 'allow', port: 80, proto: 'tcp' }
-    - { rule: 'allow', port: 443, proto: 'tcp' }
+#- name: Configure open ports for nginx.
+#  ufw:
+#    rule: "{{ item.rule }}"
+#    port: "{{ item.port }}"
+#    proto: "{{ item.proto }}"
+#  with_items:
+#    - { rule: 'allow', port: 80, proto: 'tcp' }
+#    - { rule: 'allow', port: 443, proto: 'tcp' }
 
 - name: cron for backup gitlab
   cron:
