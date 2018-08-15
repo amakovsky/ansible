@@ -6,9 +6,9 @@
   become_user: root
 
   roles:
-#    - common
-#    - user
+    - common
+    - user
     - ufw
-#    - ssh
-#    - dns
-#    - zabbix
+    - ssh
+    - dns
+    - zabbix

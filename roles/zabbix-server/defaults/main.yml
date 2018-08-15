@@ -6,8 +6,3 @@ db_host: localhost
 domain: gw.local
 host_name: zabbix.{{ domain }}
 telegram_bot: "629640079:AAFS1CtMST9wDJ9XUkk0y3thN3aA1_p8B3o"
-
-ufw_rules:
-  - { rule: 'allow', port: 22 }
-  - { rule: 'allow', port: 10051, proto: 'tcp' }
-  - { rule: 'allow', port: 80, proto: 'tcp' }

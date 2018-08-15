@@ -3,6 +3,12 @@ ansible_user: root
 gitlab_name: gitlab.gettwifi.com
 ufw_rules:
   - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
     port: 2222
     proto: 'tcp'
     from_ip:

@@ -19,8 +19,8 @@
     state: reset
   when: ufw_reset
 
-- debug:
-    msg: "{{ ufw_rules }}"
+#- debug:
+#    msg: "{{ ufw_rules }}"
 
 - name: Configuring port/protocol/network rules
   ufw:

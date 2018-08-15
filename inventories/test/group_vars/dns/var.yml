@@ -1,28 +1,6 @@
 ---
 ansible_user: root
 
-#ufw_rules:
-#  ssh:
-#    rule: 'allow'
-#    port: 22
-#    proto: 'tcp'
-#    from_ip:
-#      - 0.0.0.0/0
-#  redis:
-#    rule: 'allow'
-#    port: 53
-#    proto: 'tcp'
-#    from_ip:
-#      - 0.0.0.0/0
-#    to_ip: "{{ inventory_hostname }}"
-#  sentinel:
-#    rule: 'allow'
-#    port: 53
-#    proto: 'udp'
-#    from_ip:
-#      - 0.0.0.0/0
-#    to_ip: "{{ inventory_hostname }}"
-
 ufw_rules:
   - rule: 'allow'
     port: 22
@@ -41,12 +19,18 @@ ufw_rules:
     from_ip:
       - 0.0.0.0/0
     to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: "{{ zabbix_port }}"
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0
+    to_ip: "{{ inventory_hostname }}"
 
 domain: gw.lan
 rev_domain: 135.10.in-addr.arpa
 host_name: ns1.{{ domain }}
 
-list_public: false
+list_public: true
 
 records:
   local:

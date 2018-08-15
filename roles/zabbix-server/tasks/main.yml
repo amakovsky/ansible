@@ -1,6 +1,8 @@
 ---
 - name: check exist zabbix-agent
   stat: path=/usr/sbin/zabbix_server
+  changed_when: False
+  failed_when: False
   register: zabbix_available
 
 - name: Download zabbix apt source

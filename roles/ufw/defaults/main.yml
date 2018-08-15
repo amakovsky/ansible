@@ -5,4 +5,8 @@
 ufw_reset: false
 
 ufw_rules:
-  - { rule: 'allow', port: 22 }
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0
