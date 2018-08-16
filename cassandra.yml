@@ -1,0 +1,11 @@
+---
+- name: softether server
+  hosts: cassandra
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - common
+#    - ufw
+    - cassandra
