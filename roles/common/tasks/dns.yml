@@ -57,5 +57,5 @@
       regexp: "^nameserver*",
       line: "nameserver 127.0.0.1"
     }
-  when: inventory_hostname == groups['dns'][0] and change_dns is changed
+  when: inventory_hostname == groups['dns'][0] and change_dns_2 is changed
 

@@ -1,26 +1,28 @@
 [openvpn]
-178.128.198.64 private_ip=10.135.72.120
+#142.93.137.3 private_ip=10.133.64.231
 
 [dns]
-10.135.62.157
+142.93.131.15
 
-[gitlab]
-10.135.74.65 ansible_port=2222
+#[gitlab]
+#10.135.74.65 ansible_port=2222
 
-[postgresql]
-142.93.165.222 postgresrep_role=master
+#[postgresql]
+#142.93.137.3 postgresrep_role=master
 #10.135.102.72  postgresrep_role=slave
 
-[redis]
-10.135.103.158
-10.135.103.145
-10.135.103.157
+#[redis]
+#142.93.137.3
 
-[radius]
-142.93.163.135
+#[radius]
+#142.93.163.135
+#1.2.3.4
 
 #[asterisk]
 #142.93.140.78
 
 [softether]
-142.93.140.78
+178.62.250.245
+
+[zabbix]
+142.93.137.3

@@ -183,22 +183,22 @@
     enabled: yes
     name: redis-sentinel
 
-- name: open port for redis
-  ufw:
-    rule: allow
-    port: 6379
-    proto: tcp
-    src: "{{ item }}/32"
-  with_items:
+#- name: open port for redis
+#  ufw:
+#    rule: allow
+#    port: 6379
+#    proto: tcp
+#    src: "{{ item }}/32"
+#  with_items:
+##    - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+#    - "{{ groups['redis'] }}"
+#
+#- name: open port for sentinel
+#  ufw:
+#    rule: allow
+#    port: 26379
+#    proto: tcp
+#    src: "{{ item }}/32"
+#  with_items:
 #    - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
-    - "{{ groups['redis'] }}"
-
-- name: open port for sentinel
-  ufw:
-    rule: allow
-    port: 26379
-    proto: tcp
-    src: "{{ item }}/32"
-  with_items:
-    - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
-    - "{{ groups['redis'] }}"
+#    - "{{ groups['redis'] }}"

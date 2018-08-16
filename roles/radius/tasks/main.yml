@@ -83,12 +83,12 @@
   with_items: "{{ freeradius_include_options }}"
   notify: restart freeradius
 
-- name: open publc port for freeradius
-  ufw:
-    rule: allow
-    port: "{{ item }}"
-    proto: udp
-  with_items: "{{ public_port }}"
+#- name: open publc port for freeradius
+#  ufw:
+#    rule: allow
+#    port: "{{ item }}"
+#    proto: udp
+#  with_items: "{{ public_port }}"
 
 #- name: open port for freeradius
 #  ufw:

@@ -7,6 +7,6 @@
   serial: 1
 
   roles:
-    - common
-#    - ufw
-    - postgresql
+#   - common
+    - ufw
+#    - postgresql

@@ -1,2 +1,48 @@
 ---
 ansible_user: root
+
+ufw_rules:
+- names: ssh
+  rule: 'allow'
+  port: 22
+  proto: 'tcp'
+  from_ip: []
+- names: redis
+  rule: 'allow'
+  port: 6379
+  proto: 'tcp'
+  from_ip: "{{ groups['redis'] }}"
+- names: sentinel
+  rule: 'allow'
+  port: 26379
+  proto: 'tcp'
+  from_ip: "{{ groups['redis'] }}"
+
+#ufw_rules:
+#  ssh:
+#    rule: 'allow'
+#    port: 22
+#    proto: 'tcp'
+#    from_ip: []
+#  redis:
+#    rule: 'allow'
+#    port: 6379
+#    proto: 'tcp'
+#    from_ip: "{{ groups['redis'] }}"
+#  sentinel:
+#    rule: 'allow'
+#    port: 26379
+#    proto: 'tcp'
+#    from_ip: "{{ groups['redis'] }}"
+
+enable_local_dns: false
+
+# "{{ groups['redis'] }}/32"
+#  ssh:
+#    rule: 'allow'
+#    port: 22
+#  sentinel:
+#    rule: 'allow'
+#    port: 26379
+#    proto: 'tcp'
+#    from_ip: "{{ lookup('flattened', groups['redis']) }}"

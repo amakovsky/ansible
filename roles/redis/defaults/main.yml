@@ -52,3 +52,8 @@ sentinel_global_config_options:
 #    value: "11883c15aff687915cfea6d8e00a16ffd1b23f7e"
 
 recreate_cluster: false
+
+#ufw_rules:
+#  - { rule: 'allow', port: 22 }
+#  - { rule: 'allow', port: 6379, proto: 'tcp', from_ip: "{{ groups['redis'] }}" }
+#  - { rule: 'allow', port: 26379, proto: 'tcp', from_ip: "{{ groups['redis'] }}" }

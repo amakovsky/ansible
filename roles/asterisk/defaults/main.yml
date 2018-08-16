@@ -51,3 +51,16 @@ asterisk_username: asterisk
 asterisk_exec:
   - /opt/asterisk/status.sh
   - /opt/asterisk/dds.sh
+
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 5060
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0

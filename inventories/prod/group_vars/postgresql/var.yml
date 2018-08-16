@@ -18,3 +18,16 @@ postgresql_databases:
     owner: "{{ radius_user }}"
   - name: radius_access_points
     owner: "{{ radius_user }}"
+
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 5432
+    proto: 'tcp'
+    from_ip: "{{ [groups['radius'], groups['postgresql'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
+    to_ip: "{{ inventory_hostname }}"

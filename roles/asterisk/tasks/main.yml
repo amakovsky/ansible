@@ -120,11 +120,6 @@
 #  with_items: "{{ asterisk_global_config_options }}"
 #  notify: restart asterisk
 
-- name: open port for asterisk
-  ufw:
-    rule: allow
-    port: 5060
-    proto: udp
 
 - name: make executed file
   file:

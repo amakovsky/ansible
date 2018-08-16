@@ -91,13 +91,13 @@
 #    - restart iptables
 #    - restart fail2ban
 
-- name: Configure open ports with ufw.
-  ufw:
-    rule: "{{ item.rule }}"
-    port: "{{ item.port }}"
-    proto: "{{ item.proto }}"
-  with_items:
-    - { rule: 'allow', port: "{{ zabbix_port }}", proto: 'tcp' }
+#- name: Configure open ports with ufw.
+#  ufw:
+#    rule: "{{ item.rule }}"
+#    port: "{{ item.port }}"
+#    proto: "{{ item.proto }}"
+#  with_items:
+#    - { rule: 'allow', port: "{{ zabbix_port }}", proto: 'tcp' }
 
 - name: chown script
   file:

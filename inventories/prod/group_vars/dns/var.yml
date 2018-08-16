@@ -37,3 +37,22 @@ zones:
     name: gw.lan
   gettwifi:
     name: gitlab.gettwifi.com
+
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+  - rule: 'allow'
+    port: 53
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 53
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+    to_ip: "{{ inventory_hostname }}"
