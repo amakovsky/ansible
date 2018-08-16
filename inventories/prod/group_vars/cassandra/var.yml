@@ -1,17 +1,16 @@
 ---
 ansible_user: root
-enable_local_dns: false
 ufw_rules:
   - rule: 'allow'
     port: 22
     proto: 'tcp'
     from_ip:
-      - 0.0.0.0/0
+      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
     to_ip: "{{ inventory_hostname }}"
   - rule: 'allow'
     port: 7000
     proto: 'tcp'
-    from_ip: "{{ [groups['cassandra']]|flatten }}"
+    from_ip: "{{ [groups['cassandra'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
     to_ip: "{{ inventory_hostname }}"
   - rule: 'allow'
     port: 9042
