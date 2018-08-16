@@ -8,4 +8,6 @@
   roles:
     - common
 #    - ufw
-    - softether
+    - rvm
+#    - web_node
+#    - softether
