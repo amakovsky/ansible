@@ -13,8 +13,6 @@
   with_items:
     - build-essential
 
-
-
 - name: Install softether
   block:
     - name: create softether src folder
