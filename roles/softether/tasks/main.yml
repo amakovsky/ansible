@@ -1,7 +1,7 @@
 ---
 - name: check exist softether
   stat:
-    path: "{{ softether_srcdir }}/vpnserver"
+    path: "/usr/local/{{ softether_srcdir }}"
   changed_when: False
   failed_when: False
   register: softether_available
@@ -13,34 +13,40 @@
   with_items:
     - build-essential
 
-- name: create softether folder
-  file:
-    path: "{{item}}"
-    state: directory
-    mode: 0755
-  with_items:
-    - "{{ softether_srcdir }}"
 
-- name: Download softether source
-  get_url:
-    url: http://www.softether-download.com/files/softether/v4.27-9668-beta-2018.05.29-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
-    dest: /tmp/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
-    mode: 0740
-  when: softether_available.stat.exists == false
 
-- name: Extract softether
-  unarchive:
-    src: /tmp/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
-    dest: "{{ softether_srcdir }}"
-    remote_src: yes
-    extra_opts: --strip-components=1
-  register: extract
-  when: softether_available.stat.exists == false
+- name: Install softether
+  block:
+    - name: create softether src folder
+      file:
+        path: "/tmp/{{item}}"
+        state: directory
+        mode: 0755
+      with_items:
+        - "{{ softether_srcdir }}"
+    - name: Download softether source
+      get_url:
+        url: http://www.softether-download.com/files/softether/v4.27-9668-beta-2018.05.29-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
+        dest: /tmp/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
+        mode: 0740
 
-- name: Build softether from tarball
-  command: "{{ item }} chdir={{ softether_srcdir }}"
-  with_items:
-    - make i_read_and_agree_the_license_agreement
+    - name: Extract softether
+      unarchive:
+        src: /tmp/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
+        dest: "/tmp/{{ softether_srcdir }}"
+        remote_src: yes
+        extra_opts: --strip-components=1
+
+    - name: Build softether from tarball
+      command: "{{ item }} chdir=/tmp/{{ softether_srcdir }}"
+      with_items:
+       - make i_read_and_agree_the_license_agreement
+      notify: restart vpnserver
+
+    - name: move softether to folder
+      command: mv /tmp/{{ softether_srcdir }} /usr/local
+#      args:
+#        chdir: "{{ softether_srcdir }}"
   when: softether_available.stat.exists == false
 
 - name: Copy softether config
@@ -49,13 +55,15 @@
     dest: "{{ item.dest }}"
     mode: 0775
   with_items: "{{ softether_template }}"
-  register: copy_config
+  notify: restart vpnserver
 
-- name: Build softether from tarball
-  command: update-rc.d -f vpnserver defaults
-  when: copy_config is changed
-
-- name: Start service softether, if not running
-  service:
+- name: enable vpnserver
+  systemd:
+    enabled: yes
     name: vpnserver
+    daemon_reload: yes
+
+- name: start vpnserver
+  systemd:
     state: started
+    name: vpnserver
