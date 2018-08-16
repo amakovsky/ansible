@@ -7,9 +7,9 @@
 #[gitlab]
 #10.135.74.65 ansible_port=2222
 
-#[postgresql]
-#142.93.137.3 postgresrep_role=master
-#10.135.102.72  postgresrep_role=slave
+[postgresql]
+142.93.137.3 postgresrep_role=master
+10.135.102.72  postgresrep_role=slave
 
 #[redis]
 #142.93.137.3
@@ -22,7 +22,13 @@
 #142.93.140.78
 
 [softether]
-178.62.250.245
+142.93.137.12
+178.128.250.161
 
 [zabbix]
 142.93.137.3
+
+[cassandra]
+178.62.250.245
+142.93.133.90
+142.93.133.125

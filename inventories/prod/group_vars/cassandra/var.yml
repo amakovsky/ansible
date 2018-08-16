@@ -1,0 +1,19 @@
+---
+ansible_user: root
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 7000
+    proto: 'tcp'
+    from_ip: "{{ [groups['cassandra'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 9042
+    proto: 'tcp'
+    from_ip: "{{ [groups['cassandra']]|flatten }}"
+    to_ip: "{{ inventory_hostname }}"

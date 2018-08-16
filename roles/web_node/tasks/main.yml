@@ -1,0 +1,36 @@
+---
+#- name: add repository for cassandra
+#  apt_repository:
+#    repo: deb http://www.apache.org/dist/cassandra/debian 311x main
+#    state: present
+- name: Install common programm
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+    state: latest
+  with_items:
+    - gnupg2
+
+- name: Build softether from tarball
+  command: gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+  changed_when: False
+  check_mode: False
+
+- name: add key for rvm
+  apt_key:
+    keyserver: "hkp://keys.gnupg.net"
+    id: "{{ item }}"
+    state: present
+  with_items:
+    - 409B6B1796C275462A1703113804BB82D39DC0E3
+    - 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+
+- name: Download softether source
+  get_url:
+    url: https://get.rvm.io
+    dest: /tmp/rvm
+    mode: 0740
+
+- name: Build softether from tarball
+  command: /tmp/rvm stable

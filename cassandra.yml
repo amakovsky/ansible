@@ -1,13 +1,11 @@
 ---
 - name: softether server
-  hosts: softether
+  hosts: cassandra
   become: yes
   become_method: sudo
   become_user: root
 
   roles:
     - common
-#    - ufw
-    - rvm
-#    - web_node
-#    - softether
+    - ufw
+    - cassandra

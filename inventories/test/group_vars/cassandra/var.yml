@@ -1,0 +1,20 @@
+---
+ansible_user: root
+enable_local_dns: false
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 7000
+    proto: 'tcp'
+    from_ip: "{{ [groups['cassandra']]|flatten }}"
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 9042
+    proto: 'tcp'
+    from_ip: "{{ [groups['cassandra']]|flatten }}"
+    to_ip: "{{ inventory_hostname }}"

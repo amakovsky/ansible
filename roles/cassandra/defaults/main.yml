@@ -1,0 +1,29 @@
+---
+cassandra_config_path: /etc/cassandra/cassandra.yaml
+cassandra_cluster_name: gettwifi_cluster
+cassandra_recriate_cluster: false
+cassandra_global_config_options:
+  - option: cluster_name
+    value: '{{ cassandra_cluster_name }}'
+    regex: ''
+    tab: ''
+  - option: '- seeds'
+    value: "{{ lookup('flattened', groups['cassandra']) }}"
+    regex: '.*'
+    tab: '          '
+  - option: listen_address
+    value: '{{ inventory_hostname }}'
+    regex: ''
+    tab: ''
+  - option: rpc_address
+    value: '{{ inventory_hostname }}'
+    regex: ''
+    tab: ''
+  - option: endpoint_snitch
+    value: 'GossipingPropertyFileSnitch'
+    regex: ''
+    tab: ''
+  - option: auto_bootstrap
+    value: 'false'
+    regex: ''
+    tab: ''

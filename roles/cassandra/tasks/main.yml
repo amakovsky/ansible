@@ -1,0 +1,51 @@
+---
+- name: check exist cassandra
+  stat: path=/usr/sbin/cassandra
+  changed_when: False
+  failed_when: False
+  register: cassandra_available
+
+- name: add repository for cassandra
+  apt_repository:
+    repo: deb http://www.apache.org/dist/cassandra/debian 311x main
+    state: present
+
+- name: add key for docker repositories
+  apt_key:
+    keyserver: "pool.sks-keyservers.net"
+    id: "A278B781FE4B2BDA"
+    state: present
+
+- include_tasks: "java.yml"
+
+- name: Install common
+  apt: name={{ item }} update_cache=yes state=latest
+  with_items:
+    - cassandra
+
+- name: stop cassandra
+  systemd:
+    state: stopped
+    name: cassandra
+  when: cassandra_available.stat.exists == true and cassandra_recriate_cluster
+
+- name: remove base
+  file:
+    path: /var/lib/cassandra/data/system/
+    state: absent
+    force: yes
+  when: cassandra_available.stat.exists == true and cassandra_recriate_cluster
+
+- name: Configure global settings.
+  lineinfile:
+    dest: "{{ cassandra_config_path }}"
+    regexp: "^#?{{ item.regex }}{{ item.option }}.+$"
+    line: "{{ item.tab }}{{ item.option }}: '{{ item.value }}'"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ cassandra_global_config_options }}"
+  notify: restart cassandra
+
+- name: ensure what  cassandra started
+  systemd:
+    state: started
+    name: cassandra
