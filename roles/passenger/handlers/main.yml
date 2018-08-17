@@ -1,3 +1,7 @@
 ---
 - name: restart nginx
-  service: name=nginx state=restarted enabled=yes
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes
+    daemon_reload: yes

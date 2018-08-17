@@ -8,3 +8,7 @@ passenger_template:
 nginx_global_config_options:
   - option: user
     value: 'www-data'
+  - option: pid
+    value: '/run/nginx.pid'
+  - option: worker_processes
+    value: 'auto'

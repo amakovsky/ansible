@@ -9,3 +9,12 @@
     mode: 0775
   with_items: "{{ passenger_template }}"
   notify: restart nginx
+
+- name: Configure nginx global settings.
+  lineinfile:
+    dest: "{{ passenger_nginx_dir }}/conf/nginx.conf"
+    regexp: "^#?{{ item.option }}.+$"
+    line: "{{ item.option }} {{ item.value }};"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ nginx_global_config_options }}"
+  notify: restart nginx
