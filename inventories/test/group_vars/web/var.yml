@@ -4,8 +4,12 @@ enable_local_dns: false
 create_user: true
 
 local_user:
-  - name: user
-    pass: 1128256asdf
+  - name: web
+    password: 1128256asdf
+    password_lock: yes
+    home: /opt/www
+    shell: /bin/bash
+    group: rvm
 
 ufw_rules:
   - rule: 'allow'

@@ -5,4 +5,4 @@ create_user: false
 
 local_user:
   - name: user
-    pass: 123456sdad
+    password: 123456sdad
