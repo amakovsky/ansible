@@ -5,11 +5,15 @@ create_user: true
 
 local_user:
   - name: web
+    group: www-data
     password: 1128256asdf
     password_lock: yes
     home: /opt/www
     shell: /bin/bash
-    group: rvm
+    groups:
+      - rvm
+      - user
+      - test
 
 ufw_rules:
   - rule: 'allow'

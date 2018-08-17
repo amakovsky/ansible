@@ -1,10 +1,10 @@
 ---
 - name: create group for user
   group:
-    name: "{{ item.group | default(omit) }}"
-    state: "{{ item.state | default(omit) }}"
-    system: "{{ item.system | default(omit) }}"
-  with_items: "{{ local_user }}"
+    name: "{{ item.1 }}"
+  with_subelements:
+    - "{{ local_user | selectattr('groups', 'defined') | list }}"
+    - groups
 
 - name: create user with password
   user:
@@ -38,7 +38,7 @@
     uid: "{{ item.uid | default(omit) }}"
     update_password: "{{ item.update_password | default(omit) }}"
   with_items: "{{ local_user }}"
-  no_log: true
+#  no_log: true
   when: item.password_lock is not defined or item.password_lock == false
 
 - block:
@@ -72,7 +72,7 @@
       system: "{{ item.system | default(omit) }}"
       uid: "{{ item.uid | default(omit) }}"
     with_items: "{{ local_user }}"
-    no_log: true
+#    no_log: true
 
   - name: lock user
     user:

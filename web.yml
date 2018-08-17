@@ -6,8 +6,8 @@
   become_user: root
 
   roles:
-    - common
-    - ufw
+#    - common
+#    - ufw
     - user
-    - rvm
-#    - web_node
+#    - rvm
+#    - passenger

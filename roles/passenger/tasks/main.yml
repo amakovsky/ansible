@@ -1,0 +1,11 @@
+---
+- name: Passenger and Nginx
+  shell: bash -lc "passenger-install-nginx-module --auto --auto-download --extra-configure-flags=none --languages ruby --prefix={{ passenger_nginx_dir }}"
+
+- name: Copy softether config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0775
+  with_items: "{{ passenger_template }}"
+  notify: restart nginx
