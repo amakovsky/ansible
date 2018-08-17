@@ -1,6 +1,11 @@
 ---
-ansible_user: root
+#ansible_user: root
 enable_local_dns: false
+create_user: true
+
+local_user:
+  - name: user
+    pass: 1128256asdf
 
 ufw_rules:
   - rule: 'allow'

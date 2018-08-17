@@ -1,6 +1,6 @@
 ---
-- name: softether server
-  hosts: softether
+- name: web server
+  hosts: web
   become: yes
   become_method: sudo
   become_user: root
@@ -8,4 +8,6 @@
   roles:
     - common
     - ufw
-    - softether
+    - user
+    - rvm
+#    - web_node

@@ -4,3 +4,5 @@
     name: root
     password: "{{password | password_hash('sha512', 'mysecretsalt')}}"
 
+- include_tasks: user.yml
+  when: create_user

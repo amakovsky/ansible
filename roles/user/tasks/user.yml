@@ -1,0 +1,8 @@
+---
+- name: create user
+  user:
+    name: "{{ item.name }}"
+    group: www-data
+    shell: /bin/bash
+    password: "{{ item.pass | password_hash('sha512', 'mysecretsalt')}}"
+  with_items: "{{ local_user }}"

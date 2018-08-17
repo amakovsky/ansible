@@ -9,7 +9,7 @@
     dest: /etc/bash.bashrc.backup
   when: not bashrc_backup.stat.exists
 
-- name: Copy new bashrc
+- name: Copy new bashrc to /etc for default using
   copy:
     src: bash.bashrc
     dest: /etc/bash.bashrc
@@ -19,8 +19,13 @@
     src: bash.bashrc
     dest: /etc/skel/.bashrc
 
-- name: Remove local bashrc files
-  file:
-    state: absent
-    path: "{{ item }}"
-  with_items: "{{ bashrc_list }}"
+- name: Copy new bashrc to current user home directory
+  copy:
+    src: bash.bashrc
+    dest: ~/bash.bashrc
+
+#- name: Remove local bashrc files
+#  file:
+#    state: absent
+#    path: "{{ item }}"
+#  with_items: "{{ bashrc_list }}"
