@@ -1,0 +1,14 @@
+---
+passenger_nginx_dir: /opt/nginx
+
+passenger_template:
+  - src: 'nginx'
+    dest: '/etc/init.d/nginx'
+
+nginx_global_config_options:
+  - option: user
+    value: 'www-data'
+  - option: pid
+    value: '/run/nginx.pid'
+  - option: worker_processes
+    value: 'auto'
