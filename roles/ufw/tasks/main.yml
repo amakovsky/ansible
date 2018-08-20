@@ -19,9 +19,6 @@
     state: reset
   when: ufw_reset
 
-#- debug:
-#    msg: "{{ ufw_rules }}"
-
 - name: Configuring port/protocol/network rules
   ufw:
     delete: "{{ item.0.delete | default(omit) }}"
@@ -43,27 +40,6 @@
   with_subelements:
     - "{{ ufw_rules }}"
     - from_ip
-
-#- name: open port for ssh
-#  ufw:
-#    rule: allow
-#    port: 22
-#    proto: tcp
-#    src: "{{ item }}"
-#  with_items:
-#    - "{{ hostvars[groups['openvpn'][0]].private_ip }}/32"
-#    - "{{ allow_ip }}"
-#
-#- name: open ssh port for gitlab
-#  ufw:
-#    rule: allow
-#    port: 2222
-#    proto: tcp
-#    src: "{{ item }}"
-#  with_items:
-#    - "{{ hostvars[groups['openvpn'][0]].private_ip }}/32"
-#    - "{{ allow_ip }}"
-#  when: inventory_hostname == groups['gitlab'][0]
 
 - name: Configure default incoming/outgoing rules with ufw.
   ufw:
