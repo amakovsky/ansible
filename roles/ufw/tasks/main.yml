@@ -38,8 +38,9 @@
     to_ip: "{{ item.0.to_ip | default(omit) }}"
     to_port: "{{ item.0.to_port | default(omit) }}"
   with_subelements:
-    - "{{ ufw_rules }}"
+    - "{{ ufw_rules | selectattr('from_ip', 'defined') | list }}"
     - from_ip
+  register: ufw_change
 
 - name: Configure default incoming/outgoing rules with ufw.
   ufw:
@@ -49,3 +50,4 @@
   with_items:
     - { direction: outgoing, policy: allow }
     - { direction: incoming, policy: deny }
+  when: ufw_change is changed

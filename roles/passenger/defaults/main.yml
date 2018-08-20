@@ -2,8 +2,10 @@
 passenger_nginx_dir: /opt/nginx
 
 passenger_template:
-  - src: 'nginx'
-    dest: '/etc/init.d/nginx'
+#  - src: 'nginx'
+#    dest: '/etc/init.d/nginx'
+  - src: 'nginx.service'
+    dest: '/lib/systemd/system/nginx.service'
 
 nginx_global_config_options:
   - option: user
