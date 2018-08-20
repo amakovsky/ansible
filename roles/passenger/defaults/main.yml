@@ -2,13 +2,27 @@
 passenger_nginx_dir: /opt/nginx
 
 passenger_template:
-  - src: 'nginx'
-    dest: '/etc/init.d/nginx'
+#  - src: 'nginx'
+#    dest: '/etc/init.d/nginx'
+  - src: 'nginx.service'
+    dest: '/lib/systemd/system/nginx.service'
 
 nginx_global_config_options:
   - option: user
-    value: 'www-data'
+    value: "{{ nginx_user }}"
   - option: pid
     value: '/run/nginx.pid'
   - option: worker_processes
     value: 'auto'
+  - option: error_log
+    value: '/var/log/nginx/error.log'
+#  - option: access_log
+#    value: '/var/log/nginx/access.log'
+
+nginx_dir:
+  - /etc/nginx/sites-available
+  - /etc/nginx/sites-enabled
+  - /var/log/nginx
+
+nginx_user: www-data
+update_nginx: false

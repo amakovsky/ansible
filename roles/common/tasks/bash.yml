@@ -22,7 +22,7 @@
 - name: Copy new bashrc to current user home directory
   copy:
     src: bash.bashrc
-    dest: ~/bash.bashrc
+    dest: ~/.bashrc
 
 #- name: Remove local bashrc files
 #  file:

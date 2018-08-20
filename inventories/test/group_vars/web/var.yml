@@ -1,8 +1,12 @@
 ---
 #ansible_user: root
 enable_local_dns: false
-create_user: true
 
+rvm1_user: root
+rvm1_install_path: /usr/local/rvm
+rvm1_install_flags: '--auto-dotfiles'
+
+create_user: true
 local_user:
   - name: web
     group: www-data
@@ -12,8 +16,6 @@ local_user:
     shell: /bin/bash
     groups:
       - rvm
-      - user
-      - test
 
 ufw_rules:
   - rule: 'allow'
@@ -34,3 +36,4 @@ ufw_rules:
     from_ip:
       - 0.0.0.0/0
     to_ip: "{{ inventory_hostname }}"
+

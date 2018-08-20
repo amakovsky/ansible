@@ -1,7 +1,4 @@
 ---
-#allow_ip:
-#  - "{{ hostvars[groups['openvpn'][0]].private_ip }}/32"
-
 ufw_reset: false
 
 ufw_rules:
