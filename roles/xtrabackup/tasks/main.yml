@@ -4,11 +4,9 @@
     url: https://repo.percona.com/apt/percona-release_0.1-4.{{ ansible_distribution_release }}_all.deb
     dest: /tmp/percona-release_0.1-6.{{ ansible_distribution_release }}_all.deb
     mode: 0740
-  when: ansible_distribution_release != "bionic"
 
 - name: Install apt repo
   apt: deb="/tmp/percona-release_0.1-6.{{ ansible_distribution_release }}_all.deb"
-  when: ansible_distribution_release != "bionic"
 
 - name: Install xtrabackup
   apt: name=percona-xtrabackup-24 state=present update_cache=yes
@@ -58,5 +56,3 @@
     minute: "0"
     hour: "1"
     job: "{{ root_dir }}/del_old_backup.sh"
-
-
