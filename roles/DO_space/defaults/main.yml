@@ -1,5 +1,5 @@
 ---
 spaces_access_key: VGKQEXC2RQ3A24XZLDXU
 spaces_secret_key: srDfud8kTGadwhx1oT7gUg+Io9bPM7+J2omHdllQPSQ
-spaces_endpoint: https://gettwifi-b.ams3.digitaloceanspaces.com
+spaces_endpoint: https://ams3.digitaloceanspaces.com
 space_name: gettwifi-b

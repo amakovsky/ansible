@@ -23,9 +23,3 @@
   copy:
     src: bash.bashrc
     dest: ~/.bashrc
-
-#- name: Remove local bashrc files
-#  file:
-#    state: absent
-#    path: "{{ item }}"
-#  with_items: "{{ bashrc_list }}"

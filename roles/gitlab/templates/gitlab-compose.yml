@@ -18,6 +18,7 @@ web:
         'endpoint'              => 'https://ams3.digitaloceanspaces.com'
      }
      gitlab_rails['backup_upload_remote_directory'] = 'gettwifi-b'
+     gitlab_rails['backup_keep_time'] = 1209600
   ports:
     - '80:80'
     - '443:443'
