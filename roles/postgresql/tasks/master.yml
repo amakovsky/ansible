@@ -11,9 +11,8 @@
 - name: Create replication user account
   postgresql_user:
     name: "{{ rep_user }}"
-#    password: "{{ rep_password }}"
     role_attr_flags: "{{ rep_db }}"
-#  become: True
+  become: True
   become_user: postgres
 
 #- name: Add trust in pg_hba.conf

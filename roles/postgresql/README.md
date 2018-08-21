@@ -1,8 +1,8 @@
 # Ansible Role: PostgreSQL
 
-[![Build Status](https://travis-ci.org/geerlingguy/ansible-role-postgresql.svg?branch=master)](https://travis-ci.org/geerlingguy/ansible-role-postgresql)
 
-Installs and configures PostgreSQL server on RHEL/CentOS or Debian/Ubuntu servers.
+
+Installs and configures PostgreSQL master-slave server on RHEL/CentOS or Debian/Ubuntu servers.
 
 ## Requirements
 
@@ -16,6 +16,30 @@ No special requirements; note that this role requires root access, so either run
 ## Role Variables
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
+
+    getbase_from_master: false
+    
+Load database from master in initialize cluster
+
+    rep_user:
+    
+User for replication
+
+    rep_db:
+    
+Database for replication
+
+    postgresql_pg_partman:
+    
+Enable pg_partman for databases
+
+    postgresrep_postgres_conf_lines
+    
+Configuration for enabling replication on master server
+
+    postgresrep_role
+    
+Set role server, add to inventories file
 
     postgresql_enablerepo: ""
 
@@ -43,13 +67,19 @@ The directories (usually one, but can be multiple) where PostgreSQL's socket wil
       - option: unix_socket_directories
         value: '{{ postgresql_unix_socket_directories | join(",") }}'
 
-Global configuration options that will be set in `postgresql.conf`. Note that for RHEL/CentOS 6 (or very old versions of PostgreSQL), you need to at least override this variable and set the `option` to `unix_socket_directory`.
+Global configuration options that will be set in `pg_hba.conf`. Note that for RHEL/CentOS 6 (or very old versions of PostgreSQL), you need to at least override this variable and set the `option` to `unix_socket_directory`.
 
     postgresql_hba_entries:
       - { type: local, database: all, user: postgres, auth_method: peer }
       - { type: local, database: all, user: all, auth_method: peer }
       - { type: host, database: all, user: all, address: '127.0.0.1/32', auth_method: md5 }
       - { type: host, database: all, user: all, address: '::1/128', auth_method: md5 }
+      
+In template pg_hba.conf.j2 add loop adding rules for groups servers
+      
+      - groups['radius']
+      - groups['openvpn']
+      - groups['web']
 
 Configure [host based authentication](https://www.postgresql.org/docs/current/static/auth-pg-hba-conf.html) entries to be set in the `pg_hba.conf`. Options for entries include:
 
@@ -134,7 +164,3 @@ None.
 ## License
 
 MIT / BSD
-
-## Author Information
-
-This role was created in 2016 by [Jeff Geerling](https://www.jeffgeerling.com/), author of [Ansible for DevOps](https://www.ansiblefordevops.com/).

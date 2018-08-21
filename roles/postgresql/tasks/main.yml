@@ -19,6 +19,7 @@
   when: ansible_os_family == 'Debian'
 
 - include_tasks: pg_partman.yml
+  when: postgresql_pg_partman
 
 - include_tasks: initialize.yml
 - include_tasks: configure.yml
