@@ -7,17 +7,17 @@ web:
      external_url 'https://{{ gitlab_name }}'
      letsencrypt['enable'] = false
      nginx['redirect_http_to_https'] = true
-     nginx['ssl_certificate'] = "/var/ssl/gitlab.gettwifi.com.crt"
-     nginx['ssl_certificate_key'] = "/var/ssl/gitlab.gettwifi.com.key"
+     nginx['ssl_certificate'] = "/var/ssl/{{ gitlab_name }}.crt"
+     nginx['ssl_certificate_key'] = "/var/ssl/{{ gitlab_name }}.key"
      gitlab_rails['time_zone'] = 'Europe/Moscow'
      gitlab_rails['backup_upload_connection'] = {
         'provider' => 'AWS',
         'region' => 'ams3',
-        'aws_access_key_id' => 'VGKQEXC2RQ3A24XZLDXU',
-        'aws_secret_access_key' => 'srDfud8kTGadwhx1oT7gUg+Io9bPM7+J2omHdllQPSQ',
-        'endpoint'              => 'https://ams3.digitaloceanspaces.com'
+        'aws_access_key_id' => '{{ spaces_access_key }}',
+        'aws_secret_access_key' => '{{ spaces_secret_key }}',
+        'endpoint'              => '{{ spaces_endpoint }}'
      }
-     gitlab_rails['backup_upload_remote_directory'] = 'gettwifi-b'
+     gitlab_rails['backup_upload_remote_directory'] = '{{ space_name }}'
      gitlab_rails['backup_keep_time'] = 1209600
   ports:
     - '80:80'

@@ -22,9 +22,11 @@
         mode: 0755
       with_items:
         - "{{ softether_srcdir }}"
+
     - name: Download softether source
       get_url:
-        url: http://www.softether-download.com/files/softether/v4.27-9668-beta-2018.05.29-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
+#        url: http://www.softether-download.com/files/softether/v4.27-9668-beta-2018.05.29-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
+        url: url: https://ams3.digitaloceanspaces.com/gettwifi/source/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
         dest: /tmp/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
         mode: 0740
 

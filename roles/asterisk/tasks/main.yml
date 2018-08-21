@@ -39,7 +39,8 @@
 
     - name: Download asterisk source
       get_url:
-        url: https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-13-current.tar.gz
+#        url: https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-13-current.tar.gz
+        url: https://ams3.digitaloceanspaces.com/gettwifi/source/asterisk-13-current.tar.gz
         dest: /tmp/asterisk-13-current.tar.gz
         mode: 0740
 #      when: asterisk_available.stat.exists == false
