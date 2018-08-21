@@ -1,6 +1,7 @@
 ---
 - name: check exist asterisk
-  stat: path=/usr/sbin/asterisk
+  stat:
+    path: "{{ asterisk_bindir }}"
   changed_when: False
   failed_when: False
   register: asterisk_available
@@ -26,64 +27,75 @@
     system: yes
     createhome: no
 
-- name: create asterisk folder
+- name: build asterisk from source
+  block:
+    - name: create asterisk source folder
+      file:
+        path: "{{item}}"
+        state: directory
+        mode: 0755
+      with_items:
+        - "{{ asterisk_srcdir }}"
+
+    - name: Download asterisk source
+      get_url:
+#        url: https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-13-current.tar.gz
+        url: https://ams3.digitaloceanspaces.com/gettwifi/source/asterisk-13-current.tar.gz
+        dest: /tmp/asterisk-13-current.tar.gz
+        mode: 0740
+#      when: asterisk_available.stat.exists == false
+
+    - name: Extract asterisk source
+      unarchive:
+        src: /tmp/asterisk-13-current.tar.gz
+        dest: "{{ asterisk_srcdir }}"
+        remote_src: yes
+        extra_opts: --strip-components=1
+      register: extract
+#      when: asterisk_available.stat.exists == false
+
+    - name: copy menuselect.makeopts file
+      copy:
+        src: test
+        dest: "{{ asterisk_srcdir }}/menuselect.makeopts"
+#      when: asterisk_available.stat.exists == false
+
+    #- name: Install asterisk
+    #  shell: cd /tmp/{{ version }} && yes | ./contrib/scripts/install_prereq test; \
+    #         yes | ./contrib/scripts/install_prereq install; \
+    #         ./configure; \
+    #         make NOISY_BUILD=yes; \
+    #         make install; \
+    #         make config; \
+    #         make install-logrotate; \
+    #         make samples
+    #  when: asterisk_available.stat.exists == false
+
+    - name: Build Asterisk from tarball
+      command: "{{ item }} chdir={{ asterisk_srcdir }}"
+      with_items:
+        - ./configure
+        - make NOISY_BUILD=yes
+        - make install
+        - make config
+        - make install-logrotate
+        - make samples
+  when: asterisk_available.stat.exists == false
+
+- name: create asterisk opt folder
   file:
     path: "{{item}}"
     state: directory
     mode: 0755
   with_items:
-    - "{{ iasterisk_srcdir }}"
-    - /opt/asterisk
-
-- name: Download asterisk source
-  get_url:
-    url: https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-13-current.tar.gz
-    dest: /tmp/asterisk-13-current.tar.gz
-    mode: 0740
-  when: asterisk_available.stat.exists == false
-
-- name: Extract asterisk
-  unarchive:
-    src: /tmp/asterisk-13-current.tar.gz
-    dest: "{{ iasterisk_srcdir }}"
-    remote_src: yes
-    extra_opts: --strip-components=1
-  register: extract
-  when: asterisk_available.stat.exists == false
-
-- name: copy menuselect.makeopts file
-  copy:
-    src: test
-    dest: "{{ iasterisk_srcdir }}/menuselect.makeopts"
-  when: asterisk_available.stat.exists == false
-
-#- name: Install asterisk
-#  shell: cd /tmp/{{ version }} && yes | ./contrib/scripts/install_prereq test; \
-#         yes | ./contrib/scripts/install_prereq install; \
-#         ./configure; \
-#         make NOISY_BUILD=yes; \
-#         make install; \
-#         make config; \
-#         make install-logrotate; \
-#         make samples
-#  when: asterisk_available.stat.exists == false
-
-- name: Build Asterisk from tarball
-  command: "{{ item }} chdir={{ iasterisk_srcdir }}"
-  with_items:
-    - ./configure
-    - make NOISY_BUILD=yes
-    - make install
-    - make config
-    - make install-logrotate
-    - make samples
-  when: asterisk_available.stat.exists == false
+    - "{{ asterisk_optdir }}"
 
 - name: Copy asterisk config
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
   with_items: "{{ asterisk_template }}"
+  when: asterisk_template is defined
   notify: restart asterisk
 
 - name: delete default config
@@ -94,7 +106,7 @@
   with_items: "{{ del_config }}"
   notify: restart asterisk
 
-- name: change user and group for asterisk files
+- name: change user and group for asterisk folders
   file:
     path: "{{ item }}"
     owner: asterisk
@@ -103,39 +115,37 @@
   with_items: "{{ asterisk_folders }}"
   notify: restart asterisk
 
-- name: change user and group for asterisk config
-  file:
-    path: /etc/asterisk
-    owner: root
-    group: asterisk
-    recurse: yes
+
+- name: asterisk configure global settings.
+  lineinfile:
+    dest: "/etc/asterisk/asterisk.conf"
+    regexp: "^;?{{ item.option }}.+$"
+    line: "{{ item.option }} = {{ item.value }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ asterisk_global_config_options }}"
+  when: asterisk_template|length == 0
   notify: restart asterisk
-
-#- name: asterisk configure global settings.
-#  lineinfile:
-#    dest: "/etc/asterisk/asterisk.conf"
-#    regexp: "^;?{{ item.option }}.+$"
-#    line: "{{ item.option }} = {{ item.value }}"
-#    state: "{{ item.state | default('present') }}"
-#  with_items: "{{ asterisk_global_config_options }}"
-#  notify: restart asterisk
-
 
 - name: make executed file
   file:
-    path: "{{ item }}"
+    path: "{{ item.file }}"
     mode: "u+x,g+x"
   with_items: "{{ asterisk_exec }}"
+  when: asterisk_exec|length > 0
 
-- name: Check Asterisk trunks
+- name: Configuring cron
   cron:
-    name: "Check Asterisk trunks"
-    job: "/opt/asterisk/status.sh >> /var/log/asterisk/status.log 2>&1"
+    name: "{{ item.name | default(omit) }}"
+    minute: "{{ item.minute | default(omit) }}"
+    hour: "{{ item.hour | default(omit) }}"
+    day: "{{ item.day | default(omit) }}"
+    job: "{{ item.job | default(omit) }}"
+  with_items: "{{ asterisk_exec }}"
+  when: asterisk_exec|length > 0
 
-- name: Asterisk multifon balance movement
-  cron:
-    name: "Check Asterisk trunks"
-    minute: "0"
-    hour: "5"
-    day: "1"
-    job: "/opt/asterisk/dds.sh >> /var/log/asterisk/dds.log 2>&1"
+- name: Clear out directory after install
+  file:
+    state: absent
+    path: "{{ item }}/"
+  with_items:
+    - "{{ asterisk_srcdir }}"

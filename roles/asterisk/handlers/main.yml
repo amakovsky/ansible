@@ -1,5 +1,6 @@
 ---
 - name: restart asterisk
-  service:
+  systemd:
     name: asterisk
     state: restarted
+    enabled: yes

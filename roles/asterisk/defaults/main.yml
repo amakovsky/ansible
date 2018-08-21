@@ -1,11 +1,12 @@
 ---
-del_config:
-  - pjsip.conf
-  - queues.conf
-  - indications.conf
-  - confbridge.conf
-  - voicemail.conf
-  - musiconhold.conf
+del_config: []
+#del_config:
+#  - pjsip.conf
+#  - queues.conf
+#  - indications.conf
+#  - confbridge.conf
+#  - voicemail.conf
+#  - musiconhold.conf
 
 asterisk_folders:
   - /var/lib/asterisk
@@ -13,54 +14,49 @@ asterisk_folders:
   - /var/run/asterisk
   - /var/spool/asterisk
   - /usr/lib/asterisk
+  - /etc/asterisk
+  - "{{ asterisk_optdir }}"
 
 asterisk_global_config_options:
   - option: runuser
-    value: 'asterisk'
+    value: "{{ asterisk_username }}"
   - option: rungroup
-    value: 'asterisk'
+    value: "{{ asterisk_username }}"
 
-iasterisk_srcdir: /tmp/asterisk
+asterisk_srcdir: /tmp/asterisk
+asterisk_optdir: /opt/asterisk
+asterisk_bindir: /usr/sbin/asterisk
 
-asterisk_template:
-  - src: 'etc/asterisk.conf'
-    dest: '/etc/asterisk/asterisk.conf'
-  - src: 'etc/cdr.conf'
-    dest: '/etc/asterisk/cdr.conf'
-  - src: 'etc/cdr_custom.conf'
-    dest: '/etc/asterisk/cdr_custom.conf'
-  - src: 'etc/extensions.conf'
-    dest: '/etc/asterisk/extensions.conf'
-  - src: 'etc/logger.conf'
-    dest: '/etc/asterisk/logger.conf'
-  - src: 'etc/modules.conf'
-    dest: '/etc/asterisk/modules.conf'
-  - src: 'etc/sip.conf'
-    dest: '/etc/asterisk/sip.conf'
-  - src: 'opt/call.url'
-    dest: '/opt/asterisk/call.url'
-  - src: 'opt/dds.sh'
-    dest: '/opt/asterisk/dds.sh'
-  - src: 'opt/status.sh'
-    dest: '/opt/asterisk/status.sh'
-  - src: 'opt/status.url'
-    dest: '/opt/asterisk/status.url'
+asterisk_template: []
+#asterisk_template:
+#  - src: 'etc/asterisk.conf'
+#    dest: '/etc/asterisk/asterisk.conf'
+#  - src: 'etc/cdr.conf'
+#    dest: '/etc/asterisk/cdr.conf'
+#  - src: 'etc/cdr_custom.conf'
+#    dest: '/etc/asterisk/cdr_custom.conf'
+#  - src: 'etc/extensions.conf'
+#    dest: '/etc/asterisk/extensions.conf'
+#  - src: 'etc/logger.conf'
+#    dest: '/etc/asterisk/logger.conf'
+#  - src: 'etc/modules.conf'
+#    dest: '/etc/asterisk/modules.conf'
+#  - src: 'etc/sip.conf'
+#    dest: '/etc/asterisk/sip.conf'
+#  - src: 'opt/call.url'
+#    dest: '/opt/asterisk/call.url'
+#  - src: 'opt/dds.sh'
+#    dest: '/opt/asterisk/dds.sh'
+#  - src: 'opt/status.sh'
+#    dest: '/opt/asterisk/status.sh'
+#  - src: 'opt/status.url'
+#    dest: '/opt/asterisk/status.url'
 
 asterisk_username: asterisk
 
-asterisk_exec:
-  - /opt/asterisk/status.sh
-  - /opt/asterisk/dds.sh
+asterisk_exec: []
 
-ufw_rules:
-  - rule: 'allow'
-    port: 22
-    proto: 'tcp'
-    from_ip:
-      - 0.0.0.0/0
-    to_ip: "{{ inventory_hostname }}"
-  - rule: 'allow'
-    port: 5060
-    proto: 'udp'
-    from_ip:
-      - 0.0.0.0/0
+#asterisk_exec:
+#  - "{{ asterisk_optdir }}/status.sh"
+#  - "{{ asterisk_optdir }}/dds.sh"
+

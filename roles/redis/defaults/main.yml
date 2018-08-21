@@ -1,4 +1,6 @@
 ---
+redis_srcdir: /tmp/redis
+
 redis_global_config_options:
   - option: supervised
     value: 'systemd'

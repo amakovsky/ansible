@@ -6,25 +6,23 @@ postgresql_enablerepo: ""
 # `restarted` or `reloaded`
 postgresql_restarted_state: "restarted"
 
-private_interface: eth1
-interface_fact_var: ansible_{{ private_interface }}
-
 postgresql_python_library: python-psycopg2
 postgresql_user: postgres
 postgresql_group: postgres
 
 rep_user: replication
-rep_password: taimoaphee3Ri4ah
 rep_db: replication
 postgresql_unix_socket_directories:
   - /var/run/postgresql
+
+postgresql_pg_partman: true
 
 # Global configuration options that will be set in postgresql.conf.
 postgresql_global_config_options:
   - option: unix_socket_directories
     value: '{{ postgresql_unix_socket_directories | join(",") }}'
   - option: listen_addresses
-    value: '{{ hostvars[inventory_hostname][interface_fact_var].ipv4.address }}, localhost'
+    value: '{{ inventory_hostname }}, localhost'
   - option: shared_buffers
     value: '{{ (ansible_memtotal_mb * 0.25)|int|abs }}MB'
   - option: max_connections

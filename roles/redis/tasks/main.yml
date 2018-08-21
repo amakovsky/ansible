@@ -22,13 +22,6 @@
   failed_when: False
   register: redis_available
 
-#- name: Download source
-#  get_url:
-#    url: http://download.redis.io/redis-stable.tar.gz
-#    dest: /tmp/redis-stable.tar.gz
-#    mode: 0755
-#  when: redis_available.stat.exists == false
-
 - name: stop redis sentinel
   systemd:
     state: stopped
@@ -47,16 +40,30 @@
     path: "/var/lib/redis/"
   when: redis_available.stat.exists == true and recreate_cluster
 
+- name: create redis src folder
+  file:
+    path: "{{ redis_srcdir }}"
+    state: directory
+    mode: 0755
+
+- name: Download source
+  get_url:
+    url: https://ams3.digitaloceanspaces.com/gettwifi/source/redis-4.0.11.tar.gz
+    dest: /tmp/redis-stable.tar.gz
+    mode: 0755
+  when: redis_available.stat.exists == false
+
 - unarchive:
     src: redis-stable.tar.gz
-    dest: /tmp
-#    copy: no
+    dest: "{{ redis_srcdir }}"
+    remote_src: yes
+    extra_opts: --strip-components=1
   when: redis_available.stat.exists == false
 
 - name: build
   shell: make && make test && make install
   args:
-    chdir: /tmp/redis-stable
+    chdir: "{{ redis_srcdir }}"
 #    creates: /etc/zabbix/zabbix_agentd.psk
   when: redis_available.stat.exists == false
 

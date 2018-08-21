@@ -1,11 +1,6 @@
 ---
 ansible_user: root
 
-#ufw_rules:
-#  - { rule: 'allow', port: 2222 }
-#  - { rule: 'allow', port: 80, proto: 'tcp' }
-#  - { rule: 'allow', port: 443, proto: 'tcp' }
-
 ufw_rules:
   - rule: 'allow'
     port: 22

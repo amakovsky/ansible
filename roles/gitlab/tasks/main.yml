@@ -1,22 +1,8 @@
 ---
 - name: Copy ssl cert for gitlab
-  copy: src=ssl dest=/srv
-
-#- name: create gitlab container
-#  docker_container:
-#    name: gitlab
-#    hostname: gitlab.example.com
-#    image: gitlab/gitlab-ee:latest
-#    state: started
-#    restart_policy: always
-#    published_ports:
-#      - "443:443"
-#      - "80:80"
-#      - "2222:22"
-#    volumes:
-#      - /srv/gitlab/config:/etc/gitlab
-#      - /srv/gitlab/logs:/var/log/gitla
-#      - /srv/gitlab/data:/var/opt/gitlab
+  copy:
+    src: ssl
+    dest: /srv
 
 - name: Copy site configuration
   template:
@@ -29,18 +15,9 @@
     build: yes
     restarted: true
 
-#- name: Configure open ports for nginx.
-#  ufw:
-#    rule: "{{ item.rule }}"
-#    port: "{{ item.port }}"
-#    proto: "{{ item.proto }}"
-#  with_items:
-#    - { rule: 'allow', port: 80, proto: 'tcp' }
-#    - { rule: 'allow', port: 443, proto: 'tcp' }
-
 - name: cron for backup gitlab
   cron:
     name: "gitlab backup"
     minute: "0"
     hour: "0"
-    job: "docker exec -t root_web_1 gitlab-rake gitlab:backup:create"
+    job: "docker exec -t root_web_1 gitlab-rake gitlab:backup:create DIRECTORY=gitlab"

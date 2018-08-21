@@ -1,11 +1,9 @@
 ---
 - name: Workstation for developers
-  hosts: my
+  hosts: test
   become: yes
   become_method: sudo
   become_user: root
 
   roles:
-    - common
-    - ufw
-    - { role: openvpn, clients: [client1, client2]}
+    - DO_space
