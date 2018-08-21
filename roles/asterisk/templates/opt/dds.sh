@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASE_DIR=/opt/asterisk
+BASE_DIR={{ asterisk_optdir }}
 
 rasterisk -x "sip show peers" | awk -F"/" '{print $1}' | egrep '^[[:digit:]]{7,}' | grep -v nodds > $BASE_DIR/dds.txt
 
