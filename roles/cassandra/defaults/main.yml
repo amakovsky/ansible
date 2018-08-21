@@ -1,4 +1,9 @@
 ---
+cassandra_bindir: /usr/sbin/cassandra
+cassandra_repository: "deb http://www.apache.org/dist/cassandra/debian 311x main"
+cassandra_key:
+  - keyserver: "pool.sks-keyservers.net"
+    id: "A278B781FE4B2BDA"
 cassandra_config_path: /etc/cassandra/cassandra.yaml
 cassandra_cluster_name: gettwifi_cluster
 cassandra_recriate_cluster: false

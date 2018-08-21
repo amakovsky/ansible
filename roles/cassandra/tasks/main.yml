@@ -1,40 +1,50 @@
 ---
+- name: include java role
+  include_role:
+    name: java
+
 - name: check exist cassandra
-  stat: path=/usr/sbin/cassandra
+  stat:
+    path: "{{ cassandra_bindir }}"
   changed_when: False
   failed_when: False
   register: cassandra_available
 
 - name: add repository for cassandra
   apt_repository:
-    repo: deb http://www.apache.org/dist/cassandra/debian 311x main
+    repo: "{{ cassandra_repository }}"
     state: present
 
-- name: add key for docker repositories
+- name: add key for cassandra repositories
   apt_key:
-    keyserver: "pool.sks-keyservers.net"
-    id: "A278B781FE4B2BDA"
+    keyserver: "{{ item.keyserver }}"
+    id: "{{ item.id }}"
     state: present
+  with_items: "{{ cassandra_key }}"
 
-- include_tasks: "java.yml"
+#- include_tasks: "java.yml"
 
-- name: Install common
-  apt: name={{ item }} update_cache=yes state=latest
+- name: Install cassandra
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: latest
   with_items:
     - cassandra
 
-- name: stop cassandra
-  systemd:
-    state: stopped
-    name: cassandra
-  when: cassandra_available.stat.exists == true and cassandra_recriate_cluster
+- name: inithialize cluser
+  block:
+    - name: stop cassandra
+      systemd:
+        state: stopped
+        name: cassandra
 
-- name: remove base
-  file:
-    path: /var/lib/cassandra/data/system/
-    state: absent
-    force: yes
-  when: cassandra_available.stat.exists == true and cassandra_recriate_cluster
+    - name: remove base
+      file:
+        path: /var/lib/cassandra/data/system/
+        state: absent
+        force: yes
+  when: cassandra_recriate_cluster or cassandra_available.stat.exists == false
 
 - name: Configure global settings.
   lineinfile:
