@@ -26,42 +26,36 @@
     - name: Download softether source
       get_url:
 #        url: http://www.softether-download.com/files/softether/v4.27-9668-beta-2018.05.29-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
-        url: url: https://ams3.digitaloceanspaces.com/gettwifi/source/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
-        dest: /tmp/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
+        url: "{{ softether_source_url }}"
+        dest: /tmp/softether.tar.gz
         mode: 0740
 
     - name: Extract softether
       unarchive:
-        src: /tmp/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
+        src: /tmp/softether.tar.gz
         dest: "/tmp/{{ softether_srcdir }}"
         remote_src: yes
         extra_opts: --strip-components=1
 
     - name: Build softether from tarball
-      command: "{{ item }} chdir=/tmp/{{ softether_srcdir }}"
+      command: "{{ item }}"
+      args:
+        chdir: "/tmp/{{ softether_srcdir }}"
       with_items:
        - make i_read_and_agree_the_license_agreement
       notify: restart vpnserver
 
     - name: move softether to folder
       command: mv /tmp/{{ softether_srcdir }} /usr/local
-#      args:
-#        chdir: "{{ softether_srcdir }}"
   when: softether_available.stat.exists == false
 
-- name: Copy softether config
+- name: Copy systemd softether config
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: 0775
   with_items: "{{ softether_template }}"
   notify: restart vpnserver
-
-- name: enable vpnserver
-  systemd:
-    enabled: yes
-    name: vpnserver
-    daemon_reload: yes
 
 - name: start vpnserver
   systemd:

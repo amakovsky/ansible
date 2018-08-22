@@ -1,39 +1,33 @@
 ---
+redis_bindir: /usr/local/bin
 redis_srcdir: /tmp/redis
+redis_user: redis
+redis_datadir: /var/lib/redis
+redis_config_folder: /etc/redis
+redis_log_folders: /var/log/redis
+redis_source_url: https://ams3.digitaloceanspaces.com/gettwifi/source/redis-4.0.11.tar.gz
+
+redis_configs:
+  - redis.conf
+  - sentinel.conf
 
 redis_global_config_options:
   - option: supervised
     value: 'systemd'
   - option: dir
-    value: '/var/lib/redis'
+    value: '{{ redis_datadir }}'
   - option: logfile
-    value: '/var/log/redis/redis-server.log'
+    value: '{{ redis_log_folders }}/redis-server.log'
   - option: protected-mode
     value: 'no'
-#  - option: bind
-#    value: '127.0.0.1 {{ inventory_hostname }}'
   - option: bind
     value: '{{ inventory_hostname }} 127.0.0.1'
-#  - option: shared_preload_libraries
-#    value: 'pg_partman_bgw'
-#  - option: pg_partman_bgw.interval
-#    value: '3600'
-#  - option: pg_partman_bgw.dbname
-#    value: 'hotspot'
-#  - option: effective_io_concurrency
-#    value: '6'
-#  - option: seq_page_cost
-#    value: '1.0'
-#  - option: random_page_cost
-#    value: '2.0'
 
 redis_slave_config_options:
   - option: slaveof
     value: "{{ groups['redis'][0] }} 6379"
 
 sentinel_global_config_options:
-#  - option: bind
-#    value: '127.0.0.1 {{ inventory_hostname }}'
   - option: bind
     value: '{{ inventory_hostname }} 127.0.0.1'
   - option: supervised
@@ -41,7 +35,7 @@ sentinel_global_config_options:
   - option: daemonize
     value: 'no'
   - option: logfile
-    value: '/var/log/redis/redis-sentinel.log'
+    value: '{{ redis_log_folders }}/redis-sentinel.log'
   - option: protected-mode
     value: 'no'
   - option: sentinel monitor
@@ -54,8 +48,3 @@ sentinel_global_config_options:
 #    value: "11883c15aff687915cfea6d8e00a16ffd1b23f7e"
 
 recreate_cluster: false
-
-#ufw_rules:
-#  - { rule: 'allow', port: 22 }
-#  - { rule: 'allow', port: 6379, proto: 'tcp', from_ip: "{{ groups['redis'] }}" }
-#  - { rule: 'allow', port: 26379, proto: 'tcp', from_ip: "{{ groups['redis'] }}" }

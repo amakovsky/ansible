@@ -5,9 +5,9 @@ After=syslog.target network.target remote-fs.target nss-lookup.target
 [Service]
 Type=forking
 PIDFile=/run/nginx.pid
-ExecStartPre=/usr/sbin/nginx -t
-ExecStart=/usr/sbin/nginx
-ExecReload=/usr/sbin/nginx -s reload
+ExecStartPre={{ nginx_bindir }}/nginx -t
+ExecStart={{ nginx_bindir }}/nginx
+ExecReload={{ nginx_bindir }}/nginx -s reload
 ExecStop=/bin/kill -s QUIT $MAINPID
 PrivateTmp=true
 Restart=always

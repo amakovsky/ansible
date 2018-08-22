@@ -3,25 +3,26 @@ Description=Redis In-Memory Data Store
 After=network.target
 
 [Service]
-User=redis
-Group=redis
-ExecStart=/usr/local/bin/redis-server /etc/redis/redis.conf
-ExecStop=/usr/local/bin/redis-cli shutdown
+User={{ redis_user }}
+Group={{ redis_user }}
+ExecStart={{ redis_bindir }}/redis-server {{ redis_config_folder }}/redis.conf
+ExecStop={{ redis_bindir }}/redis-cli shutdown
 Restart=always
+RestartSecs=10
 
 PrivateTmp=yes
 PrivateDevices=yes
 ProtectHome=yes
 ReadOnlyDirectories=/
-ReadWriteDirectories=-/var/lib/redis
-ReadWriteDirectories=-/var/log/redis
+ReadWriteDirectories=-{{ redis_datadir }}
+ReadWriteDirectories=-{{ redis_log_folders }}
 ReadWriteDirectories=-/var/run/redis
 CapabilityBoundingSet=~CAP_SYS_PTRACE
 
 # redis-server writes its own config file when in cluster mode so we allow
 # writing there (NB. ProtectSystem=true over ProtectSystem=full)
 ProtectSystem=true
-ReadWriteDirectories=-/etc/redis
+ReadWriteDirectories=-{{ redis_config_folder }}
 
 [Install]
 WantedBy=multi-user.target

@@ -6,4 +6,4 @@
 
 - name: create local user
   include_tasks: user.yml
-  when: create_user
+  when: local_user is defined

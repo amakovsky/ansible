@@ -87,15 +87,15 @@
     dest: '/usr/share/zabbix/conf/zabbix.conf.php'
     force: yes
 
-- name: starte zabbix-server
-  systemd:
-    state: started
-    name: zabbix-server
-
-- name: enable zabbix-server
-  systemd:
-    enabled: yes
-    name: zabbix-server.service
+#- name: starte zabbix-server
+#  systemd:
+#    state: started
+#    name: zabbix-server
+#
+#- name: enable zabbix-server
+#  systemd:
+#    enabled: yes
+#    name: zabbix-server.service
 
 - name: enable zabbix-client
   systemd:
@@ -121,12 +121,3 @@
     state: link
     force: yes
   notify: restart apache2
-
-#- name: Configure open ports for zabbix-server
-#  ufw:
-#    rule: "{{ item.rule }}"
-#    port: "{{ item.port }}"
-#    proto: "{{ item.proto }}"
-#  with_items:
-#    - { rule: 'allow', port: 10051, proto: 'tcp' }
-#    - { rule: 'allow', port: 80, proto: 'tcp' }
