@@ -6,7 +6,8 @@ After=network.target
 User={{ redis_user }}
 Group={{ redis_user }}
 ExecStart={{ redis_bindir }}/redis-sentinel {{ redis_config_folder }}/sentinel.conf --daemonize no
-
+Restart=always
+RestartSecs=10
 
 [Install]
 WantedBy=multi-user.target

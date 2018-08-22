@@ -1,0 +1,41 @@
+---
+- name: Install monit
+  apt:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - monit
+
+- name: Configure global settings.
+  lineinfile:
+    dest: "/etc/monit/monitrc"
+    regexp: "^#?{{ item.option }}.+$"
+    line: "{{ item.option }} {{ item.value }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ monit_global_config_options }}"
+  notify: restart monit
+
+- name: Copy monit template
+  template:
+    src: "{{ item.1.src }}"
+    dest: "{{ monit_config_dir }}/{{ item.0.dir }}/{{ item.1.dest }}"
+  with_subelements:
+    - "{{ monit_template | selectattr('template', 'defined') | list }}"
+    - template
+  notify: restart monit
+
+- name: link monit configs
+  file:
+    src: "{{ monit_config_dir }}/{{ item.0.dir }}/{{ item.1.dest }}"
+    dest: "{{ monit_config_dir }}/{{ item.0.link }}/{{ item.1.dest }}"
+    state: link
+    force: yes
+  with_subelements:
+    - "{{ monit_template | selectattr('template', 'defined') | list }}"
+    - template
+  when: item.0.link is defined
+  notify: restart monit
+
+- name: validate monit conf
+  command: monit -t
+  changed_when: false

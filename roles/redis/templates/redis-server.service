@@ -8,6 +8,7 @@ Group={{ redis_user }}
 ExecStart={{ redis_bindir }}/redis-server {{ redis_config_folder }}/redis.conf
 ExecStop={{ redis_bindir }}/redis-cli shutdown
 Restart=always
+RestartSecs=10
 
 PrivateTmp=yes
 PrivateDevices=yes

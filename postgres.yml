@@ -10,3 +10,4 @@
     - common
     - ufw
     - postgresql
+    - monit

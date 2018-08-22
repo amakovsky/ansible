@@ -84,3 +84,10 @@ postgresql_unix_socket_directories:
   - /var/run/postgresql
 
 postgresql_pg_partman: true
+
+monit_template:
+  - dir: conf-available
+    link: 'conf-enabled'
+    template:
+      - src: 'monit-postgresql.conf'
+        dest: 'postgresql.conf'

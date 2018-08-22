@@ -1,0 +1,17 @@
+---
+monit_config_dir: /etc/monit
+monit_global_config_options:
+  - option: 'set httpd'
+    value: 'port 2812 and'
+  - option: 'use address'
+    value: 'localhost'
+  - option: 'allow'
+    value: 'localhost'
+
+monit_template: []
+#monit_template:
+#  - dir: conf-available
+#    link: 'conf-enabled'
+#    template:
+#      - src: 'monit-postgresql.conf'
+#        dest: 'postgresql.conf'
