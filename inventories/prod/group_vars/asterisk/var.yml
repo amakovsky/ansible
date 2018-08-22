@@ -1,5 +1,4 @@
 ---
-
 ufw_rules:
   - rule: 'allow'
     port: 22

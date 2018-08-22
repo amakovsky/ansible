@@ -1,70 +1,99 @@
 ---
-#- name: Install common
-#  apt: name={{ item }} update_cache=yes state=latest
-#  with_items:
-#    - redis-server
+- name: check exist redis
+  stat:
+    path: "{{ redis_bindir }}/redis-server"
+  changed_when: False
+  failed_when: False
+  register: redis_available
 
-- name: Install common
-  apt: name={{ item }} update_cache=yes state=latest
+- name: Install required packet for build redis
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: latest
   with_items:
     - build-essential
     - tcl
 
 - name: create  user redis
   user:
-    name: redis
+    name: "{{ redis_user }}"
     system: yes
     createhome: no
 
-- name: check exist node
-  stat: path=/usr/local/bin/redis-server
-  changed_when: False
-  failed_when: False
-  register: redis_available
-
-- name: stop redis sentinel
-  systemd:
-    state: stopped
-    name: redis-sentinel
-  when: redis_available.stat.exists == true and recreate_cluster
-
-- name: stop redis server
-  systemd:
-    state: stopped
-    name: redis-server
-  when: redis_available.stat.exists == true and recreate_cluster
-
-- name: Clear out data directory
+- name: create redis folders
   file:
-    state: absent
-    path: "/var/lib/redis/"
-  when: redis_available.stat.exists == true and recreate_cluster
-
-- name: create redis src folder
-  file:
-    path: "{{ redis_srcdir }}"
+    path: "{{ item }}"
     state: directory
+    owner: "{{ redis_user }}"
+    group: "{{ redis_user }}"
     mode: 0755
+  with_items:
+    - "{{ redis_config_folder }}"
+    - "{{ redis_log_folders }}"
+    - "{{ redis_datadir }}"
 
-- name: Download source
-  get_url:
-    url: https://ams3.digitaloceanspaces.com/gettwifi/source/redis-4.0.11.tar.gz
-    dest: /tmp/redis-stable.tar.gz
-    mode: 0755
-  when: redis_available.stat.exists == false
+- name: recriate redis cluster
+  block:
+    - name: stop redis sentinel
+      systemd:
+        state: stopped
+        name: redis-sentinel
 
-- unarchive:
-    src: redis-stable.tar.gz
-    dest: "{{ redis_srcdir }}"
-    remote_src: yes
-    extra_opts: --strip-components=1
-  when: redis_available.stat.exists == false
+    - name: stop redis server
+      systemd:
+        state: stopped
+        name: redis-server
 
-- name: build
-  shell: make && make test && make install
-  args:
-    chdir: "{{ redis_srcdir }}"
-#    creates: /etc/zabbix/zabbix_agentd.psk
+    - name: Clear out data directory
+      file:
+        state: absent
+        path: "{{ redis_datadir }}/"
+
+    - name: create redis data folder
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ redis_user }}"
+        group: "{{ redis_user }}"
+        mode: 0755
+      with_items:
+        - "{{ redis_datadir }}"
+  when: redis_available.stat.exists == true and recreate_cluster
+
+- name: compile redis
+  block:
+    - name: create redis src folder
+      file:
+        path: "{{ redis_srcdir }}"
+        state: directory
+        mode: 0755
+
+    - name: Download source
+      get_url:
+        url: "{{ redis_source_url }}"
+        dest: /tmp/redis-stable.tar.gz
+        mode: 0755
+
+    - unarchive:
+        src: /tmp/redis-stable.tar.gz
+        dest: "{{ redis_srcdir }}"
+        remote_src: yes
+        extra_opts: --strip-components=1
+
+    - name: build
+      shell: "{{ item }}"
+      args:
+        chdir: "{{ redis_srcdir }}"
+      with_items:
+        - make
+        - make test
+        - make install
+
+    - name: copy configs
+      shell: cp {{ redis_srcdir }}/{{ item }} {{ redis_config_folder }}/{{ item }} #&& chown redis:redis {{ redis_config_folder }}/*
+      with_items: "{{ redis_configs }}"
+      become_user: '{{ redis_user }}'
   when: redis_available.stat.exists == false
 
 #- name: install redis
@@ -72,29 +101,6 @@
 #  args:
 #    chdir: /tmp/redis-stable
 #  when: redis_available.stat.exists == false
-
-- name: create redis config folder
-  file:
-    path: /etc/redis
-    state: directory
-    mode: 0755
-
-- name: create redis log folder
-  file:
-    path: /var/log/redis
-    state: directory
-    owner: redis
-    group: redis
-    mode: 0755
-
-- name: copy config
-  shell: cp /tmp/redis-stable/{{ item }}.conf /etc/redis/{{ item }}.conf && chown redis:redis /etc/redis/*
-#  args:
-#    creates: /etc/redis/redis.conf
-  with_items:
-    - redis
-    - sentinel
-  when: redis_available.stat.exists == false
 
 - name: redis configure global settings.
   lineinfile:
@@ -126,26 +132,6 @@
   notify: restart redis-server
   when: inventory_hostname != groups['redis'][0] and (redis_available.stat.exists == false or recreate_cluster)
 
-#- name: ensure supervised systemd
-#  lineinfile:
-#    path: /etc/redis/redis.conf
-#    line: '^supervised no'
-#    state: absent
-#
-#- name: ensure supervised systemd
-#  lineinfile:
-#    path: /etc/redis/redis.conf
-#    insertafter: 'daemonize no'
-#    line: 'supervised systemd'
-#    state: present
-##  when: redis_available.stat.exists == false
-#
-#- name: ensure /etc/redis/redis.conf
-#  lineinfile:
-#    path: /etc/redis/redis.conf
-#    regexp: '^(.*)dir'
-#    line: 'dir /var/lib/redis'
-
 - name: Copy systemd configuration
   template:
     src: "{{ item }}.service"
@@ -153,59 +139,3 @@
   with_items:
     - redis-server
     - redis-sentinel
-
-#- name: create redis config folder
-#  file:
-#    path: /var/log/redis
-#    state: directory
-#    owner: redis
-#    group: redis
-#    mode: 0775
-
-- name: create dir for redis cash
-  file:
-    path: /var/lib/redis
-    state: directory
-    owner: redis
-    group: redis
-    mode: 0770
-
-#- name: start redis
-#  systemd:
-#    state: started
-#    name: redis-server
-
-- name: enable redis
-  systemd:
-    enabled: yes
-    name: redis-server
-
-#- name: start redis sentinel
-#  systemd:
-#    state: started
-#    name: redis-sentinel
-
-- name: enable redis sentinel
-  systemd:
-    enabled: yes
-    name: redis-sentinel
-
-#- name: open port for redis
-#  ufw:
-#    rule: allow
-#    port: 6379
-#    proto: tcp
-#    src: "{{ item }}/32"
-#  with_items:
-##    - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
-#    - "{{ groups['redis'] }}"
-#
-#- name: open port for sentinel
-#  ufw:
-#    rule: allow
-#    port: 26379
-#    proto: tcp
-#    src: "{{ item }}/32"
-#  with_items:
-#    - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
-#    - "{{ groups['redis'] }}"

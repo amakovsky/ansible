@@ -1,11 +1,11 @@
 ---
-- name: postgresql server
+- name: redis server
   hosts: redis
   become: yes
   become_method: sudo
   become_user: root
 
   roles:
-#    - common
+    - common
     - ufw
-#    - redis
+    - redis
