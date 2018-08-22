@@ -1,0 +1,44 @@
+---
+- name: add chrome key
+  apt_key:
+    url: "https://dl-ssl.google.com/linux/linux_signing_key.pub"
+    state: present
+
+- name: add chrome repository
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+    - 'deb http://dl.google.com/linux/chrome/deb/ stable main'
+    - 'ppa:atareao/telegram'
+
+- name: Install common programm for workstation
+  apt: name={{ item }} update_cache=yes state=latest
+  with_items:    
+    - git-core
+    - mysql-client
+    - p7zip-rar
+    - p7zip-full
+    - compizconfig-settings-manager
+    - compiz-plugins-extra
+    - google-chrome-stable
+    - telegram
+    - software-properties-common
+
+- name: check exist skype
+  stat: path=/usr/bin/skypeforlinux
+  register: skype_available
+
+- name: download skype
+  get_url: 
+    url: https://repo.skype.com/latest/skypeforlinux-64.deb
+    dest: /tmp/skype.deb
+  when: skype_available.stat.exists == false
+
+- name: install skype
+  shell: dpkg --add-architecture i386; dpkg -i /tmp/skype.deb; apt-get -y -f install
+  ignore_errors: True
+  args:
+    creates: /usr/bin/skypeforlinux
+
+- import_tasks: 'phpstorm.yml'
