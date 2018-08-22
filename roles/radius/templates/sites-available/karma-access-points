@@ -2,12 +2,12 @@ server karma_access_points {
   listen {
     type = auth
     ipaddr = {{ inventory_hostname }}
-    port = 17781
+    port = {{ karma_access_points_auth_port }}
   }
 
   client vpn_server {
     ipaddr = {{ inventory_hostname }}/32
-    secret = Jt0fOVD79dG0
+    secret = {{ radius_secret }}
     nastype = other
   }
   

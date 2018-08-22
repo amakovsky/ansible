@@ -1,38 +1,38 @@
 ---
-radius_template:
-  - src: 'freeradius/mods-available/sql'
-    dest: '/etc/freeradius/mods-available/sql'
-  - src: 'freeradius/mods-config/schema.sql'
-    dest: '/etc/freeradius/mods-config/schema.sql'
-  - src: 'freeradius/sites-available/karma-access-points'
-    dest: '/etc/freeradius/sites-available/karma-access-points'
-  - src: 'freeradius/sites-available/karma-users-chilli'
-    dest: '/etc/freeradius/sites-available/karma-users-chilli'
-  - src: 'freeradius/sites-available/karma-users-cisco'
-    dest: '/etc/freeradius/sites-available/karma-users-cisco'
-  - src: 'freeradius/sites-available/karma-users-mikrotik'
-    dest: '/etc/freeradius/sites-available/karma-users-mikrotik'
+radius_config_dir: '/etc/freeradius'
+radius_template: []
+#radius_template:
+#  - dir: mods-available
+#    link: 'mods-enabled'
+#    template:
+#      - src: 'sql'
+#        dest: 'sql'
+#  - dir: mods-config
+#    template:
+#      - src: 'schema.sql'
+#        dest: 'schema.sql'
+#  - dir: sites-available
+#    link: 'sites-enabled'
+#    template:
+#      - src: 'karma-access-points'
+#        dest: 'karma-access-points'
+#      - src: 'karma-users-chilli'
+#        dest: 'karma-users-chilli'
+#      - src: 'karma-users-cisco'
+#        dest: 'karma-users-cisco'
+#      - src: 'karma-users-mikrotik'
+#        dest: 'karma-users-mikrotik'
 
-radius_file:
-  - src: 'freeradius/mods-config/queries.conf'
-    dest: '/etc/freeradius/mods-config/queries.conf'
+radius_file: []
+#radius_file:
+#  - src: 'freeradius/mods-config/queries.conf'
+#    dest: '/etc/freeradius/mods-config/queries.conf'
 
-link_config:
-  - src: '/etc/freeradius/sites-available/karma-access-points'
-    dest: '/etc/freeradius/sites-enabled/karma-access-points'
-  - src: '/etc/freeradius/sites-available/karma-users-chilli'
-    dest: '/etc/freeradius/sites-enabled/karma-users-chilli'
-  - src: '/etc/freeradius/sites-available/karma-users-cisco'
-    dest: '/etc/freeradius/sites-enabled/karma-users-cisco'
-  - src: '/etc/freeradius/sites-available/karma-users-mikrotik'
-    dest: '/etc/freeradius/sites-enabled/karma-users-mikrotik'
-  - src: '/etc/freeradius/mods-available/sql'
-    dest: '/etc/freeradius/mods-enabled/sql'
-
-unlink_config:
-  - '/etc/freeradius/sites-enabled/default'
-  - '/etc/freeradius/sites-enabled/inner-tunnel'
-  - '/etc/freeradius/mods-enabled/eap'
+unlink_config: []
+#unlink_config:
+#  - '/etc/freeradius/sites-enabled/default'
+#  - '/etc/freeradius/sites-enabled/inner-tunnel'
+#  - '/etc/freeradius/mods-enabled/eap'
 
 freeradius_config_options:
   - option: 'auth'
@@ -50,8 +50,6 @@ freeradius_include_options:
 
 postgres_server: "{{ groups['postgresql'][0] }}"
 
-private_interface: eth1
-interface_fact_var: ansible_{{ private_interface }}
 radius_secret: "nungeiThai6ieze"
 
 karma_users_chilli_auth_port: 17751
@@ -60,49 +58,4 @@ karma_users_cisco_auth_port: 17761
 karma_users_cisco_acct_port: 17762
 karma_users_mikrotik_auth_port: 17771
 karma_users_mikrotik_acct_port: 17772
-
-#public_port:
-#  - "{{ karma_users_chilli_auth_port }}"
-#  - "{{ karma_users_chilli_acct_port }}"
-#  - "{{ karma_users_cisco_auth_port }}"
-#  - "{{ karma_users_cisco_acct_port }}"
-#  - "{{ karma_users_mikrotik_auth_port }}"
-#  - "{{ karma_users_mikrotik_acct_port }}"
-
-ufw_rules:
-  - rule: 'allow'
-    port: 22
-    proto: 'tcp'
-    from_ip:
-      - 0.0.0.0/0
-    to_ip: "{{ inventory_hostname }}"
-  - rule: 'allow'
-    port: "{{ karma_users_chilli_auth_port }}"
-    proto: 'udp'
-    from_ip:
-      - 0.0.0.0/0
-  - rule: 'allow'
-    port: "{{ karma_users_chilli_acct_port }}"
-    proto: 'udp'
-    from_ip:
-      - 0.0.0.0/0
-  - rule: 'allow'
-    port: "{{ karma_users_cisco_auth_port }}"
-    proto: 'udp'
-    from_ip:
-      - 0.0.0.0/0
-  - rule: 'allow'
-    port: "{{ karma_users_cisco_acct_port }}"
-    proto: 'udp'
-    from_ip:
-      - 0.0.0.0/0
-  - rule: 'allow'
-    port: "{{ karma_users_mikrotik_auth_port }}"
-    proto: 'udp'
-    from_ip:
-      - 0.0.0.0/0
-  - rule: 'allow'
-    port: "{{ karma_users_mikrotik_acct_port }}"
-    proto: 'udp'
-    from_ip:
-      - 0.0.0.0/0
+karma_access_points_auth_port: 17781
