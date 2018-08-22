@@ -1,0 +1,9 @@
+---
+ansible_user: root
+private_network: 10.135.0.0/16
+private_DNS: 10.135.62.157
+
+enable_local_dns: false
+
+allow_ip:
+  - 0.0.0.0/0

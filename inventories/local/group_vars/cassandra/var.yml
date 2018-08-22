@@ -1,0 +1,8 @@
+---
+ansible_user: vagrant
+enable_local_dns: false
+ufw_rules:
+  - policy: 'allow'
+    direction: incoming
+
+cassandra_cluster_name: test
