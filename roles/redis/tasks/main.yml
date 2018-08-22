@@ -122,7 +122,7 @@
   when: redis_available.stat.exists == false or recreate_cluster
   notify: restart redis-sentinel
 
-- name: Configure settings for slave.
+- name: redis configure settings for slave.
   lineinfile:
     dest: "/etc/redis/redis.conf"
     regexp: "^#?{{ item.option }}.+$"

@@ -1,6 +1,9 @@
 ---
 - name: Install ufw
-  apt: name={{ item }} update_cache=yes state=latest
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: latest
   with_items:
     - ufw
 
