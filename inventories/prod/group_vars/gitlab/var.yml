@@ -1,6 +1,7 @@
 ---
 ansible_user: root
 gitlab_name: gitlab.gettwifi.com
+gitlab_registry_port: 5001
 ufw_rules:
   - rule: 'allow'
     port: 22
@@ -27,8 +28,13 @@ ufw_rules:
       - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
     to_ip: "{{ inventory_hostname }}"
   - rule: 'allow'
-    port: 10050
+    port: "{{ gitlab_registry_port }}"
     proto: 'tcp'
     from_ip:
-      - "{{ [groups['zabbix'] }}"
+      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+    from_ip: "{{ groups['zabbix'] }}"
     to_ip: "{{ inventory_hostname }}"

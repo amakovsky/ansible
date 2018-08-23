@@ -58,4 +58,4 @@ if mysql == 1:
 zapi.do_request('host.update', {'hostid': zabbix_hostid, 'tls_connect': 2, 'tls_accept': 2, 'tls_psk_identity': 'PSK {{ ansible_nodename }}', 'tls_psk': PSK, 'templates': templ })
 
 #Удаление скриптов в целях безопасности
-subprocess.call("/usr/lib/zabbix/externalscripts/clear.sh")
+subprocess.call("{{ zabbix_script_directory }}/clear.sh")

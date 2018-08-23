@@ -19,10 +19,14 @@ web:
      }
      gitlab_rails['backup_upload_remote_directory'] = '{{ space_name }}'
      gitlab_rails['backup_keep_time'] = 1209600
+     registry_external_url 'https://{{ gitlab_name }}:{{ gitlab_registry_port }}'
+     registry_nginx['ssl_certificate'] = "/var/ssl/{{ gitlab_name }}.crt"
+     registry_nginx['ssl_certificate_key'] = "/var/ssl/{{ gitlab_name }}.key"
   ports:
     - '80:80'
     - '443:443'
     - '22:22'
+    - "{{ gitlab_registry_port }}:{{ gitlab_registry_port }}"
   volumes:
     - '/etc/localtime:/etc/localtime'
     - '/srv/gitlab/config:/etc/gitlab'

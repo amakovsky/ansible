@@ -10,4 +10,4 @@ UserParameter=uHDD.A[*],sudo smartctl -A $1
 UserParameter=uHDD.i[*],sudo smartctl -i $1
 UserParameter=uHDD.health[*],sudo smartctl -H $1 || true
 ### Discovery
-UserParameter=uHDD.discovery,sudo {{ directory }}/smartctl-disks-discovery.pl
+UserParameter=uHDD.discovery,sudo {{ zabbix_script_directory }}/smartctl-disks-discovery.pl
