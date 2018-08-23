@@ -1,5 +1,5 @@
 ---
-- name: add repository for cassandra
+- name: add repository for docker
   apt_repository:
     repo: "{{ docker_repository }}"
     state: present
@@ -27,3 +27,6 @@
   with_items:
     - docker
     - docker-compose
+
+- include_tasks: "registrator.yml"
+  when: docker_registrator

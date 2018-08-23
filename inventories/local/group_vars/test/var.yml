@@ -1,6 +1,9 @@
 ---
 ansible_user: vagrant
 enable_local_dns: false
+consul_role: client
 ufw_rules:
   - policy: 'allow'
     direction: incoming
+
+docker_registrator: true

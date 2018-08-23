@@ -1,0 +1,10 @@
+version: '3'
+services:
+  registrator:
+    image: 'gliderlabs/registrator:latest'
+    restart: always
+    network_mode: "host"
+    container_name: registrator
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    command: consul://localhost:8500

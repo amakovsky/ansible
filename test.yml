@@ -7,4 +7,6 @@
 
   roles:
 #    - DO_space
-    - zabbix
+    - consul
+    - docker
+    - common

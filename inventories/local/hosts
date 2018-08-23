@@ -40,3 +40,6 @@
 
 [test]
 10.100.198.5
+
+[consul:children]
+redis

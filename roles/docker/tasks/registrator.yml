@@ -1,0 +1,13 @@
+---
+- name: Copy site configuration
+  template:
+    src: register.yml
+    dest: ~/docker-register.yml
+
+- name: build and start docker containers
+  docker_service:
+    project_src: /root
+    files: docker-register.yml
+    build: yes
+    restarted: true
+  changed_when: False
