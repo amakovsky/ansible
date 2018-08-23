@@ -17,9 +17,7 @@ netstat: 1
 smartctl: 0
 mysql: 0
 mysql_slave: 0
-zabbix_script_directory:
-  - '/usr/lib/zabbix/externalscripts'
-zabbix_conf_directory:
-  - '/etc/zabbix/zabbix_agentd.d'
+zabbix_script_directory: '/usr/lib/zabbix/externalscripts'
+zabbix_conf_directory: '/etc/zabbix/zabbix_agentd.d'
 another_port: false
 zabbix_port: 10050

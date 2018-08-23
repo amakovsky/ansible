@@ -6,4 +6,5 @@
   become_user: root
 
   roles:
-    - DO_space
+#    - DO_space
+    - zabbix

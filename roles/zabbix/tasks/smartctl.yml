@@ -2,7 +2,7 @@
 - name: copy zabbix user parameter for netstat
   template:
     src: zabbix_smartctl.conf.j2
-    dest: "{{ zabbix_conf_directory }}/abbix_smartctl.conf"
+    dest: "{{ zabbix_conf_directory }}/zabbix_smartctl.conf"
   notify: restart zabbix
 
 - name: copy netstat script for zabbix
