@@ -1,6 +1,8 @@
 ---
 - name: copy zabbix user parameter for mysql
-  template: src=userparameter_mysql.conf.j2 dest=/etc/zabbix/zabbix_agentd.d/userparameter_mysql.conf
+  template:
+    src: userparameter_mysql.conf.j2
+    dest: "{{ zabbix_conf_directory }}/userparameter_mysql.conf"
   notify: restart zabbix
 
 - mysql_user:

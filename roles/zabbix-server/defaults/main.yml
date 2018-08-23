@@ -1,8 +1,10 @@
 ---
-db_name: zabbix
-db_user: zabbix
-db_pass: zabbix
-db_host: localhost
-domain: gw.local
-host_name: zabbix.{{ domain }}
+zabbix_db_name: zabbix
+zabbix_db_user: zabbix
+zabbix_db_pass: zabbix
+zabbix_db_host: localhost
+zabbix_domain: gw.local
+zabbix_host_name: zabbix.{{ domain }}
 telegram_bot: "629640079:AAFS1CtMST9wDJ9XUkk0y3thN3aA1_p8B3o"
+zabbix_bindir: /usr/sbin/zabbix_server
+zabbix_apt_url: https://repo.zabbix.com/zabbix/3.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.4-1+{{ ansible_distribution_release }}_all.deb
