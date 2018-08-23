@@ -1,6 +1,6 @@
 ---
 gitlab_name: gitlab.gettwifi.com
-
+gitlab_registry_port: 5001
 spaces_access_key: ""
 spaces_secret_key: ""
 spaces_endpoint: ""

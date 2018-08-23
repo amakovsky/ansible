@@ -1,10 +1,14 @@
 ---
 - name: copy zabbix user parameter for slave status
-  template: src=mysql_slave.conf dest=/etc/zabbix/zabbix_agentd.d/mysql_slave.conf
+  template:
+    src: mysql_slave.conf
+    dest: /etc/zabbix/zabbix_agentd.d/mysql_slave.conf
   notify: restart zabbix
 
 - name: copy mysql slave script for zabbix
-  copy: src=mysql-slave.sh dest={{ directory ~ '/mysql-slave.sh' }}
+  copy:
+    src: mysql-slave.sh
+    dest: {{ directory ~ '/mysql-slave.sh' }}
 
 - name: chown script tcpstats.sh
   file:

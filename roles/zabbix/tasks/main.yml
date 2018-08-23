@@ -1,21 +1,26 @@
 ---
 - name: check exist zabbix-agent
-  stat: path=/usr/sbin/zabbix_agentd
+  stat:
+    path: "{{ zabbix_bindir }}"
   register: zabbix_available
 
 - name: Download zabbix apt source
   get_url:
-    url: http://repo.zabbix.com/zabbix/3.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.2-1+{{ ansible_distribution_release }}_all.deb
-    dest: /tmp/zabbix-release_3.2-1+{{ ansible_distribution_release }}_all.deb
+    url: "{{ zabbix_apt_url }}"
+    dest: /tmp/zabbix_all.deb
     mode: 0740
-  when: ansible_distribution_release != "bionic"
+  when: zabbix_available.stat.exists == false
 
 - name: Install apt repo
-  apt: deb="/tmp/zabbix-release_3.2-1+{{ ansible_distribution_release }}_all.deb"
-  when: ansible_distribution_release != "bionic"
+  apt:
+    deb: "/tmp/zabbix_all.deb"
+  when: zabbix_available.stat.exists == false
 
 - name: Install common
-  apt: name={{ item }} update_cache=yes state=present
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
   with_items:
     - python-pip
     - libcurl3
@@ -43,80 +48,46 @@
     mysql: 1
   when: mysql_available.stat.exists == true
 
-#- name: copy zabbix_agent
-#  copy: src=zabbix-agent.deb dest=/tmp/zabbix-agent.deb
-#  when: zabbix_available.stat.exists == false
-#
-#- name: Install zabbix package
-#  apt:
-#    deb: /tmp/zabbix-agent.deb
-#  when: zabbix_available.stat.exists == false
-
-- name: create folder for project zabbix script
+- name: create folder for project zabbix
   file:
-    path: '{{ directory }}'
+    path: '{{ item }}'
     state: directory
-    owner: root
-    group: root
-#    mode: 0755
-
-- name: create folder for project zabbix script
-  file:
-    path: /etc/zabbix/zabbix_agentd.d
-    state: directory
-    owner: root
+    owner: zabbix
+    group: zabbix
+  with_items:
+    - "{{ zabbix_script_directory }}"
+    - "{{ zabbix_conf_directory }}"
 
 - name: copy zabbix_agent auto register script
-  template: src=autoreg-enable-tls-psk_comm.py.j2 dest=/usr/lib/zabbix/externalscripts/autoreg-enable-tls-psk_comm.py
+  template:
+    src: autoreg-enable-tls-psk_comm.py.j2
+    dest: '{{ zabbix_script_directory }}/autoreg-enable-tls-psk_comm.py'
+    owner: zabbix
+    group: zabbix
+    mode: 0755
   when: zabbix_available.stat.exists == false
 
 - name: copy clear scripts
-  copy: src=clear.sh dest=/usr/lib/zabbix/externalscripts/
+  copy:
+    src: clear.sh
+    dest: "{{ zabbix_script_directory }}/clear.sh"
+    owner: root
+    group: zabbix
+    mode: 0770
   when: zabbix_available.stat.exists == false
 
 - name: add scripts to sudo
   lineinfile:
     state: present
     path: /etc/sudoers
-    line: 'zabbix ALL=(ALL) NOPASSWD:/usr/lib/zabbix/externalscripts/clear.sh'
+    line: 'zabbix ALL=(ALL) NOPASSWD:{{ zabbix_script_directory }}/clear.sh'
   when: zabbix_available.stat.exists == false
-
-#- name: add iptables rule
-#  lineinfile:
-#    path: /etc/iptables/rules.v4
-#    insertafter: '#tcp ports'
-#    line: '-A INPUT -p tcp -m state --state NEW -m tcp --dport 10050 -j ACCEPT'
-#    state: present
-#  notify:
-#    - restart iptables
-#    - restart fail2ban
-
-#- name: Configure open ports with ufw.
-#  ufw:
-#    rule: "{{ item.rule }}"
-#    port: "{{ item.port }}"
-#    proto: "{{ item.proto }}"
-#  with_items:
-#    - { rule: 'allow', port: "{{ zabbix_port }}", proto: 'tcp' }
-
-- name: chown script
-  file:
-    path: /usr/lib/zabbix/externalscripts/clear.sh
-    state: file
-    owner: root
-    group: zabbix
-    mode: 0770
-  when: zabbix_available.stat.exists == false
-
-#- name: check exist psk
-#  stat: path=/etc/zabbix/zabbix_agentd.psk
-#  register: psk_available
 
 - name: gen psk
   shell: openssl rand -hex 32 > /etc/zabbix/zabbix_agentd.psk
   args:
     creates: /etc/zabbix/zabbix_agentd.psk
-#  when: psk_available.stat.exists == false
+
 - name: edit config file
   lineinfile:
     backup: yes
@@ -137,7 +108,9 @@
   when: zabbix_available.stat.exists == false
 
 - name: copy zabbix_agent auto register script
-  template: src=userparameter.conf.j2 dest=/etc/zabbix/zabbix_agentd.d/userparameter.conf
+  template:
+    src: userparameter.conf.j2
+    dest: "{{ zabbix_conf_directory }}/userparameter.conf"
   when: zabbix_available.stat.exists == false
   
 - name: get contents of PSK file
@@ -147,29 +120,16 @@
   
 - name: insert PSK into autoconfig
   lineinfile: 
-    path: /usr/lib/zabbix/externalscripts/autoreg-enable-tls-psk_comm.py
+    path: "{{ zabbix_script_directory }}/autoreg-enable-tls-psk_comm.py"
     regexp: '^(.*)PSK=""' 
     line: 'PSK="{{filename.stdout}}"'
-  when: zabbix_available.stat.exists == false
-
-- name: chown script autoreg
-  file:
-    path: /usr/lib/zabbix/externalscripts/autoreg-enable-tls-psk_comm.py
-    state: file
-    owner: zabbix
-    group: zabbix
-    mode: 0755
   when: zabbix_available.stat.exists == false
 
 - name: enable zabbix
   systemd:
     enabled: yes
-    name: zabbix-agent.service
-
-- name: starte zabbix
-  systemd:
     state: started
-    name: zabbix-agent
+    name: zabbix-agent.service
 
 - include_tasks: "nginx.yml"
   when: nginx_available.stat.exists == true

@@ -1,3 +1,4 @@
 .idea
 *.retry
 #inventories/local
+roles/consul

@@ -1,15 +1,14 @@
 ---
 - name: copy zabbix user parameter for netstat
-  template: src=zabbix_smartctl.conf.j2 dest=/etc/zabbix/zabbix_agentd.d/zabbix_smartctl.conf
+  template:
+    src: zabbix_smartctl.conf.j2
+    dest: "{{ zabbix_conf_directory }}/zabbix_smartctl.conf"
   notify: restart zabbix
 
 - name: copy netstat script for zabbix
-  copy: src=smartctl-disks-discovery.pl dest={{ directory ~ '/smartctl-disks-discovery.pl' }}
-
-- name: chown script tcpstats.sh
-  file:
-    path: "{{ directory ~ '/smartctl-disks-discovery.pl' }}"
-    state: file
+  copy:
+    src: smartctl-disks-discovery.pl
+    dest: "{{ zabbix_script_directory }}/smartctl-disks-discovery.pl"
     owner: zabbix
     group: zabbix
     mode: 0770
@@ -18,4 +17,4 @@
   lineinfile:
     state: present
     path: /etc/sudoers
-    line: "zabbix ALL=(ALL) NOPASSWD: {{ directory ~ '/smartctl-disks-discovery.pl' }}"
+    line: "zabbix ALL=(ALL) NOPASSWD: {{ zabbix_script_directory }}/smartctl-disks-discovery.pl"

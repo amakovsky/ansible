@@ -1,23 +1,28 @@
 ---
-- name: check exist zabbix-agent
-  stat: path=/usr/sbin/zabbix_server
+- name: check exist zabbix-server
+  stat:
+    path: "{{ zabbix_bindir }}"
   changed_when: False
   failed_when: False
   register: zabbix_available
 
 - name: Download zabbix apt source
   get_url:
-    url: https://repo.zabbix.com/zabbix/3.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.4-1+{{ ansible_distribution_release }}_all.deb
-    dest: /tmp/zabbix-release_3.4-1+{{ ansible_distribution_release }}_all.deb
+    url: "{{ zabbix_apt_url }}"
+    dest: /tmp/zabbix.deb
     mode: 0740
   when: zabbix_available.stat.exists == false
 
 - name: Install apt repo
-  apt: deb="/tmp/zabbix-release_3.4-1+{{ ansible_distribution_release }}_all.deb"
+  apt:
+    deb: "/tmp/zabbix.deb"
   when: zabbix_available.stat.exists == false
 
 - name: Install common
-  apt: name={{ item }} update_cache=yes state=present
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
   with_items:
     - zabbix-server-mysql
     - zabbix-frontend-php
@@ -30,16 +35,16 @@
   when: zabbix_available.stat.exists == false
 
 - mysql_db:
-    name: "{{ db_name }}"
+    name: "{{ zabbix_db_name }}"
     state: import
     target: /tmp/zabbix.gz
   when: zabbix_available.stat.exists == false
 
 - mysql_user:
-    name: "{{ db_user }}"
+    name: "{{ zabbix_db_user }}"
     host: localhost
-    password: "{{ db_pass }}"
-    priv: "{{ db_name }}.*:ALL"
+    password: "{{ zabbix_db_pass }}"
+    priv: "{{ zabbix_db_name }}.*:ALL"
     state: present
 
 - name: edit zabbix-server config file
@@ -49,10 +54,10 @@
     regexp: "{{ item.path }}"
     line: "{{ item.regexp }}"
   with_items:
-    - { path: 'DBHost=*', regexp: 'DBHost={{ db_host }}' }
-    - { path: 'DBName=*', regexp: 'DBName={{ db_name }}' }
-    - { path: 'DBUser=*', regexp: 'DBUser={{ db_user }}' }
-    - { path: 'DBPassword=*', regexp: 'DBPassword={{ db_pass }}' }
+    - { path: 'DBHost=*', regexp: 'DBHost={{ zabbix_db_host }}' }
+    - { path: 'DBName=*', regexp: 'DBName={{ zabbix_db_name }}' }
+    - { path: 'DBUser=*', regexp: 'DBUser={{ zabbix_db_user }}' }
+    - { path: 'DBPassword=*', regexp: 'DBPassword={{ zabbix_db_pass }}' }
   notify: restart zabbix-server
 
 - name: edit apache2 config file

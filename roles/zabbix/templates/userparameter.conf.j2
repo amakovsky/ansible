@@ -1,1 +1,1 @@
-UserParameter=host.relocate[*],sudo /usr/lib/zabbix/externalscripts/clear.sh $1
+UserParameter=host.relocate[*],sudo {{ zabbix_script_directory }}/clear.sh $1
