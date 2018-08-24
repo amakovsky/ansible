@@ -10,3 +10,4 @@
     - consul
     - docker
     - common
+    - nomad

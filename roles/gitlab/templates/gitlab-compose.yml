@@ -32,4 +32,4 @@ web:
     - '/srv/gitlab/config:/etc/gitlab'
     - '/srv/gitlab/logs:/var/log/gitlab'
     - '/srv/gitlab/data:/var/opt/gitlab'
-    - '/srv/ssl:/var/ssl'
+    - '/srv/{{ gitlab_cert_source }}:/var/ssl'

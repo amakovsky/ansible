@@ -43,3 +43,6 @@
 
 [consul:children]
 redis
+
+[nomad:children]
+redis
