@@ -13,22 +13,27 @@
     volumes:
     - /srv/gitlab-runner/config:/etc/gitlab-runner
     - /var/run/docker.sock:/var/run/docker.sock
-#    environment:
-#    - DOCKER_HOST=tcp://dind:2375
+    - '/srv/{{ gitlab_cert_source }}:/var/ssl'
+    environment:
+    - DOCKER_HOST=tcp://dind:2375
+    - CA_CERTIFICATES_PATH=/var/ssl/rootCA.crt
 
   register-runner:
     restart: 'no'
     image: gitlab/gitlab-runner:latest
     volumes:
-    - /srv/gitlab-runner/config:/etc/gitlab-runner
+    - '/srv/gitlab-runner/config:/etc/gitlab-runner'
+    - '/srv/{{ gitlab_cert_source }}:/var/ssl'
     command:
     - register
     - --non-interactive
     - --locked=false
     - --name=Docker Runner
     - --executor=docker
+    - --tls-ca-file=/var/ssl/rootCA.crt
     - --docker-image=alpine:latest
     - --docker-volumes=/var/run/docker.sock:/var/run/docker.sock
     environment:
     - CI_SERVER_URL=https://{{ gitlab_name }}/
     - REGISTRATION_TOKEN={{ gitlab_tocken }}
+    - CA_CERTIFICATES_PATH=/var/ssl/rootCA.crt
