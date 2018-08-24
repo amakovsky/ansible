@@ -2,3 +2,4 @@
 *.retry
 #inventories/local
 roles/consul
+roles/nomad
