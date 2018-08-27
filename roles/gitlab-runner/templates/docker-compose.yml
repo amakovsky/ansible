@@ -3,7 +3,7 @@
     privileged: true
     volumes:
     - /var/lib/docker
-    image: docker:17.09.0-ce-dind
+    image: docker:stable-dind
     command:
     - --storage-driver=overlay2
 
@@ -31,7 +31,7 @@
     - --name=Docker Runner
     - --executor=docker
     - --tls-ca-file=/var/ssl/rootCA.crt
-    - --docker-image=docker:17.09.0-ce-dind
+    - --docker-image=docker:stable-dind
     - --docker-volumes=/var/run/docker.sock:/var/run/docker.sock
     environment:
     - CI_SERVER_URL=https://{{ gitlab_name }}/
