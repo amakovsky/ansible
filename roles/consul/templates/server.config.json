@@ -1,0 +1,29 @@
+{
+  "bind_addr": "{{ inventory_hostname }}",
+  "datacenter": "{{ consul_datacentr }}",
+  "data_dir": "{{ consul_data_dir }}",
+  "encrypt": "{{ consul_encrypt }}",
+  "log_level": "INFO",
+  "enable_syslog": true,
+  "enable_debug": true,
+{% for item in groups['consul'] %}
+{% if item == inventory_hostname  %}
+  "node_name": "ConsulServer{{ loop.index }}",
+{% endif %}
+{% endfor %}
+  "server": true,
+  "bootstrap_expect": {{ consul_bootstrap_count }},
+  "leave_on_terminate": false,
+  "skip_leave_on_interrupt": true,
+  "rejoin_after_leave": true,
+  "retry_interval": "30s",
+  "retry_join": [
+{% for item in groups['consul'] %}
+{% if loop.index  < groups['consul']|length %}
+   "{{item}}:8301",
+{% else %}
+   "{{item}}:8301"
+{% endif %}
+{% endfor %}
+  ]
+}

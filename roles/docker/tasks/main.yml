@@ -29,4 +29,4 @@
     - docker-compose
 
 - include_tasks: "registrator.yml"
-  when: docker_registrator
+  when: consul_docker_registrator

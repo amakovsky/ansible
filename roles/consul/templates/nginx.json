@@ -1,0 +1,10 @@
+{
+  "services": [{
+    "name": "web",
+    "checks": [{
+      "id": "web-ping",
+      "http": "http://127.0.0.1",
+      "interval": "15s"
+    }]
+  }]
+}

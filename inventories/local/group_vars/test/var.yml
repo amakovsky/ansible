@@ -7,4 +7,5 @@ ufw_rules:
   - policy: 'allow'
     direction: incoming
 
-docker_registrator: true
+consul_docker_registrator: true
+nomad_jobs_interface: enp0s8

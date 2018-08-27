@@ -1,0 +1,6 @@
+{% if consul_role == 'server' %}
+OPTIONS="-ui -client=0.0.0.0 -dns-port=53 -recursor=8.8.8.8"
+{% else %}
+description "Consul client process"
+OPTIONS="-client=0.0.0.0 -dns-port=53 -recursor=8.8.8.8"
+{% endif %}

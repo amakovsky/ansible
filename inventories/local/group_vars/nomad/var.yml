@@ -2,4 +2,5 @@
 ansible_user: vagrant
 enable_local_dns: false
 nomad_role: server
+nomad_jobs_interface: enp0s8
 

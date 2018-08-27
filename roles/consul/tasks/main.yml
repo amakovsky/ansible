@@ -1,0 +1,56 @@
+---
+- name: check exist consul
+  stat:
+    path: "{{ consul_bin_dir }}/consul"
+  changed_when: False
+  failed_when: False
+  register: consul_available
+
+- name: create  user consul
+  user:
+    name: "{{ consul_user }}"
+    system: yes
+    createhome: no
+
+- name: Download and unarchive a consul
+  unarchive:
+    src: "{{ consul_source_url }}"
+    dest: "{{ consul_bin_dir }}"
+    remote_src: yes
+  register: consul_change
+  when: consul_available.stat.exists == false or consul_update
+
+- name: create consul folders
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ consul_user }}"
+    group: "{{ consul_user }}"
+    mode: 0755
+  with_items:
+    - "{{ consul_conf_dir }}"
+    - "{{ consul_data_dir }}"
+
+- name: copy consul config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_user }}"
+    mode: 0775
+  with_items: "{{ consul_config }}"
+  notify: restart consul
+
+- name: allow consul listen 53 port
+  command: "setcap 'cap_net_bind_service=+ep' {{ consul_bin_dir }}/consul"
+  when: consul_available.stat.exists == false or consul_change is changed
+  notify: restart consul
+
+- systemd:
+    name: consul
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+#- debug:
+#    msg: "{{ hostvars }}"

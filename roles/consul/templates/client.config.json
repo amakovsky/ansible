@@ -1,0 +1,21 @@
+{
+  "bind_addr": "{{ inventory_hostname }}",
+  "datacenter": "{{ consul_datacentr }}",
+  "data_dir": "{{ consul_data_dir }}",
+  "encrypt": "{{ consul_encrypt }}",
+  "log_level": "INFO",
+  "enable_syslog": true,
+  "enable_debug": true,
+  "node_name": "ConsulClient",
+  "server": false,
+  "rejoin_after_leave": true,
+  "retry_join": [
+{% for item in groups['consul'] %}
+{% if loop.index  < groups['consul']|length %}
+  "{{item}}:8301",
+{% else %}
+  "{{item}}:8301"
+{% endif %}
+{% endfor %}
+  ]
+}

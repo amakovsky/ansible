@@ -5,4 +5,4 @@ docker_key:
 
 docker_repository: "deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main"
 
-docker_registrator: false
+consul_docker_registrator: false

@@ -5,6 +5,8 @@ spaces_endpoint: https://ams3.digitaloceanspaces.com
 space_name: gettwifi
 
 upload_files:
-  - softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
-  - redis-4.0.11.tar.gz
-  - asterisk-13-current.tar.gz
+#  - softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
+#  - redis-4.0.11.tar.gz
+#  - asterisk-13-current.tar.gz
+  - nomad_0.8.4_linux_amd64.zip
+  - consul_1.2.2_linux_amd64.zip

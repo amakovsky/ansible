@@ -1,0 +1,24 @@
+[Unit]
+Description=Consul service discovery agent
+Requires=network-online.target
+After=network.target
+
+[Service]
+User={{ consul_user }}
+Group={{ consul_user }}
+RuntimeDirectory=consul
+RuntimeDirectoryMode=755
+EnvironmentFile=-{{ consul_envirenment_file }}
+PIDFile=/run/consul/consul.pid
+Restart=on-failure
+ExecStartPre=[ -f "/run/consul/consul.pid" ] && /bin/rm -f /run/consul/consul.pid
+ExecStartPre={{ consul_bin_dir }}/consul validate /etc/consul.d
+ExecStart={{ consul_bin_dir }}/consul agent $OPTIONS -pid-file=/run/consul/consul.pid -config-dir=/etc/consul.d
+ExecReload=/bin/kill -s HUP $MAINPID
+ReadWriteDirectories=-/run
+ReadWriteDirectories=-/var/consul
+KillSignal=SIGINT
+TimeoutStopSec=5
+
+[Install]
+WantedBy=multi-user.target

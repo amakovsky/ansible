@@ -1,0 +1,22 @@
+---
+consul_user: consul
+consul_conf_dir: /etc/consul.d
+consul_data_dir: /var/consul
+consul_bin_dir: /usr/bin
+consul_encrypt: J9t9VfsHUhyn5akjry8Gsg==
+consul_datacentr: dc1
+consul_bootstrap_count: 3
+consul_config:
+  - src: "{{ consul_role }}.config.json"
+    dest: "{{ consul_conf_dir }}/config.json"
+  - src: consul.service
+    dest: "/etc/systemd/system/"
+#  - src: consul.socket
+#    dest: "/etc/systemd/system/"
+  - src: env
+    dest: "{{ consul_envirenment_file }}"
+
+#consul_role: server
+consul_envirenment_file: /etc/default/consul
+consul_source_url: https://ams3.digitaloceanspaces.com/gettwifi/source/consul_1.2.2_linux_amd64.zip
+consul_update: false

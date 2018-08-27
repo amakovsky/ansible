@@ -1,0 +1,10 @@
+{
+    "name": "redis",
+    "check": {
+      "id": "redis",
+      "name": "redis",
+      "tcp": "localhost:6379",
+      "interval": "10s",
+      "timeout": "1s"
+    }
+}
