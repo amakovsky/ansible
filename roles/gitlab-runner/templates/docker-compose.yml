@@ -1,11 +1,11 @@
-#  dind:
-#    restart: always
-#    privileged: true
-#    volumes:
-#    - /var/lib/docker
-#    image: docker:17.09.0-ce-dind
-#    command:
-#    - --storage-driver=overlay2
+  dind:
+    restart: always
+    privileged: true
+    volumes:
+    - /var/lib/docker
+    image: docker:17.09.0-ce-dind
+    command:
+    - --storage-driver=overlay2
 
   runner:
     restart: always
@@ -31,7 +31,7 @@
     - --name=Docker Runner
     - --executor=docker
     - --tls-ca-file=/var/ssl/rootCA.crt
-    - --docker-image=alpine:latest
+    - --docker-image=docker:17.09.0-ce-dind
     - --docker-volumes=/var/run/docker.sock:/var/run/docker.sock
     environment:
     - CI_SERVER_URL=https://{{ gitlab_name }}/
