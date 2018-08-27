@@ -2,3 +2,4 @@
 gitlab_name: gitlab.gettwifi.com
 gitlab_tocken: 123
 gitlab_cert_source: self
+docker_runner_register: false

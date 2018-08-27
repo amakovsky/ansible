@@ -1,9 +1,14 @@
+version: '3'
+
+services:
   dind:
     restart: always
     privileged: true
     volumes:
     - /var/lib/docker
     image: docker:stable-dind
+    networks:
+    - gitlab-runner-net
     command:
     - --storage-driver=overlay2
 
@@ -17,23 +22,31 @@
     environment:
     - DOCKER_HOST=tcp://dind:2375
     - CA_CERTIFICATES_PATH=/var/ssl/rootCA.crt
+    networks:
+    - gitlab-runner-net
 
-  register-runner:
-    restart: 'no'
-    image: gitlab/gitlab-runner:latest
-    volumes:
-    - '/srv/gitlab-runner/config:/etc/gitlab-runner'
-    - '/srv/{{ gitlab_cert_source }}:/var/ssl'
-    command:
-    - register
-    - --non-interactive
-    - --locked=false
-    - --name=Docker Runner
-    - --executor=docker
-    - --tls-ca-file=/var/ssl/rootCA.crt
-    - --docker-image=docker:stable-dind
-    - --docker-volumes=/var/run/docker.sock:/var/run/docker.sock
-    environment:
-    - CI_SERVER_URL=https://{{ gitlab_name }}/
-    - REGISTRATION_TOKEN={{ gitlab_tocken }}
-    - CA_CERTIFICATES_PATH=/var/ssl/rootCA.crt
+#  register-runner:
+#    restart: 'no'
+#    image: gitlab/gitlab-runner:latest
+#    volumes:
+#    - '/srv/gitlab-runner/config:/etc/gitlab-runner'
+#    - '/srv/{{ gitlab_cert_source }}:/var/ssl'
+#    command:
+#    - register
+#    - --non-interactive
+#    - --locked=false
+#    - --name=Docker Runner
+#    - --executor=docker
+#    - --tls-ca-file=/var/ssl/rootCA.crt
+#    - --docker-privileged
+#    - --docker-image=docker:stable-dind
+#    - --docker-dns=10.135.1.24
+#    - --docker-volumes=/var/run/docker.sock:/var/run/docker.sock
+#    environment:
+#    - CI_SERVER_URL=https://{{ gitlab_name }}/
+#    - REGISTRATION_TOKEN={{ gitlab_tocken }}
+#    - CA_CERTIFICATES_PATH=/var/ssl/rootCA.crt
+
+networks:
+  gitlab-runner-net:
+    driver: "bridge"
