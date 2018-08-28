@@ -8,7 +8,7 @@
 - name: copy mysql slave script for zabbix
   copy:
     src: mysql-slave.sh
-    dest: {{ directory ~ '/mysql-slave.sh' }}
+    dest: "{{ directory ~ '/mysql-slave.sh' }}"
 
 - name: chown script tcpstats.sh
   file:
