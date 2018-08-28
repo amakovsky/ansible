@@ -5,7 +5,8 @@
     dest: "{{ zabbix_conf_directory }}/userparameter_mysql.conf"
   notify: restart zabbix
 
-- mysql_user:
+- name: create user for monitoring
+  mysql_user:
     name: zabbix
     password: '{{ zabbix_mysql_pass }}'
     priv: "*.*:USAGE"
