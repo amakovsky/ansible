@@ -22,12 +22,14 @@
 
 - name: fix broken dependences
   block:
-    - replace:
+    - name: change config file
+      replace:
         path: /var/lib/dpkg/info/freeradius-postgresql.postinst
         regexp: 'force-reload'
         replace: 'restart'
 
-    - shell: dpkg --configure -a
+    - name: run dpkg configure a
+      command: dpkg --configure -a
   when: installed.failed is defined
 
 #- debug:

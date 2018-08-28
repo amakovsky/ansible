@@ -8,7 +8,7 @@
     name: "{{ item }}"
     update_cache: yes
     cache_valid_time: 3600
-    state: latest
+#    state: latest
   with_items:
     - gnupg2
 
@@ -32,5 +32,5 @@
     dest: /tmp/rvm
     mode: 0740
 
-- name: Build softether from tarball
-  command: /tmp/rvm stable
+#- name: Build softether from tarball
+#  command: /tmp/rvm stable

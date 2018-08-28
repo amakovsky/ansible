@@ -8,7 +8,7 @@
   register: phpstorm_available
 
 - name: Download source phpstorm
-  get_url: 
+  get_url:
     url: https://download-cf.jetbrains.com/webide/PhpStorm-2017.2.4.tar.gz
     dest: /tmp/PhpStorm.tar.gz
     mode: 0755
@@ -28,6 +28,6 @@
 - name: link phpstorm
   file:
     src: /opt/phpstorm/bin/phpstorm.sh
-    dest: /usr/local/bin/phpstorm  
+    dest: /usr/local/bin/phpstorm
     state: link
     force: yes

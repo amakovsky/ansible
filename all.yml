@@ -1,11 +1,38 @@
 ---
 - name: DNS server
-  hosts: dns
+#  hosts: dns
   become: yes
   become_method: sudo
   become_user: root
 
   roles:
-    - common
-    - ufw
+    - asterisk
+    - cassandra
+    - consul
+    - desktop
     - dns
+    - DO_space
+    - docker
+    - fail2ban
+    - gitlab
+    - gitlab-runner
+    - java
+    - mariadb
+    - monit
+    - nginx
+    - nomad
+    - openvpn
+    - passenger
+    - postgresql
+    - radius
+    - redis
+    - rvm
+    - softether
+    - ssh
+    - template
+    - ufw
+    - user
+    - web_node
+    - xtrabackup
+    - zabbix
+    - zabbix-server

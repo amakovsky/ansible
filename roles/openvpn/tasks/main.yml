@@ -1,6 +1,7 @@
 ---
 # tasks file for openvpn
-- include_vars: "{{ item }}"
+- name: load variable from files
+  include_vars: "{{ item }}"
   with_first_found:
     - "../vars/{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
     - "../vars/{{ ansible_distribution }}.yml"

@@ -12,10 +12,11 @@ stages:
   - pp
   - prod
 
-test:
+lint:
+  image: particlekit/ansible-lint
   stage: test
   script:
-      - echo "Test"
+      - ansible-lint all.yml
 
 build:
   stage: build

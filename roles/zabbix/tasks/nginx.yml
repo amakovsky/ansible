@@ -7,7 +7,7 @@
 - name: link zabbix.conf
   file:
     src: /etc/nginx/sites-available/zabbix.conf
-    dest: /etc/nginx/sites-enabled/zabbix.conf 
+    dest: /etc/nginx/sites-enabled/zabbix.conf
     state: link
     force: yes
   notify: restart nginx
@@ -17,7 +17,7 @@
     src: nginx_parameter.conf.j2
     dest: "{{ zabbix_conf_directory }}/nginx_parameter.conf"
   notify: restart zabbix
- 
+
 - name: copy nginx script for zabbix
   copy:
     src: php-fpm-check.sh
