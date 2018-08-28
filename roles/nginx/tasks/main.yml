@@ -1,5 +1,6 @@
 ---
-- apt_repository:
+- name: add nginx repo
+  apt_repository:
     repo: 'ppa:nginx/stable'
     state: present
     update_cache: True
@@ -23,7 +24,7 @@
   notify: restart nginx
 
 - name: unlink default config
-  file:    
+  file:
     path: /etc/nginx/sites-enabled/default
     state: absent
     force: yes

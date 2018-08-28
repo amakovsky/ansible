@@ -4,14 +4,13 @@
   become: yes
   become_method: sudo
   become_user: root
-  
+
   roles:
     - common
     - docker
     - gitlab
     - ufw
     - dns
-  
 
 #  vars_prompt:
 #    - name: "ansible_user"
@@ -26,4 +25,3 @@
 #    - name: "githubpassword"
 #      prompt: "Enter your github password"
 #      private: yes
- 

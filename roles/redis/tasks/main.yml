@@ -10,7 +10,7 @@
   apt:
     name: "{{ item }}"
     update_cache: yes
-    state: latest
+#    state: latest
   with_items:
     - build-essential
     - tcl
@@ -75,14 +75,15 @@
         dest: /tmp/redis-stable.tar.gz
         mode: 0755
 
-    - unarchive:
+    - name: extract redis from archive
+      unarchive:
         src: /tmp/redis-stable.tar.gz
         dest: "{{ redis_srcdir }}"
         remote_src: yes
         extra_opts: --strip-components=1
 
     - name: build
-      shell: "{{ item }}"
+      command: "{{ item }}"
       args:
         chdir: "{{ redis_srcdir }}"
       with_items:
@@ -91,8 +92,9 @@
         - make install
 
     - name: copy configs
-      shell: cp {{ redis_srcdir }}/{{ item }} {{ redis_config_folder }}/{{ item }} #&& chown redis:redis {{ redis_config_folder }}/*
+      command: cp {{ redis_srcdir }}/{{ item }} {{ redis_config_folder }}/{{ item }} #&& chown redis:redis {{ redis_config_folder }}/*
       with_items: "{{ redis_configs }}"
+      become: yes
       become_user: '{{ redis_user }}'
   when: redis_available.stat.exists == false
 

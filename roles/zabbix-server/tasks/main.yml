@@ -34,13 +34,15 @@
     dest: /tmp/zabbix.gz
   when: zabbix_available.stat.exists == false
 
-- mysql_db:
+- name: create database for zabbix
+  mysql_db:
     name: "{{ zabbix_db_name }}"
     state: import
     target: /tmp/zabbix.gz
   when: zabbix_available.stat.exists == false
 
-- mysql_user:
+- name: create user for zabbix
+  mysql_user:
     name: "{{ zabbix_db_user }}"
     host: localhost
     password: "{{ zabbix_db_pass }}"

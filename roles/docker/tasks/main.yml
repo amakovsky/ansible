@@ -15,7 +15,7 @@
   apt:
     name: "{{ item }}"
     update_cache: yes
-    state: latest
+#    state: latest
   with_items:
     - docker-engine
     - python-setuptools

@@ -13,8 +13,10 @@
     - 'ppa:atareao/telegram'
 
 - name: Install common programm for workstation
-  apt: name={{ item }} update_cache=yes state=latest
-  with_items:    
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
     - git-core
     - mysql-client
     - p7zip-rar
@@ -30,7 +32,7 @@
   register: skype_available
 
 - name: download skype
-  get_url: 
+  get_url:
     url: https://repo.skype.com/latest/skypeforlinux-64.deb
     dest: /tmp/skype.deb
   when: skype_available.stat.exists == false

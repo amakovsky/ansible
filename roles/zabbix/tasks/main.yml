@@ -112,16 +112,16 @@
     src: userparameter.conf.j2
     dest: "{{ zabbix_conf_directory }}/userparameter.conf"
   when: zabbix_available.stat.exists == false
-  
+
 - name: get contents of PSK file
   command: cat /etc/zabbix/zabbix_agentd.psk
   register: filename
   when: zabbix_available.stat.exists == false
-  
+
 - name: insert PSK into autoconfig
-  lineinfile: 
+  lineinfile:
     path: "{{ zabbix_script_directory }}/autoreg-enable-tls-psk_comm.py"
-    regexp: '^(.*)PSK=""' 
+    regexp: '^(.*)PSK=""'
     line: 'PSK="{{filename.stdout}}"'
   when: zabbix_available.stat.exists == false
 

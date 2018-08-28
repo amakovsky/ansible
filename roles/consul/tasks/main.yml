@@ -46,7 +46,8 @@
   when: consul_available.stat.exists == false or consul_change is changed
   notify: restart consul
 
-- systemd:
+- name: ensure what consul started
+  systemd:
     name: consul
     state: started
     enabled: yes

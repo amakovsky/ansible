@@ -56,7 +56,7 @@
 #    owner: 'root'
 #    group: 'root'
 #    mode: '0644'
-#  when: (mariadb_server_register_version | d() and not mariadb_server_register_version.stdout) 
+#  when: (mariadb_server_register_version | d() and not mariadb_server_register_version.stdout)
 
 #- name: Configure the database server
 #  template:

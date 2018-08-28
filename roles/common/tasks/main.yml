@@ -4,13 +4,13 @@
     name: "{{ item }}"
     update_cache: yes
     cache_valid_time: 3600
-    state: latest
+#    state: latest
   with_items:
     - git
-    - vim       
+    - vim
     - gzip
-    - wget    
-    - curl    
+    - wget
+    - curl
     - unzip
     - zip
     - htop
@@ -23,19 +23,13 @@
     - gnupg
     - build-essential
     - libcurl4-openssl-dev
-    - ca-certificates 
-    - software-properties-common 
-    - imagemagick 
-    - tzdata 
+    - ca-certificates
+    - software-properties-common
+    - imagemagick
+    - tzdata
     - ntp
-
 
 - import_tasks: bash.yml
 - import_tasks: defaults.yml
 - import_tasks: dns.yml
   when: enable_local_dns
-
- 
-
-
-

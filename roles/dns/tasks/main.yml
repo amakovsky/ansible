@@ -4,7 +4,7 @@
     name: "{{ item }}"
     update_cache: yes
     cache_valid_time: 3600
-    state: latest
+#    state: latest
   with_items:
     - bind9
     - bind9utils
