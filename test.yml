@@ -11,3 +11,4 @@
     - docker
     - common
     - nomad
+    - swarm

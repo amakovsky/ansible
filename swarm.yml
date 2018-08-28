@@ -1,0 +1,10 @@
+---
+- name: swarm cluster
+  hosts: swarm
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - docker
+    - swarm

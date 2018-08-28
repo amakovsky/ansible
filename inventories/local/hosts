@@ -46,3 +46,6 @@ redis
 
 [nomad:children]
 redis
+
+[swarm:children]
+redis
