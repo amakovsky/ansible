@@ -1,0 +1,41 @@
+#image: docker:stable
+#
+#variables:
+#  DOCKER_DRIVER: overlay2
+#
+#before_script:
+#- docker info
+
+stages:
+  - test
+  - build
+  - pp
+  - prod
+
+test:
+  stage: test
+  script:
+      - echo "Test"
+
+build:
+  stage: build
+  script:
+      - echo "build"
+
+deploy to preprod:
+  stage: pp
+  when: on_success
+  script:
+    - echo "deploy to preprod"
+  except:
+    - master
+
+
+deploy to prod:
+  stage: prod
+  when: manual
+  script:
+    - echo "deploy to prod"
+  allow_failure: false
+  only:
+    - master
