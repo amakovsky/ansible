@@ -10,10 +10,11 @@
   with_items: '{{ openvpn_revoke_these_certs }}'
 
 - name: revoke certificates
-  command: sh revoke.sh {{ item }}.crt
+  command: "sh revoke.sh {{ item }}.crt"
   args:
     chdir: "{{ openvpn_key_dir }}"
   with_items: '{{ openvpn_revoke_these_certs }}'
+  tags: skip_ansible_lint
 
 - name: remove client key
   file:

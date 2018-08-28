@@ -20,3 +20,4 @@
     name: "{{ postgresql_daemon }}"
     state: restarted
   when: locale_gen_result.changed
+  tags: skip_ansible_lint

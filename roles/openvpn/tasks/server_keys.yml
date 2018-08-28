@@ -125,7 +125,7 @@
     dest: "{{openvpn_key_dir}}/revoke.sh"
     owner: root
     group: root
-    mode: 744
+    mode: 0744
 
 - name: ensure certificate revocation list database exists
   file:
