@@ -1,0 +1,17 @@
+---
+- name: Check if Swarm has already been Initialized
+  command: docker info
+  register: docker_info
+  ignore_errors: true
+
+- name: Get the Manager join-token
+  command: docker swarm join-token --quiet manager
+  register: manager_token
+  delegate_to: "{{ groups['swarm'][0] }}"
+
+- debug:
+    msg: "{{ manager_token }}"
+
+- name: Add Managers to the Swarm
+  shell: "docker swarm join --token {{ manager_token.stdout }} {{ groups['swarm'][0] }}"
+  when: "docker_info.stdout.find('Swarm: inactive') != -1"

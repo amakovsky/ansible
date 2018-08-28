@@ -1,6 +1,6 @@
 ---
 - name: DNS server
-#  hosts: dns
+  hosts: dns
   become: yes
   become_method: sudo
   become_user: root

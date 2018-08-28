@@ -1,0 +1,13 @@
+---
+- name: init swarm cluster
+  include_tasks: "init_cluster.yml"
+  when: inventory_hostname == groups['swarm'][0]
+
+- name: add manager to swarm cluster
+  include_tasks: "add_manager.yml"
+  when: "inventory_hostname != groups['swarm'][0] and 'swarm' in group_names"
+
+- name: add worker to swarm cluster
+  include_tasks: "add_worker.yml"
+#  when: "'swarm_worker' in hostvars[inventory_hostname].group_names"
+  when: "'swarm' not in group_names"

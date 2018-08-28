@@ -1,0 +1,1 @@
+[![Build Status](https://gitlab.gettwifi.com/DevOps/ansible/badges/master/pipeline.svg)](https://gitlab.gettwifi.com/DevOps/ansible/commits/master)
