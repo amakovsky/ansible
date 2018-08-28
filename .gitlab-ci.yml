@@ -9,7 +9,8 @@
 stages:
   - test
   - build
-  - deploy
+  - pp
+  - prod
 
 test:
   stage: test
@@ -22,8 +23,19 @@ build:
       - echo "build"
 
 deploy to preprod:
-  stage: deploy
-  when: manual
+  stage: pp
+  when: on_success
   script:
     - echo "deploy to preprod"
+  except:
+    - master
+
+
+deploy to prod:
+  stage: prod
+  when: manual
+  script:
+    - echo "deploy to prod"
   allow_failure: false
+  only:
+    - master
