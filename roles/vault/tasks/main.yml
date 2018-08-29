@@ -1,0 +1,58 @@
+---
+- name: check exist vault
+  stat:
+    path: "{{ vault_bin_dir }}/vault"
+  changed_when: False
+  failed_when: False
+  register: vault_available
+
+- name: create  user vault
+  user:
+    name: "{{vault_user }}"
+    system: yes
+    createhome: no
+
+- name: Download and unarchive a vault
+  unarchive:
+    src: "{{ vault_source_url }}"
+    dest: "{{ vault_bin_dir }}"
+    remote_src: yes
+  when: vault_available.stat.exists == false or vault_update
+  notify: restart vault
+
+#- name: copy vault binaries
+#  copy:
+#    src: vault
+#    dest: "{{ vault_bin_dir }}"
+#    owner: root
+#    group: root
+#    mode: 0775
+
+- name: create vault folders
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ vault_user }}"
+    group: "{{ vault_user }}"
+    mode: 0755
+  with_items:
+    - "{{ vault_conf_dir }}"
+    - "{{ vault_data_dir }}"
+    - "{{ vault_log_dir }}"
+
+- name: copy vault config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ vault_user }}"
+    group: "{{ vault_user }}"
+    mode: 0775
+  with_items: "{{ vault_config }}"
+  notify: restart vault
+
+- name: ensure what vault started
+  systemd:
+    name: vault
+    state: started
+    enabled: yes
+    daemon_reload: yes
