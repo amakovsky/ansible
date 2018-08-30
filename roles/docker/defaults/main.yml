@@ -6,3 +6,6 @@ docker_key:
 docker_repository: "deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main"
 
 consul_docker_registrator: false
+
+registry_cert_source: self
+registry_hostname: registry.gettwifi.com

@@ -1,0 +1,18 @@
+---
+- name: Copy ssl cert for gitlab
+  copy:
+    src: "{{ registry_cert_source }}"
+    dest: /etc/ssl/
+
+- name: Copy registry configuration
+  template:
+    src: registry.yml
+    dest: ~/docker-registry.yml
+
+- name: build and start docker containers
+  docker_service:
+    project_src: /root
+    files: docker-registry.yml
+    build: yes
+    restarted: true
+  changed_when: False
