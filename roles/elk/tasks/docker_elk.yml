@@ -1,0 +1,28 @@
+---
+- name: set sysctl vm.max_map_count
+  sysctl:
+    name: vm.max_map_count
+    value: 262144
+    state: present
+    reload: yes
+
+- name: create elk folders
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - "{{ elk_data_folder }}"
+
+- name: start elk
+  docker_container:
+    name: elk
+    image: sebp/elk
+    state: started
+    restart_policy: yes
+    ports:
+    - '5601:5601'
+    - '9200:9200'
+    - '5044:5044'
+    volumes:
+    - '{{ elk_data_folder }}:/var/lib/elasticsearch'
