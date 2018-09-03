@@ -1,0 +1,3 @@
+---
+- include_tasks: docker_elk.yml
+  when: docker_elk

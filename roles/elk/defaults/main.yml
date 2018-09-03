@@ -1,0 +1,3 @@
+---
+elk_data_folder: /var/lib/elk
+docker_elk: true
