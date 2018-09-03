@@ -1,0 +1,33 @@
+version: '3'
+registry:
+  restart: always
+  image: registry:2
+  container_name: registry
+  ports:
+    - 443:443
+  environment:
+    REGISTRY_HTTP_TLS_CERTIFICATE: "/certs/{{ registry_hostname }}.crt"
+    REGISTRY_HTTP_TLS_KEY: "/certs/{{ registry_hostname }}.key"
+    REGISTRY_HTTP_ADDR: 0.0.0.0:443
+    REGISTRY_STORAGE_DELETE_ENABLED: "true"
+    REGISTRY_AUTH: htpasswd
+    REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+    REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
+  volumes:
+    - /var/lib/registry:/var/lib/registry
+    - "/etc/ssl/{{ registry_cert_source }}/:/certs"
+    - /root/registry/auth/:/auth
+
+frontend:
+  restart: always
+  image: konradkleine/docker-registry-frontend:v2
+  container_name: frontend
+  ports:
+    - 80:80
+  environment:
+    ENV_DOCKER_REGISTRY_HOST: "{{ registry_hostname }}"
+    ENV_DOCKER_REGISTRY_PORT: 443
+    ENV_DOCKER_REGISTRY_USE_SSL: 1
+    ENV_MODE_BROWSE_ONLY: "false"
+  links:
+    - registry

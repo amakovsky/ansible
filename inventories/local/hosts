@@ -47,5 +47,8 @@ redis
 [nomad:children]
 redis
 
+[vault:children]
+redis
+
 [swarm:children]
 redis

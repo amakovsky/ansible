@@ -1,0 +1,4 @@
+---
+bin_dir: /usr/bin
+terraform_source_url: https://ams3.digitaloceanspaces.com/gettwifi/source/packer_1.2.5_linux_amd64.zip
+packer_source_url: https://ams3.digitaloceanspaces.com/gettwifi/source/terraform_0.11.8_linux_amd64.zip

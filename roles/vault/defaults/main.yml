@@ -1,0 +1,14 @@
+---
+vault_user: vault
+vault_conf_dir: /etc/vault.d
+vault_data_dir: /var/vault
+vault_bin_dir: /usr/bin
+vault_log_dir: /var/log/vault
+vault_config:
+  - src: "server.json"
+    dest: "{{ vault_conf_dir }}/server.json"
+  - src: vault.service
+    dest: "/etc/systemd/system/"
+
+vault_source_url: https://releases.hashicorp.com/vault/0.11.0/vault_0.11.0_linux_amd64.zip
+vault_update: false

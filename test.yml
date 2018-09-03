@@ -6,9 +6,9 @@
   become_user: root
 
   roles:
-#    - DO_space
-    - consul
-    - docker
-    - common
-    - nomad
-    - swarm
+    - DO_space
+#    - consul
+#    - docker
+#    - common
+#    - nomad
+#    - swarm
