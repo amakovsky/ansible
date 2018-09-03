@@ -9,7 +9,12 @@
     - python-boto
     - python-botocore
     - python-boto3
-    - awscli
+#    - awscli
+    - python3-pip
+
+- name: install pip-aws
+  pip:
+    name: awscli
 
 - name: copy file
   copy:
