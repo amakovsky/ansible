@@ -6,6 +6,7 @@
   become_user: root
 
   roles:
-    - common
-    - ufw
-    - redis
+#    - common
+#    - ufw
+#    - redis
+    - beat

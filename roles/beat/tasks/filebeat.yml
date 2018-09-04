@@ -1,0 +1,45 @@
+---
+- name: Check if filebeat is installed
+  environment:
+    LC_MESSAGES: 'C'
+  shell: dpkg-query -W -f='${Version}\n' 'filebeat' | grep -v '^$'
+  register: filebeat_register_version
+  check_mode: no
+  changed_when: False
+  failed_when: False
+
+- name: Download filebeat package
+  get_url:
+    url: "{{ filebeat_deb_url }}"
+    dest: /tmp/filebeat.deb
+    mode: 0755
+  when: not filebeat_register_version.stdout or filebeat_register_version.stdout != beat_version
+  register: filebeat_downloaded
+
+- name: Install filebeat package
+  apt:
+    deb: /tmp/filebeat.deb
+  when: filebeat_downloaded is changed
+
+- name: Copy filebeat configuration
+  template:
+    src: filebeat/filebeat.yml
+    dest: /etc/filebeat/filebeat.yml
+  notify: restart filebeat
+
+- name: Copy filebeat modules
+  template:
+    src: "filebeat/{{ item }}"
+    dest: "/etc/filebeat/modules.d/{{ item }}"
+  with_items: "{{ filebeat_module }}"
+  notify: restart filebeat
+
+- name: load index
+  command: filebeat setup
+  run_once: true
+
+- name: start filebeat
+  systemd:
+    state: started
+    enabled: yes
+    name: filebeat
