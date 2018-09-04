@@ -1,0 +1,51 @@
+---
+- name: Check if metricbeat is installed
+  environment:
+    LC_MESSAGES: 'C'
+  shell: dpkg-query -W -f='${Version}\n' 'metricbeat' | grep -v '^$'
+  register: metricbeat_register_version
+  check_mode: no
+  changed_when: False
+  failed_when: False
+
+- name: Download metricbeat package
+  get_url:
+    url: "{{ metricbeat_deb_url }}"
+    dest: /tmp/metricbeat.deb
+    mode: 0755
+  when: not metricbeat_register_version.stdout or metricbeat_register_version.stdout != beat_version
+  register: metricbeat_downloaded
+
+- name: Install metricbeat package
+  apt:
+    deb: /tmp/metricbeat.deb
+  when: metricbeat_downloaded is changed
+
+- name: create metricbeat module folders
+  file:
+    path: /etc/metricbeat/modules.d
+    state: directory
+    mode: 0755
+
+- name: Copy metricbeat configuration
+  template:
+    src: metricbeat/metricbeat.yml
+    dest: /etc/metricbeat/metricbeat.yml
+  notify: restart metricbeat
+
+- name: Copy metricbeat modules
+  template:
+    src: "metricbeat/{{ item }}"
+    dest: "/etc/metricbeat/modules.d/{{ item }}"
+  with_items: "{{ metricbeat_module }}"
+  notify: restart metricbeat
+
+- name: load index
+  command: metricbeat setup
+  run_once: true
+
+- name: start metricbeat
+  systemd:
+    state: started
+    enabled: yes
+    name: metricbeat
