@@ -1,0 +1,27 @@
+---
+- name: Workstation for developers
+  hosts: full
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  roles:
+#    - DO_space
+#    - consul
+#    - docker
+#    - common
+#    - nomad
+#    - swarm
+
+    - common
+    - ufw
+    - asterisk
+    - cassandra
+    - postgresql
+    - radius
+    - monit
+    - redis
+    - softether
+    - user
+    - rvm
+    - passenger

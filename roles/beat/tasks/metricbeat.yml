@@ -43,6 +43,8 @@
 - name: load index
   command: metricbeat setup
   run_once: true
+  when: load_beat_index
+
 
 - name: start metricbeat
   systemd:

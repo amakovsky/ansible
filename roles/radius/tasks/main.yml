@@ -2,7 +2,9 @@
 - name: Include postgresql vars files
   include_vars:
     file: "{{ postgrs_conf }}"
-    name: postgresql
+    name: postgresql_var
+- debug:
+    msg: "{{ postgresql_var }}"
 
 - name: add radius repo
   apt_repository:

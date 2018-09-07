@@ -5,3 +5,16 @@ enable_local_dns: false
 ufw_rules:
   - policy: 'allow'
     direction: incoming
+
+filebeat_module:
+  - nginx.yml
+  - redis.yml
+  - system.yml
+
+metricbeat_module:
+  - docker.yml
+  - system.yml
+  - redis.yml
+
+filebeat_enable: true
+metricbeat_enable: true
