@@ -1,5 +1,5 @@
 ---
 - name: Install rubygems
   command: '{{ rvm1_rvm }} rubygems current'
-
+  tags: skip_ansible_lint
 
