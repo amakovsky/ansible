@@ -1,6 +1,6 @@
 ---
 elk_ip: 10.100.198.1
-beat_version: 6.4.0
+beat_version: 6.2.2
 filebeat_deb_url: "https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-{{ beat_version }}-amd64.deb"
 metricbeat_deb_url: "https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-{{ beat_version }}-amd64.deb"
 filebeat_module:
@@ -15,3 +15,4 @@ metricbeat_module:
 
 filebeat_enable: true
 metricbeat_enable: true
+load_beat_index: false

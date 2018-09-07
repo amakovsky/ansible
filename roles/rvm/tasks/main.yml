@@ -10,7 +10,7 @@
   become: yes
   become_user: '{{ rvm1_user }}'
 
-#- name: Install Gems
-#  import_tasks: 'gem.yml'
-#  become: yes
-#  become_user: '{{ rvm1_user }}'
+- name: Install Gems
+  import_tasks: 'gem.yml'
+  become: yes
+  become_user: '{{ rvm1_user }}'

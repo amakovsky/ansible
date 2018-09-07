@@ -34,9 +34,21 @@
   with_items: "{{ filebeat_module }}"
   notify: restart filebeat
 
+- name: Update filebeat timezone
+  lineinfile:
+    path: "/usr/share/filebeat/module/system/{{ item }}/ingest/pipeline.json"
+    insertbefore: '"ignore_failure": true'
+    regexp: '"timezone"'
+    line: '"timezone" : "Europe/Moscow",'
+  notify: restart filebeat
+  with_items:
+    - syslog
+    - auth
+
 - name: load index
   command: filebeat setup
   run_once: true
+  when: load_beat_index
 
 - name: start filebeat
   systemd:
