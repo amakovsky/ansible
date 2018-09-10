@@ -1,0 +1,6 @@
+auto tap_aphub
+iface tap_aphub inet static
+      address 172.22.0.2
+      netmask 255.255.0.0
+      network 172.22.0.0
+      broadcast 172.22.255.255

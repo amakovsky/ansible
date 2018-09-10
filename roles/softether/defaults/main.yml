@@ -6,3 +6,9 @@ softether_source_url: https://ams3.digitaloceanspaces.com/gettwifi/source/softet
 softether_template:
   - src: 'vpnserver.service'
     dest: '/lib/systemd/system/vpnserver.service'
+  - src: 'tap'
+    dest: '/etc/network/interfaces.d/'
+
+softether_config:
+  - src: 'vpn_server.config'
+    dest: '/usr/local/{{ softether_srcdir }}'

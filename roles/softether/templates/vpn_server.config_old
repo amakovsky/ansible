@@ -1,0 +1,762 @@
+﻿# Software Configuration File
+# ---------------------------
+# 
+# You may edit this file when the VPN Server / Client / Bridge program is not running.
+# 
+# In prior to edit this file manually by your text editor,
+# shutdown the VPN Server / Client / Bridge background service.
+# Otherwise, all changes will be lost.
+# 
+declare root
+{
+	uint ConfigRevision 283
+	bool IPsecMessageDisplayed true
+	string Region $
+	bool VgsMessageDisplayed false
+
+	declare DDnsClient
+	{
+		bool Disabled true
+	}
+	declare IPsec
+	{
+		bool EtherIP_IPsec false
+		string IPsec_Secret vpnpass
+		string L2TP_DefaultHub DEFAULT
+		bool L2TP_IPsec true
+		bool L2TP_Raw false
+
+		declare EtherIP_IDSettingsList
+		{
+		}
+	}
+	declare ListenerList
+	{
+		declare Listener0
+		{
+			bool DisableDos false
+			bool Enabled false
+			uint Port 443
+		}
+		declare Listener1
+		{
+			bool DisableDos false
+			bool Enabled false
+			uint Port 5555
+		}
+		declare Listener2
+		{
+			bool DisableDos false
+			bool Enabled true
+			uint Port 8443
+		}
+	}
+	declare LocalBridgeList
+	{
+		bool DoNotDisableOffloading false
+
+		declare LocalBridge0
+		{
+			string DeviceName aphub
+			string HubName DEFAULT
+			bool LimitBroadcast false
+			bool MonitorMode false
+			bool NoPromiscuousMode false
+			string TapMacAddress 00-AC-6E-D1-71-AD
+			bool TapMode true
+		}
+	}
+	declare ServerConfiguration
+	{
+		bool AcceptOnlyTls false
+		uint64 AutoDeleteCheckDiskFreeSpaceMin 104857600
+		uint AutoDeleteCheckIntervalSecs 300
+		uint AutoSaveConfigSpan 300
+		bool BackupConfigOnlyWhenModified true
+		string CipherName RC4-MD5
+		uint CurrentBuild 9570
+		bool DisableCoreDumpOnUnix false
+		bool DisableDeadLockCheck false
+		bool DisableDosProction false
+		bool DisableGetHostNameWhenAcceptTcp false
+		bool DisableIntelAesAcceleration false
+		bool DisableIPv6Listener false
+		bool DisableNatTraversal false
+		bool DisableOpenVPNServer true
+		bool DisableSessionReconnect false
+		bool DisableSSTPServer false
+		bool DontBackupConfig false
+		bool EnableVpnOverDns false
+		bool EnableVpnOverIcmp false
+		byte HashedPassword 3o8ic193fplK9So5Wwj/bQ5p3Z4=
+		string KeepConnectHost keepalive.softether.org
+		uint KeepConnectInterval 50
+		uint KeepConnectPort 80
+		uint KeepConnectProtocol 1
+		uint64 LoggerMaxLogSize 1073741823
+		uint MaxConcurrentDnsClientThreads 512
+		uint MaxConnectionsPerIP 256
+		uint MaxUnestablishedConnections 1000
+		bool NoHighPriorityProcess false
+		bool NoLinuxArpFilter false
+		bool NoSendSignature false
+		string OpenVPNDefaultClientOption dev-type$20tun,link-mtu$201500,tun-mtu$201500,cipher$20AES-128-CBC,auth$20SHA1,keysize$20128,key-method$202,tls-client
+		string OpenVPN_UdpPortList 1194
+		bool SaveDebugLog false
+		byte ServerCert MIIDlDCCAnygAwIBAgIBADANBgkqhkiG9w0BAQsFADBJMRIwEAYDVQQDDAl0aGUta2FybWExEjAQBgNVBAoMCXRoZS1rYXJtYTESMBAGA1UECwwJdGhlLWthcm1hMQswCQYDVQQGEwJVUzAeFw0xNTA4MTgyMDUyNDJaFw0zNjEyMzEyMDUyNDJaMEkxEjAQBgNVBAMMCXRoZS1rYXJtYTESMBAGA1UECgwJdGhlLWthcm1hMRIwEAYDVQQLDAl0aGUta2FybWExCzAJBgNVBAYTAlVTMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3XciPG0/zVn1Txl9ddUi7mJtvHe2RdMGvrAXyYNm/jc2+7guCaw79Gow/25TKRgESMyIuYpWDTo/VwHFnjCFqlqvoqn3F+R9AjomWrykcwZ0k3LNI6OSJkMF/290jUw1P9bEGCrkUscQdsMBsRk5xf3nE+RNbb8lnUstayFhYIY2BWADXwPyc1KIRxYjCoahz2rvN+H1YNHTQYk6KaA+ZiTkmuFkFhPAOIM7+/E4BgPeeAhkzsoybAYff4RzH2BBMGFNqfSaDvwifJsdVwuWktiurHzzncvJmVt6tVbaka7mWaYSepclYHo7eymgD8smLthGehW0yw2pQ3y4JneAfQIDAQABo4GGMIGDMA8GA1UdEwEB/wQFMAMBAf8wCwYDVR0PBAQDAgH2MGMGA1UdJQRcMFoGCCsGAQUFBwMBBggrBgEFBQcDAgYIKwYBBQUHAwMGCCsGAQUFBwMEBggrBgEFBQcDBQYIKwYBBQUHAwYGCCsGAQUFBwMHBggrBgEFBQcDCAYIKwYBBQUHAwkwDQYJKoZIhvcNAQELBQADggEBADreuGkTNkpTgDdW+sE1Drlqn6yC2W7hA5ca1LYLsFX8qhM3enWTuspNgWYzHaZBaVPCsV0dW6aWn6gtiqcSB4RNGTk9x9KFNNOda1ZTj4JRusehiw41FndvZuvhQO9Y6LRc+DZbx2mmWyuiK0UvDehAuDyCLOsZ2bxZEEuHIlKC9T/kqR0K2SEVAuXjY4NYP7QT3xufKxx4O9pG125NSnTdoYzOXt3G09/47F5/Q1+uKth1nKHpGZxqTuKjb74wJs5AnbmIb7XAVrizW2m1yxyhrtmURV3nWtGkAaeITyTQMtykLQadusH710yuVNliqSn5PC8kGpRhnt8bvmRCsNY=
+		byte ServerKey MIIEpAIBAAKCAQEA3XciPG0/zVn1Txl9ddUi7mJtvHe2RdMGvrAXyYNm/jc2+7guCaw79Gow/25TKRgESMyIuYpWDTo/VwHFnjCFqlqvoqn3F+R9AjomWrykcwZ0k3LNI6OSJkMF/290jUw1P9bEGCrkUscQdsMBsRk5xf3nE+RNbb8lnUstayFhYIY2BWADXwPyc1KIRxYjCoahz2rvN+H1YNHTQYk6KaA+ZiTkmuFkFhPAOIM7+/E4BgPeeAhkzsoybAYff4RzH2BBMGFNqfSaDvwifJsdVwuWktiurHzzncvJmVt6tVbaka7mWaYSepclYHo7eymgD8smLthGehW0yw2pQ3y4JneAfQIDAQABAoIBAD+F4m4OsBRIz1Im75OS1Pgnh25dsAyLIQ4lGE2WwT39vGmrRJlFq9TJeNBrZrMMzn3LHRSLF2+n228rdPGQ3WYlqOcxdUyHH0w6PbIdFdZgbaO1dB3a1xrecqP35ih5SXTMN2bvNpp/urs16BBSOf4Oe+96trLZ9wINBDQMWRAEJmi8uStBue0MMQop2uoPrxswcSApe62EcewCupSisGdtNV7+segf86KHflAKQg3WPmVyjUAlFQHNfEydsidGDNjOe4FIZ1VZ5LOOa6hS7XEQd0DRK8LfhqfdZ0BZTyOKWWyoLohvW76E9r+t/7NADVyqyCdwa0oSxrvB03SdLMkCgYEA9NRvj5mWD9aEgmsgq1biCzQY/oO4Rmfv7Ra0lx1ZvZkurvVh05Tav0X9AyY443smhcs6e2rhMlodehGVX3BktM2oios3eiNmFwn0I/sbsf3C+nnk0alvfX5/HeIB3oQECpWps+I30kW/1wYeDyzT8Wv1qtM66ynB4IT2m2CAO08CgYEA55HOPnEJeUbX6KEPdtTPMr6EMChY6h4BM7RlQcsidFoN7Ayrwfuuj8V1g6k7/glgTGU2dvxS08xB2IZIphGhzQ/LXFu5OK6V/VHDEOiwiwALpi4tFWXP5bPLn7kKarScDj/Id4ks9gmWH24W7qV3z4MDOggVLHdZqfyI5rquZHMCgYATtMGiAk+0yKRzxuGjSOP62N+mJL4BVL5YC/rPKvqdKyY5yOBt4k5VFPIPfdUYYkIwhLIZWvnzTpOOzrmCLA6/CsqlFB2MBCtkcVWoS77n7a/y7zq+sW+a30KmChnyahfVLkSxiOTLVPfi+8gRmp8YkIL+k+/rG7pSMwGScgsAOwKBgQCa6JXgfXuJ7pNGol+W7buBxaLmGEeKrfG95eKKxdnRneCMVNmdVcErmjsHjXF9ekY6NMbfh+Hcn1o4/3Of7FGhvPwcV5urSFc787MbH53iDnC8hU1RcB9IGSORQJawVQvEGHUBSfmSyUzsz5d1o6lnXswMyRVo/poztaTbPGym8wKBgQDnlMZpMoRKMiPj2XUgFMK+3PikYGnU4qJHiEkSERXn51UZpG1NzoygqRH8e7aeKQjzVkeAMH8wKoVNd1FAWS/55LetkolwaIRsADCYjlzrcawcxf0HtPNkA6fGrx5Jm82AlDO/osAFnrhiBmHPo4ZmbLSoRoi5GJHY0Rf5r+zwuw==
+		uint ServerLogSwitchType 4
+		uint ServerType 0
+		bool UseKeepConnect true
+		bool UseWebTimePage false
+		bool UseWebUI false
+
+		declare GlobalParams
+		{
+			uint FIFO_BUDGET 10240000
+			uint HUB_ARP_SEND_INTERVAL 5000
+			uint IP_TABLE_EXPIRE_TIME 60000
+			uint IP_TABLE_EXPIRE_TIME_DHCP 300000
+			uint MAC_TABLE_EXPIRE_TIME 600000
+			uint MAX_BUFFERING_PACKET_SIZE 2560000
+			uint MAX_HUB_LINKS 1024
+			uint MAX_IP_TABLES 65536
+			uint MAX_MAC_TABLES 65536
+			uint MAX_SEND_SOCKET_QUEUE_NUM 128
+			uint MAX_SEND_SOCKET_QUEUE_SIZE 2560000
+			uint MAX_STORED_QUEUE_NUM 1024
+			uint MEM_FIFO_REALLOC_MEM_SIZE 655360
+			uint MIN_SEND_SOCKET_QUEUE_SIZE 320000
+			uint QUEUE_BUDGET 2048
+			uint SELECT_TIME 256
+			uint SELECT_TIME_FOR_NAT 30
+			uint STORM_CHECK_SPAN 500
+			uint STORM_DISCARD_VALUE_END 1024
+			uint STORM_DISCARD_VALUE_START 3
+		}
+		declare ServerTraffic
+		{
+			declare RecvTraffic
+			{
+				uint64 BroadcastBytes 57291421101
+				uint64 BroadcastCount 507483976
+				uint64 UnicastBytes 696346861140
+				uint64 UnicastCount 5728755925
+			}
+			declare SendTraffic
+			{
+				uint64 BroadcastBytes 1401402200786
+				uint64 BroadcastCount 18112217316
+				uint64 UnicastBytes 863358482015
+				uint64 UnicastCount 6684664415
+			}
+		}
+		declare SyslogSettings
+		{
+			string HostName $
+			uint Port 0
+			uint SaveType 0
+		}
+	}
+	declare VirtualHUB
+	{
+		declare DEFAULT
+		{
+			uint64 CreatedTime 1439898762473
+			byte HashedPassword +WzqGYrR3VYXrAhKPZLGEHcIwO8=
+			uint64 LastCommTime 1534985184056
+			uint64 LastLoginTime 1534985142055
+			uint NumLogin 2886001
+			bool Online true
+			uint RadiusRetryInterval 500
+			byte RadiusSecret QjN2czJXdW5BR1FV
+			string RadiusServerName 127.0.0.1
+			uint RadiusServerPort 17781
+			string RadiusSuffixFilter $
+			byte SecurePassword bpw3X/O5E8a6G6ccnl4uXmDtkwI=
+			uint Type 0
+
+			declare AccessList
+			{
+				declare 1
+				{
+					bool Active true
+					bool CheckDstMac false
+					bool CheckSrcMac false
+					bool CheckTcpState false
+					uint Delay 0
+					string DestIpAddress 172.22.0.0
+					uint DestPortEnd 0
+					uint DestPortStart 0
+					string DestSubnetMask 255.255.255.0
+					string DestUsername $
+					bool Discard false
+					bool Established false
+					bool IsIPv6 false
+					uint Jitter 0
+					uint Loss 0
+					string Note Allow$20AP-Server
+					uint Priority 1
+					uint Protocol 0
+					string RedirectUrl $
+					string SrcIpAddress 0.0.0.0
+					uint SrcPortEnd 0
+					uint SrcPortStart 0
+					string SrcSubnetMask 0.0.0.0
+					string SrcUsername Access$20Points
+				}
+				declare 2
+				{
+					bool Active true
+					bool CheckDstMac false
+					bool CheckSrcMac false
+					bool CheckTcpState false
+					uint Delay 0
+					string DestIpAddress 0.0.0.0
+					uint DestPortEnd 0
+					uint DestPortStart 0
+					string DestSubnetMask 0.0.0.0
+					string DestUsername Access$20Points
+					bool Discard false
+					bool Established false
+					bool IsIPv6 false
+					uint Jitter 0
+					uint Loss 0
+					string Note Allow$20Server-AP
+					uint Priority 2
+					uint Protocol 0
+					string RedirectUrl $
+					string SrcIpAddress 172.22.0.0
+					uint SrcPortEnd 0
+					uint SrcPortStart 0
+					string SrcSubnetMask 255.255.255.0
+					string SrcUsername $
+				}
+				declare 3
+				{
+					bool Active true
+					bool CheckDstMac false
+					bool CheckSrcMac false
+					bool CheckTcpState false
+					uint Delay 0
+					string DestIpAddress 172.22.0.0
+					uint DestPortEnd 0
+					uint DestPortStart 0
+					string DestSubnetMask 255.255.0.0
+					string DestUsername $
+					bool Discard true
+					bool Established false
+					bool IsIPv6 false
+					uint Jitter 0
+					uint Loss 0
+					string Note Deny$20AP-NET
+					uint Priority 10
+					uint Protocol 0
+					string RedirectUrl $
+					string SrcIpAddress 0.0.0.0
+					uint SrcPortEnd 0
+					uint SrcPortStart 0
+					string SrcSubnetMask 0.0.0.0
+					string SrcUsername Access$20Points
+				}
+				declare 4
+				{
+					bool Active true
+					bool CheckDstMac false
+					bool CheckSrcMac false
+					bool CheckTcpState false
+					uint Delay 0
+					string DestIpAddress 0.0.0.0
+					uint DestPortEnd 0
+					uint DestPortStart 0
+					string DestSubnetMask 0.0.0.0
+					string DestUsername Access$20Points
+					bool Discard true
+					bool Established false
+					bool IsIPv6 false
+					uint Jitter 0
+					uint Loss 0
+					string Note Deny$20NET-AP
+					uint Priority 11
+					uint Protocol 0
+					string RedirectUrl $
+					string SrcIpAddress 172.22.0.0
+					uint SrcPortEnd 0
+					uint SrcPortStart 0
+					string SrcSubnetMask 255.255.0.0
+					string SrcUsername $
+				}
+				declare 5
+				{
+					bool Active true
+					bool CheckDstMac false
+					bool CheckSrcMac false
+					bool CheckTcpState false
+					uint Delay 0
+					string DestIpAddress 0.0.0.0
+					uint DestPortEnd 5678
+					uint DestPortStart 5678
+					string DestSubnetMask 0.0.0.0
+					string DestUsername stark
+					bool Discard true
+					bool Established false
+					bool IsIPv6 false
+					uint Jitter 0
+					uint Loss 0
+					string Note stark$20drop$20discovery
+					uint Priority 200
+					uint Protocol 17
+					string RedirectUrl $
+					string SrcIpAddress 0.0.0.0
+					uint SrcPortEnd 0
+					uint SrcPortStart 0
+					string SrcSubnetMask 0.0.0.0
+					string SrcUsername $
+				}
+			}
+			declare AdminOption
+			{
+				uint allow_hub_admin_change_option 0
+				uint deny_bridge 0
+				uint deny_change_user_password 0
+				uint deny_empty_password 0
+				uint deny_hub_admin_change_ext_option 0
+				uint deny_qos 0
+				uint deny_routing 0
+				uint max_accesslists 0
+				uint max_bitrates_download 0
+				uint max_bitrates_upload 0
+				uint max_groups 0
+				uint max_multilogins_per_user 0
+				uint max_sessions 0
+				uint max_sessions_bridge 0
+				uint max_sessions_client 0
+				uint max_sessions_client_bridge_apply 0
+				uint max_users 0
+				uint no_access_list_include_file 0
+				uint no_cascade 0
+				uint no_change_access_control_list 0
+				uint no_change_access_list 0
+				uint no_change_admin_password 0
+				uint no_change_cert_list 0
+				uint no_change_crl_list 0
+				uint no_change_groups 0
+				uint no_change_log_config 0
+				uint no_change_log_switch_type 0
+				uint no_change_msg 0
+				uint no_change_users 0
+				uint no_delay_jitter_packet_loss 0
+				uint no_delete_iptable 0
+				uint no_delete_mactable 0
+				uint no_disconnect_session 0
+				uint no_enum_session 0
+				uint no_offline 0
+				uint no_online 0
+				uint no_query_session 0
+				uint no_read_log_file 0
+				uint no_securenat 0
+				uint no_securenat_enabledhcp 0
+				uint no_securenat_enablenat 0
+			}
+			declare CascadeList
+			{
+			}
+			declare LogSetting
+			{
+				uint PacketLogSwitchType 4
+				uint PACKET_LOG_ARP 0
+				uint PACKET_LOG_DHCP 1
+				uint PACKET_LOG_ETHERNET 0
+				uint PACKET_LOG_ICMP 0
+				uint PACKET_LOG_IP 0
+				uint PACKET_LOG_TCP 0
+				uint PACKET_LOG_TCP_CONN 1
+				uint PACKET_LOG_UDP 0
+				bool SavePacketLog false
+				bool SaveSecurityLog true
+				uint SecurityLogSwitchType 4
+			}
+			declare Message
+			{
+			}
+			declare Option
+			{
+				uint AccessListIncludeFileCacheLifetime 30
+				uint AdjustTcpMssValue 0
+				bool ApplyIPv4AccessListOnArpPacket false
+				bool AssignVLanIdByRadiusAttribute false
+				bool BroadcastLimiterStrictMode false
+				uint BroadcastStormDetectionThreshold 0
+				uint ClientMinimumRequiredBuild 0
+				uint DetectDormantSessionInterval 0
+				bool DisableAdjustTcpMss false
+				bool DisableCheckMacOnLocalBridge false
+				bool DisableCorrectIpOffloadChecksum false
+				bool DisableHttpParsing false
+				bool DisableIPParsing false
+				bool DisableKernelModeSecureNAT false
+				bool DisableUdpAcceleration false
+				bool DisableUdpFilterForLocalBridgeNic false
+				bool DisableUserModeSecureNAT false
+				bool DoNotSaveHeavySecurityLogs false
+				bool DropArpInPrivacyFilterMode true
+				bool DropBroadcastsInPrivacyFilterMode true
+				bool FilterBPDU false
+				bool FilterIPv4 false
+				bool FilterIPv6 false
+				bool FilterNonIP false
+				bool FilterOSPF false
+				bool FilterPPPoE false
+				uint FloodingSendQueueBufferQuota 33554432
+				bool ManageOnlyLocalUnicastIPv6 true
+				bool ManageOnlyPrivateIP true
+				uint MaxLoggedPacketsPerMinute 0
+				uint MaxSession 0
+				bool NoArpPolling false
+				bool NoDhcpPacketLogOutsideHub true
+				bool NoEnum false
+				bool NoIpTable false
+				bool NoIPv4PacketLog false
+				bool NoIPv6AddrPolling false
+				bool NoIPv6DefaultRouterInRAWhenIPv6 true
+				bool NoIPv6PacketLog false
+				bool NoLookBPDUBridgeId false
+				bool NoMacAddressLog true
+				bool NoManageVlanId false
+				bool NoPhysicalIPOnPacketLog false
+				bool NoSpinLockForPacketDelay false
+				bool RemoveDefGwOnDhcpForLocalhost true
+				uint RequiredClientId 0
+				uint SecureNAT_MaxDnsSessionsPerIp 0
+				uint SecureNAT_MaxIcmpSessionsPerIp 0
+				uint SecureNAT_MaxTcpSessionsPerIp 0
+				uint SecureNAT_MaxTcpSynSentPerIp 0
+				uint SecureNAT_MaxUdpSessionsPerIp 0
+				bool SecureNAT_RandomizeAssignIp false
+				bool SuppressClientUpdateNotification false
+				string VlanTypeId 0x8100
+				bool YieldAfterStorePacket false
+			}
+			declare SecureNAT
+			{
+				bool Disabled false
+				bool SaveLog true
+
+				declare VirtualDhcpServer
+				{
+					string DhcpDnsServerAddress 0.0.0.0
+					string DhcpDnsServerAddress2 0.0.0.0
+					string DhcpDomainName $
+					bool DhcpEnabled true
+					uint DhcpExpireTimeSpan 7200
+					string DhcpGatewayAddress 172.22.0.1
+					string DhcpLeaseIPEnd 172.22.0.200
+					string DhcpLeaseIPStart 172.22.0.10
+					string DhcpPushRoutes 172.22.0.0/255.255.0.0/172.22.0.1
+					string DhcpSubnetMask 255.255.0.0
+				}
+				declare VirtualHost
+				{
+					string VirtualHostIp 172.22.0.1
+					string VirtualHostIpSubnetMask 255.255.0.0
+					string VirtualHostMacAddress 00-AC-C8-A0-C6-20
+				}
+				declare VirtualRouter
+				{
+					bool NatEnabled true
+					uint NatMtu 1500
+					uint NatTcpTimeout 1800
+					uint NatUdpTimeout 60
+				}
+			}
+			declare SecurityAccountDatabase
+			{
+				declare CertList
+				{
+				}
+				declare CrlList
+				{
+				}
+				declare GroupList
+				{
+					declare Access$20Points
+					{
+						string Note $
+						string RealName $
+
+						declare Policy
+						{
+							bool Access true
+							bool ArpDhcpOnly false
+							uint AutoDisconnect 0
+							bool CheckIP true
+							bool CheckIPv6 false
+							bool CheckMac false
+							bool DHCPFilter false
+							bool DHCPForce false
+							bool DHCPNoServer true
+							bool DHCPv6Filter false
+							bool DHCPv6NoServer false
+							bool FilterIPv4 false
+							bool FilterIPv6 false
+							bool FilterNonIP false
+							bool FixPassword true
+							uint MaxConnection 32
+							uint MaxDownload 0
+							uint MaxIP 0
+							uint MaxIPv6 0
+							uint MaxMac 0
+							uint MaxUpload 0
+							bool MonitorPort false
+							uint MultiLogins 0
+							bool NoBridge true
+							bool NoBroadcastLimiter false
+							bool NoIPv6DefaultRouterInRA false
+							bool NoIPv6DefaultRouterInRAWhenIPv6 false
+							bool NoQoS false
+							bool NoRouting false
+							bool NoRoutingV6 false
+							bool NoSavePassword false
+							bool NoServer false
+							bool NoServerV6 false
+							bool PrivacyFilter true
+							bool RAFilter false
+							bool RSandRAFilter false
+							uint TimeOut 20
+							uint VLanId 0
+						}
+						declare Traffic
+						{
+							declare RecvTraffic
+							{
+								uint64 BroadcastBytes 1242646068467
+								uint64 BroadcastCount 16710151323
+								uint64 UnicastBytes 461405756567
+								uint64 UnicastCount 4607299209
+							}
+							declare SendTraffic
+							{
+								uint64 BroadcastBytes 47966003035
+								uint64 BroadcastCount 381611735
+								uint64 UnicastBytes 478802641113
+								uint64 UnicastCount 4096413210
+							}
+						}
+					}
+				}
+				declare IPAccessControlList
+				{
+				}
+				declare UserList
+				{
+					declare *
+					{
+						string AuthRadiusUsername $
+						uint AuthType 4
+						uint64 CreatedTime 1439900587662
+						uint64 ExpireTime 0
+						string GroupName Access$20Points
+						uint64 LastLoginTime 1534985142055
+						string Note $
+						uint NumLogin 2884428
+						string RealName $
+						uint64 UpdatedTime 1439900587662
+
+						declare Traffic
+						{
+							declare RecvTraffic
+							{
+								uint64 BroadcastBytes 1242646068467
+								uint64 BroadcastCount 16710151323
+								uint64 UnicastBytes 461405756567
+								uint64 UnicastCount 4607299209
+							}
+							declare SendTraffic
+							{
+								uint64 BroadcastBytes 47966003035
+								uint64 BroadcastCount 381611735
+								uint64 UnicastBytes 478802641113
+								uint64 UnicastCount 4096413210
+							}
+						}
+					}
+					declare data
+					{
+						byte AuthNtLmSecureHash aMpSpDjAeOJXUUahkUAxLQ==
+						byte AuthPassword WCdyItChdXqjNyuFS0p7ZLdc8Oo=
+						uint AuthType 1
+						uint64 CreatedTime 1528332318448
+						uint64 ExpireTime 0
+						uint64 LastLoginTime 1530169717934
+						string Note $
+						uint NumLogin 2
+						string RealName $
+						uint64 UpdatedTime 1528332318448
+
+						declare Traffic
+						{
+							declare RecvTraffic
+							{
+								uint64 BroadcastBytes 12987239688
+								uint64 BroadcastCount 144478672
+								uint64 UnicastBytes 11493054669
+								uint64 UnicastCount 257124008
+							}
+							declare SendTraffic
+							{
+								uint64 BroadcastBytes 6874907144
+								uint64 BroadcastCount 85051700
+								uint64 UnicastBytes 11377467824
+								uint64 UnicastCount 260447340
+							}
+						}
+					}
+					declare karmaoffice
+					{
+						byte AuthNtLmSecureHash t/Hh2FFY6xPTMvGAif95xw==
+						byte AuthPassword nvh539pTpC78TcwW2G7aUxva2ZM=
+						uint AuthType 1
+						uint64 CreatedTime 1492734553964
+						uint64 ExpireTime 0
+						uint64 LastLoginTime 1533505642571
+						string Note $
+						uint NumLogin 477
+						string RealName $
+						uint64 UpdatedTime 1492734553964
+
+						declare Traffic
+						{
+							declare RecvTraffic
+							{
+								uint64 BroadcastBytes 38440495524
+								uint64 BroadcastCount 351123441
+								uint64 UnicastBytes 5114908886
+								uint64 UnicastCount 33088667
+							}
+							declare SendTraffic
+							{
+								uint64 BroadcastBytes 6788510
+								uint64 BroadcastCount 151126
+								uint64 UnicastBytes 1111645246
+								uint64 UnicastCount 14973735
+							}
+						}
+					}
+					declare stark
+					{
+						byte AuthNtLmSecureHash U+zRcqB3oNeJ2RFWJwXyxA==
+						byte AuthPassword K1I5O39MUh/8lO7qmEgvlLeHZto=
+						uint AuthType 1
+						uint64 CreatedTime 1510895431947
+						uint64 ExpireTime 0
+						uint64 LastLoginTime 1534976865232
+						string Note $
+						uint NumLogin 25
+						string RealName $
+						uint64 UpdatedTime 1512343879453
+
+						declare Traffic
+						{
+							declare RecvTraffic
+							{
+								uint64 BroadcastBytes 7698578
+								uint64 BroadcastCount 91385
+								uint64 UnicastBytes 160903563
+								uint64 UnicastCount 150045
+							}
+							declare SendTraffic
+							{
+								uint64 BroadcastBytes 526588
+								uint64 BroadcastCount 1886
+								uint64 UnicastBytes 7468424
+								uint64 UnicastCount 107528
+							}
+						}
+					}
+					declare tim
+					{
+						byte AuthNtLmSecureHash HUTJI1lesKJn49fo4r78Kw==
+						byte AuthPassword 51vUtkbw98VSGqEeXlWYpoAiOfE=
+						uint AuthType 1
+						uint64 CreatedTime 1529390329196
+						uint64 ExpireTime 0
+						uint64 LastLoginTime 1534977537969
+						string Note $
+						uint NumLogin 32
+						string RealName $
+						uint64 UpdatedTime 1529390329196
+
+						declare Traffic
+						{
+							declare RecvTraffic
+							{
+								uint64 BroadcastBytes 93970281
+								uint64 BroadcastCount 987645
+								uint64 UnicastBytes 610990081
+								uint64 UnicastCount 694345
+							}
+							declare SendTraffic
+							{
+								uint64 BroadcastBytes 3955749
+								uint64 BroadcastCount 24519
+								uint64 UnicastBytes 58213216
+								uint64 UnicastCount 408441
+							}
+						}
+					}
+					declare vizoria
+					{
+						byte AuthNtLmSecureHash bro+iz91vRPKLiHFJRbdpg==
+						byte AuthPassword 94bnr3m13ZuiqkKLfw2JCs2Hcsc=
+						uint AuthType 1
+						uint64 CreatedTime 1439900171694
+						uint64 ExpireTime 0
+						uint64 LastLoginTime 1534911457869
+						string Note $
+						uint NumLogin 956
+						string RealName Vladislav$20Izoria
+						uint64 UpdatedTime 1439900171694
+
+						declare Traffic
+						{
+							declare RecvTraffic
+							{
+								uint64 BroadcastBytes 1326150540
+								uint64 BroadcastCount 10326293
+								uint64 UnicastBytes 9563729330
+								uint64 UnicastCount 10848322
+							}
+							declare SendTraffic
+							{
+								uint64 BroadcastBytes 15929909
+								uint64 BroadcastCount 77283
+								uint64 UnicastBytes 1107131820
+								uint64 UnicastCount 8631713
+							}
+						}
+					}
+				}
+			}
+			declare Traffic
+			{
+				declare RecvTraffic
+				{
+					uint64 BroadcastBytes 57291421101
+					uint64 BroadcastCount 507483976
+					uint64 UnicastBytes 696346861140
+					uint64 UnicastCount 5728755925
+				}
+				declare SendTraffic
+				{
+					uint64 BroadcastBytes 1401402200786
+					uint64 BroadcastCount 18112217316
+					uint64 UnicastBytes 863358482015
+					uint64 UnicastCount 6684664415
+				}
+			}
+		}
+	}
+	declare VirtualLayer3SwitchList
+	{
+	}
+}

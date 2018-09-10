@@ -47,6 +47,14 @@
 
     - name: move softether to folder
       command: mv /tmp/{{ softether_srcdir }} /usr/local
+
+    - name: Copy  softether config
+      template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        mode: 0775
+      with_items: "{{ softether_config }}"
+
   when: softether_available.stat.exists == false
 
 - name: Copy systemd softether config
