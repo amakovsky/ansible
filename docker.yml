@@ -1,0 +1,11 @@
+---
+- name: docker server
+  hosts: docker
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - common
+    - docker
+    - nginx

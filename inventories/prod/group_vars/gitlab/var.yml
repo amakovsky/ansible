@@ -7,7 +7,7 @@ ufw_rules:
     port: 22
     proto: 'tcp'
     from_ip:
-      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+      - 0.0.0.0/0
     to_ip: "{{ inventory_hostname }}"
   - rule: 'allow'
     port: 2222
