@@ -3,7 +3,7 @@ state=0
 hour=$(date +"%H")
 patch="{{ root_dir }}/{{ xtra_dir }}"
 backup="{{ root_dir }}/{{ backup_dir }}"
-name="vps3_xtra"
+name="{{ ansible_host }}"
 pass=$(cat /root/.mysql)
 last=$(ls -td ${patch}/* | head -1)
 ########################################

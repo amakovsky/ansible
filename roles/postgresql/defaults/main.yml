@@ -1,4 +1,5 @@
 ---
+postgresql_backup: schema.sql
 # RHEL/CentOS only. Set a repository to use for PostgreSQL installation.
 postgresql_enablerepo: ""
 
