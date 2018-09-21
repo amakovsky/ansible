@@ -7,7 +7,7 @@
   serial: 1
 
   roles:
-    - common
+#    - common
     - ufw
     - postgresql
     - monit

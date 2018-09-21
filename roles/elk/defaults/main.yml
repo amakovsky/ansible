@@ -1,3 +1,4 @@
 ---
 elk_data_folder: /var/lib/elk
 docker_elk: true
+docker_elk_image: sebp/elk

@@ -4,7 +4,7 @@ xtra_dir: "xtrabackup"
 backup_dir: "backup"
 root_dir: "/root"
 cron_hour: "4"
-telegram_bot: "629640079:AAFS1CtMST9wDJ9XUkk0y3thN3aA1_p8B3o"
+#telegram_bot: "629640079:AAFS1CtMST9wDJ9XUkk0y3thN3aA1_p8B3o"
 
 ufw_rules:
   - rule: 'allow'

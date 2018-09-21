@@ -22,8 +22,6 @@
     state: present
   with_items: "{{ cassandra_key }}"
 
-#- include_tasks: "java.yml"
-
 - name: Install cassandra
   apt:
     name: "{{ item }}"

@@ -1,6 +1,6 @@
 ---
 - name: check exist pg_partman
-  stat: path=/usr/share/postgresql/9.5/extension/pg_partman.control
+  stat: path=/usr/share/postgresql/{{ __postgresql_version }}/extension/pg_partman.control
   register: pg_partman_available
 
 - name: download pg_partman

@@ -7,22 +7,22 @@
 #[gitlab]
 #10.135.74.65 ansible_port=2222
 
-#[postgresql]
-#142.93.137.3 postgresrep_role=master
+[postgresql]
+206.189.105.156 postgresrep_role=master
 #10.135.102.72  postgresrep_role=slave
 
 #[redis]
 #142.93.137.3
 
-#[radius]
-#142.93.163.135
+[radius]
+142.93.163.135
 #1.2.3.4
 
 #[asterisk]
 #142.93.140.78
 
-#[softether]
-#142.93.137.12
+[softether]
+188.166.81.115
 #178.128.250.161
 
 #[zabbix]
@@ -36,5 +36,8 @@
 #[web]
 #178.128.247.74
 
-[full]
-174.138.11.130
+#[full]
+#174.138.11.130
+
+[docker]
+188.166.125.60

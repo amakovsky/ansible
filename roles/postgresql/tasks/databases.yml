@@ -23,7 +23,7 @@
 
 - name: copy template database
   template:
-    src: schema.sql
+    src: "{{ postgresql_backup }}"
     dest: /tmp/schema.sql
   when: not postgresql_server_register_version.stdout
 

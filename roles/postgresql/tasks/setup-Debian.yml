@@ -1,4 +1,16 @@
 ---
+- name: add PostgreSQL key
+  apt_key:
+    url: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
+    state: present
+
+- name: add PostgreSQL repository
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+    - 'deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main'
+
 - name: Ensure PostgreSQL Python libraries are installed.
   apt:
     name: "{{ postgresql_python_library }}"

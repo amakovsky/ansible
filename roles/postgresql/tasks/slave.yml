@@ -16,7 +16,7 @@
   when: getbase_from_master
 
 - name: Create base backup
-  command: pg_basebackup -D {{ __postgresql_data_dir }} -h {{ groups['postgresql'][0] }} -R -P -U {{ rep_user }} --xlog-method=stream
+  command: pg_basebackup -D {{ __postgresql_data_dir }} -h {{ groups['postgresql'][0] }} -R -P -U {{ rep_user }} -X stream
   become: yes
   become_user: postgres
   when: getbase_from_master
