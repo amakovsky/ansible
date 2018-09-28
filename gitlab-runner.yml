@@ -6,8 +6,8 @@
   become_user: root
 
   roles:
-#    - common
-#    - docker
+    - common
+    - docker
 #    - ufw
     - gitlab-runner
 #    - zabbix

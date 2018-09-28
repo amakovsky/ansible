@@ -10,7 +10,7 @@
     state: present
   with_items:
     - 'deb http://dl.google.com/linux/chrome/deb/ stable main'
-    - 'ppa:atareao/telegram'
+#    - 'ppa:atareao/telegram'
 
 - name: Install common programm for workstation
   apt:
@@ -24,7 +24,7 @@
     - compizconfig-settings-manager
     - compiz-plugins-extra
     - google-chrome-stable
-    - telegram
+#    - telegram
     - software-properties-common
 
 - name: check exist skype
@@ -42,5 +42,9 @@
   ignore_errors: True
   args:
     creates: /usr/bin/skypeforlinux
+
+- name: install telegram via snap
+  command: snap install telegram-desktop
+  tags: skip_ansible_lint
 
 - import_tasks: 'phpstorm.yml'

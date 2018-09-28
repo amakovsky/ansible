@@ -1,15 +1,15 @@
 ---
+# Variable configuration.
+- include_tasks: variables.yml
+
 - name: Check if postgresql is installed
   environment:
     LC_MESSAGES: 'C'
-  shell: dpkg-query -W -f='${Version}\n' 'postgresql' | grep -v '^$'
+  shell: dpkg-query -W -f='${Version}\n' 'postgresql-{{ postgresql_version }}' | grep -v '^$'
   register: postgresql_server_register_version
   check_mode: no
   changed_when: False
   failed_when: False
-
-# Variable configuration.
-- include_tasks: variables.yml
 
 # Setup/install tasks.
 - include_tasks: setup-RedHat.yml

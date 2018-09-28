@@ -1,0 +1,37 @@
+---
+- name: check exist gitlab-runner
+  stat:
+    path: "/usr/bin/gitlab-runner"
+  changed_when: False
+  failed_when: False
+  register: gitlab_runner_available
+
+- name: Download GitLab repository installation script
+  get_url:
+    url: "{{ gitlab_repository_installation_script_url }}"
+    dest: /tmp/gitlab_install_repository.sh
+    validate_certs: "{{ gitlab_download_validate_certs }}"
+  when: gitlab_runner_available.stat.exists == false
+
+- name: Install GitLab repository
+  command: bash /tmp/gitlab_install_repository.sh
+  when: gitlab_runner_available.stat.exists == false
+
+- name: Install gitlab-runner package
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+    - gitlab-runner
+
+- name: register runner
+  command: "gitlab-runner register \
+    --url 'http://{{ gitlab_name }}' \
+    --registration-token '{{ gitlab_token }}' \
+    --non-interactive \
+    --locked='false' \
+    --name 'Docker Runner' \
+    --executor 'docker' \
+    --docker-dns '10.12.25.1' \
+    --docker-image 'alpine:latest' "
+  when: gitlab_runner_register
