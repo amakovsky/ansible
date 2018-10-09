@@ -1,0 +1,14 @@
+---
+- name: Download and unarchive a harbor source cod
+  unarchive:
+    src: "{{ harbor_source_url }}"
+    dest: "{{ harbor_dir }}"
+    remote_src: yes
+
+- name: Configure global settings.
+  lineinfile:
+    dest: "{{ harbor_dir }}/harbor/harbor.cfg"
+    regexp: "^#?{{ item.option }}.+$"
+    line: "{{ item.option }} = {{ item.value }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ harbor_global_config_options }}"

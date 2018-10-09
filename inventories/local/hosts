@@ -38,7 +38,10 @@
 [web]
 127.0.0.1 ansible_port=2222
 
-[test]
+#[test]
+#10.100.198.5
+
+[docker]
 10.100.198.5
 
 [consul:children]

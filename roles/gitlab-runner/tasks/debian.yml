@@ -30,8 +30,14 @@
     --registration-token '{{ gitlab_token }}' \
     --non-interactive \
     --locked='false' \
-    --name 'Docker Runner' \
-    --executor 'docker' \
-    --docker-dns '10.12.25.1' \
-    --docker-image 'alpine:latest' "
+    --name 'Shell Runner' \
+    --executor 'shell' "
+#    --docker-dns '10.12.25.1' \
+#    --docker-image 'alpine:latest' "
   when: gitlab_runner_register
+
+- name: adding existing user gitlab-runner to group sudo
+  user:
+    name: gitlab-runner
+    groups: docker
+    append: yes

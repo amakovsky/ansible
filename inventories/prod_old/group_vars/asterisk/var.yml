@@ -1,0 +1,59 @@
+---
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 5060
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+    to_ip: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+
+asterisk_optdir: /opt/asterisk
+
+asterisk_template:
+  - src: 'etc/asterisk.conf'
+    dest: '/etc/asterisk/asterisk.conf'
+  - src: 'etc/cdr.conf'
+    dest: '/etc/asterisk/cdr.conf'
+  - src: 'etc/cdr_custom.conf'
+    dest: '/etc/asterisk/cdr_custom.conf'
+  - src: 'etc/extensions.conf'
+    dest: '/etc/asterisk/extensions.conf'
+  - src: 'etc/logger.conf'
+    dest: '/etc/asterisk/logger.conf'
+  - src: 'etc/modules.conf'
+    dest: '/etc/asterisk/modules.conf'
+  - src: 'etc/sip.conf'
+    dest: '/etc/asterisk/sip.conf'
+  - src: 'opt/call.url'
+    dest: '{{ asterisk_optdir }}/call.url'
+  - src: 'opt/dds.sh'
+    dest: '{{ asterisk_optdir }}/dds.sh'
+  - src: 'opt/status.sh'
+    dest: '{{ asterisk_optdir }}/status.sh'
+  - src: 'opt/status.url'
+    dest: '{{ asterisk_optdir }}/status.url'
+
+del_config:
+  - pjsip.conf
+  - queues.conf
+  - indications.conf
+  - confbridge.conf
+  - voicemail.conf
+  - musiconhold.conf
+
+asterisk_exec:
+  - file: "{{ asterisk_optdir }}/status.sh"
+    name: "Check Asterisk trunks"
+    job: "{{ asterisk_optdir }}/status.sh >> /var/log/asterisk/status.log 2>&1"
+  - file: "{{ asterisk_optdir }}/dds.sh"
+    name: "Check Asterisk balance movement"
+    minute: "0"
+    hour: "5"
+    day: "1"
+    job: "{{ asterisk_optdir }}/dds.sh >> /var/log/asterisk/dds.log 2>&1"
