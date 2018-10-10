@@ -25,6 +25,7 @@
     - python-pip
 #    - libcurl3
     - zabbix-agent
+  notify: restart zabbix
 
 - name: install pip-zabbix
   pip:

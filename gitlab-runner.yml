@@ -7,7 +7,7 @@
 
   roles:
     - common
-    - docker
-#    - ufw
-    - gitlab-runner
-#    - zabbix
+#    - docker
+##    - ufw
+#    - gitlab-runner
+##    - zabbix

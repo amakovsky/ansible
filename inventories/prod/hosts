@@ -8,7 +8,7 @@
 10.135.56.169
 
 [gitlab]
-10.135.55.36 ansible_port=2222
+10.135.11.170 ansible_port=2222
 
 [gitlab-runner]
 10.135.8.173

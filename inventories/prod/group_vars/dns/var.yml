@@ -10,14 +10,14 @@ list_public: false
 records:
   local:
     ns1:
-      forward: 10.135.1.24
+      forward: 10.135.101.26
       type: A
-      last: 24.1
+      last: 26.101
       rev: 135.10.in-addr.arpa
     zabbix:
-      forward: 10.135.81.75
+      forward: 10.135.56.169
       type: A
-      last: 75.81
+      last: 169.56
       rev: 135.10.in-addr.arpa
     runner1:
       forward: 10.135.8.173
@@ -27,9 +27,9 @@ records:
 
   gettwifi:
     "@":
-      forward: 10.135.55.36
+      forward: 10.135.11.170
       type: A
-      last: 36.55
+      last: 170.11
       rev: 135.10.in-addr.arpa
 
 zones:
@@ -55,4 +55,9 @@ ufw_rules:
     proto: 'udp'
     from_ip:
       - 0.0.0.0/0
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+    from_ip: "{{ groups['zabbix'] }}"
     to_ip: "{{ inventory_hostname }}"

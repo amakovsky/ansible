@@ -1,0 +1,12 @@
+---
+- fetch:
+    src: /etc/netplan/50-cloud-init.yaml
+    dest: /tmp/50-cloud-init.yaml
+
+- name: Include vars of stuff.yaml into the 'stuff' variable (2.2).
+  include_vars:
+    file: /tmp/50-cloud-init.yaml
+    name: cloud
+
+- debug:
+    msg: "{{ cloud }}"
