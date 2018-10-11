@@ -23,8 +23,9 @@
     state: present
   with_items:
     - python-pip
-    - libcurl3
+#    - libcurl3
     - zabbix-agent
+  notify: restart zabbix
 
 - name: install pip-zabbix
   pip:
@@ -104,7 +105,7 @@
     - { path: '^(.*)TLSAccept=unencrypted', regexp: 'TLSAccept=unencrypted,psk' }
     - { path: '^(.*)TLSPSKIdentity=', regexp: 'TLSPSKIdentity=PSK {{ ansible_nodename }}' }
     - { path: '^(.*)TLSPSKFile=', regexp: 'TLSPSKFile=/etc/zabbix/zabbix_agentd.psk' }
-    - { path: '^(.*)Include=/etc/zabbix/zabbix_agentd.conf.d/', regexp: 'Include=/etc/zabbix/zabbix_agentd.d/\*\.conf' }
+#    - { path: '^(.*)Include=/etc/zabbix/zabbix_agentd.conf.d/', regexp: 'Include=/etc/zabbix/zabbix_agentd.d/*.conf' }
   when: zabbix_available.stat.exists == false
 
 - name: copy zabbix_agent auto register script

@@ -1,11 +1,14 @@
-#[openvpn]
-#142.93.137.3 private_ip=10.133.64.231
+[openvpn]
+104.248.33.80 private_ip=10.135.103.165
 
 #[dns]
 #142.93.131.15
 
 #[gitlab]
 #10.135.74.65 ansible_port=2222
+
+[gitlab-runner]
+195.201.120.194 ansible_port=10021
 
 [postgresql]
 206.189.105.156 postgresrep_role=master
@@ -39,5 +42,5 @@
 #[full]
 #174.138.11.130
 
-[docker]
-188.166.125.60
+#[docker]
+#188.166.125.60

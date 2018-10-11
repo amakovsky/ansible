@@ -1,0 +1,41 @@
+---
+- name: fetch netplan file from server
+  fetch:
+    src: /etc/netplan/50-cloud-init.yaml
+    dest: /tmp/50-cloud-init.yaml
+    flat: true
+
+- name: load netplan file
+  include_vars:
+    file: /tmp/50-cloud-init.yaml
+    name: cloud
+
+#- debug:
+#    msg: "{{ item }}"
+#  with_items: "{{ cloud.network.ethernets.eth0.nameservers.addresses[0] }}"
+
+- name: edit netpaln config file for all servers
+  lineinfile:
+    backup: yes
+    path: /etc/netplan/50-cloud-init.yaml
+    regexp: "{{ item.path }}"
+    line: "{{ item.regexp }}"
+  with_items:
+    - { path: "^.*{{ cloud.network.ethernets.eth0.nameservers.addresses[0] }}", regexp: "                - {{ groups['dns'][0] }}" }
+  when: cloud.network.ethernets.eth0.nameservers.addresses[0] != groups['dns'][0] and inventory_hostname != groups['dns'][0]
+  notify: netplan apply
+
+- name: edit netpaln config file for dns server
+  lineinfile:
+    backup: yes
+    path: /etc/netplan/50-cloud-init.yaml
+    regexp: "{{ item.path }}"
+    line: "{{ item.regexp }}"
+  with_items:
+    - { path: "^.*{{ cloud.network.ethernets.eth0.nameservers.addresses[0] }}", regexp: "                - 127.0.0.1" }
+  when: cloud.network.ethernets.eth0.nameservers.addresses[0] != '127.0.0.1' and inventory_hostname == groups['dns'][0]
+  notify: netplan apply
+
+- name: validate netpaln conf
+  command: netplan try
+  changed_when: false

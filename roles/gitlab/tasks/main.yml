@@ -1,7 +1,7 @@
 ---
 - name: Copy ssl cert for gitlab
   copy:
-    src: "{{ gitlab_cert_source }}"
+    src: "../../files/{{ gitlab_cert_source }}"
     dest: /srv
 
 - name: Copy site configuration

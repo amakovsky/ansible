@@ -1,0 +1,22 @@
+---
+
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 6379
+    proto: 'tcp'
+    from_ip:
+      - "{{ groups['redis'], groups['web'], hostvars[groups['openvpn'][0]].private_ip] |flatten }}"
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 26379
+    proto: 'tcp'
+    from_ip:
+      - "{{ groups['redis'], groups['web'], hostvars[groups['openvpn'][0]].private_ip] |flatten }}"
+    to_ip: "{{ inventory_hostname }}"
+

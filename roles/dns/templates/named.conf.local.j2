@@ -1,4 +1,4 @@
-{% for key, value in zones.iteritems() %}
+{% for key, value in zones.items() %}
 zone "{{ value.name }}" IN {
 type master;
 file "/etc/bind/zones/db.{{ value.name }}";

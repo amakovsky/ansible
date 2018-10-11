@@ -1,7 +1,7 @@
 ---
 - name: Download xtrabackup
   get_url:
-    url: https://repo.percona.com/apt/percona-release_0.1-4.{{ ansible_distribution_release }}_all.deb
+    url: https://repo.percona.com/apt/percona-release_0.1-6.{{ ansible_distribution_release }}_all.deb
     dest: /tmp/percona-release_0.1-6.{{ ansible_distribution_release }}_all.deb
     mode: 0740
 

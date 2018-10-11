@@ -1,5 +1,8 @@
 ---
 gitlab_name: gitlab.gettwifi.com
-gitlab_tocken: 123
+gitlab_token: 123
 gitlab_cert_source: self
-docker_runner_register: false
+gitlab_runner_register: false
+gitlab_runnet_type: docker
+gitlab_repository_installation_script_url: "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh"
+gitlab_download_validate_certs: true

@@ -1,0 +1,3 @@
+---
+ansible_user: vagrant
+enable_local_dns: false

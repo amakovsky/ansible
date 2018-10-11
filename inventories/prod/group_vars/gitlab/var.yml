@@ -8,7 +8,7 @@ ufw_rules:
     proto: 'tcp'
     from_ip:
       - 0.0.0.0/0
-    to_ip: "{{ inventory_hostname }}"
+#    to_ip: "{{ inventory_hostname }}"
   - rule: 'allow'
     port: 2222
     proto: 'tcp'

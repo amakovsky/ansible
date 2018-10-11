@@ -1,15 +1,21 @@
 ---
+- name: add docker key
+  apt_key:
+    url: "https://download.docker.com/linux/ubuntu/gpg"
+    state: present
+
 - name: add repository for docker
   apt_repository:
     repo: "{{ docker_repository }}"
     state: present
+#    validate_certs: no
 
-- name: add key for docker repositories
-  apt_key:
-    keyserver: "{{ item.keyserver }}"
-    id: "{{ item.id }}"
-    state: present
-  with_items: "{{ docker_key }}"
+#- name: add key for docker repositories
+#  apt_key:
+#    keyserver: "{{ item.keyserver }}"
+#    id: "{{ item.id }}"
+#    state: present
+#  with_items: "{{ docker_key }}"
 
 - name: Install common docker package
   apt:
@@ -17,7 +23,7 @@
     update_cache: yes
 #    state: latest
   with_items:
-    - docker-engine
+    - docker-ce
     - python-setuptools
     - python-pip
 

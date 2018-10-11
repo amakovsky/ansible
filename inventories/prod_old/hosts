@@ -1,0 +1,18 @@
+[openvpn]
+142.93.106.194 private_ip=10.135.76.89
+
+[dns]
+10.135.1.24
+
+[zabbix]
+10.135.81.75
+
+[gitlab]
+10.135.55.36 ansible_port=2222
+
+[gitlab-runner]
+10.135.8.173
+
+[postgresql]
+10.135.102.140 postgresrep_role=master
+10.135.102.72  postgresrep_role=slave

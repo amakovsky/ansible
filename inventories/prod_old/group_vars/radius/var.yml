@@ -1,0 +1,85 @@
+---
+postgrs_conf: "{{ inventory_dir }}/group_vars/postgresql/vault.yml"
+postgres_server: "{{ groups['postgresql'][0] }}"
+
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: "{{ karma_access_points_auth_port }}"
+    proto: 'udp'
+    from_ip:
+      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+  - rule: 'allow'
+    port: "{{ karma_users_chilli_auth_port }}"
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: "{{ karma_users_chilli_acct_port }}"
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: "{{ karma_users_cisco_auth_port }}"
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: "{{ karma_users_cisco_acct_port }}"
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: "{{ karma_users_mikrotik_auth_port }}"
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: "{{ karma_users_mikrotik_acct_port }}"
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+
+radius_template:
+  - dir: mods-available
+    link: 'mods-enabled'
+    template:
+      - src: 'sql'
+        dest: 'sql'
+  - dir: mods-config
+    template:
+      - src: 'schema.sql'
+        dest: 'schema.sql'
+  - dir: sites-available
+    link: 'sites-enabled'
+    template:
+      - src: 'karma-access-points'
+        dest: 'karma-access-points'
+      - src: 'karma-users-chilli'
+        dest: 'karma-users-chilli'
+      - src: 'karma-users-cisco'
+        dest: 'karma-users-cisco'
+      - src: 'karma-users-mikrotik'
+        dest: 'karma-users-mikrotik'
+
+unlink_config:
+  - '/etc/freeradius/sites-enabled/default'
+  - '/etc/freeradius/sites-enabled/inner-tunnel'
+  - '/etc/freeradius/mods-enabled/eap'
+
+radius_file:
+  - src: 'freeradius/mods-config/queries.conf'
+    dest: '/etc/freeradius/mods-config/queries.conf'
+
+karma_users_chilli_auth_port: 17751
+karma_users_chilli_acct_port: 17752
+karma_users_cisco_auth_port: 17761
+karma_users_cisco_acct_port: 17762
+karma_users_mikrotik_auth_port: 17771
+karma_users_mikrotik_acct_port: 17772
+karma_access_points_auth_port: 17781

@@ -1,0 +1,43 @@
+---
+#- name: Copy ssl cert for gitlab
+#  copy:
+#    src: "{{ gitlab_cert_source }}"
+#    dest: /srv
+
+- name: Copy site configuration
+  template:
+    src: docker-compose.yml
+    dest: ~/docker-compose.yml
+
+- name: build and start docker containers
+  docker_service:
+    project_src: /root
+    build: yes
+    restarted: true
+
+- name: register runner
+  docker_container:
+    name: register-runner
+    image: gitlab/gitlab-runner:latest
+    command: "register \
+    --non-interactive \
+    --locked='false' \
+    --name 'Docker Runner' \
+    --executor 'docker' \
+    --docker-privileged \
+    --docker-tlsverify=true \
+    --docker-image 'docker:stable-dind' \
+    --docker-dns '10.135.101.26' \
+    --docker-volumes '/var/run/docker.sock:/var/run/docker.sock'"
+    state: started
+    restart_policy: no
+    volumes:
+    - '/srv/gitlab-runner/config:/etc/gitlab-runner'
+#    - '/srv/{{ gitlab_cert_source }}:/var/ssl'
+    env:
+      CI_SERVER_URL: "https://{{ gitlab_name }}/"
+      REGISTRATION_TOKEN: "{{ gitlab_tocken }}"
+#      CA_CERTIFICATES_PATH: /var/ssl/rootCA.crt
+    networks:
+      - name: gitlab-runner-net
+  when: gitlab_runner_register
