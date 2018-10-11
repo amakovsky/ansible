@@ -24,6 +24,21 @@ records:
       type: A
       last: 173.8
       rev: 135.10.in-addr.arpa
+    db-master:
+      forward: 10.135.72.192
+      type: A
+      last: 192.72
+      rev: 135.10.in-addr.arpa
+    db-slave:
+      forward: 10.135.20.228
+      type: A
+      last: 228.20
+      rev: 135.10.in-addr.arpa
+    openvpn1:
+      forward: 10.135.16.158
+      type: A
+      last: 158.16
+      rev: 135.10.in-addr.arpa
 
   gettwifi:
     "@":

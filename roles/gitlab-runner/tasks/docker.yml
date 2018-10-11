@@ -1,8 +1,8 @@
 ---
-- name: Copy ssl cert for gitlab
-  copy:
-    src: "{{ gitlab_cert_source }}"
-    dest: /srv
+#- name: Copy ssl cert for gitlab
+#  copy:
+#    src: "{{ gitlab_cert_source }}"
+#    dest: /srv
 
 - name: Copy site configuration
   template:
@@ -24,18 +24,20 @@
     --locked='false' \
     --name 'Docker Runner' \
     --executor 'docker' \
-    --tls-ca-file '/var/ssl/rootCA.crt' \
     --docker-privileged \
+    --docker-tlsverify=true \
     --docker-image 'docker:stable-dind' \
-    --docker-dns '10.135.1.24' \
+    --docker-dns '10.135.101.26' \
     --docker-volumes '/var/run/docker.sock:/var/run/docker.sock'"
     state: started
     restart_policy: no
     volumes:
     - '/srv/gitlab-runner/config:/etc/gitlab-runner'
-    - '/srv/{{ gitlab_cert_source }}:/var/ssl'
+#    - '/srv/{{ gitlab_cert_source }}:/var/ssl'
     env:
       CI_SERVER_URL: "https://{{ gitlab_name }}/"
       REGISTRATION_TOKEN: "{{ gitlab_tocken }}"
-      CA_CERTIFICATES_PATH: /var/ssl/rootCA.crt
+#      CA_CERTIFICATES_PATH: /var/ssl/rootCA.crt
+    networks:
+      - name: gitlab-runner-net
   when: gitlab_runner_register

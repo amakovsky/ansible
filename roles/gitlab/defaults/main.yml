@@ -5,4 +5,4 @@ spaces_access_key: ""
 spaces_secret_key: ""
 spaces_endpoint: ""
 space_name: ""
-gitlab_cert_source: self
+gitlab_cert_source: gettwifi.com

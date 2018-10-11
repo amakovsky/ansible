@@ -27,14 +27,27 @@ ufw_rules:
   - rule: 'allow'
     port: 5432
     proto: 'tcp'
-    from_ip: "{{ [groups['radius'], groups['postgresql'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
+    from_ip: "{{ [groups['postgresql'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
+#    from_ip: "{{ [groups['radius'], groups['postgresql'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 5432
+    proto: 'tcp'
+    from_ip:
+      - 89.108.106.171
+      - 89.108.86.192
+    to_ip: "{{ ansible_default_ipv4.address }}"
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+    from_ip: "{{ groups['zabbix'] }}"
     to_ip: "{{ inventory_hostname }}"
 
 postgresql_global_config_options:
   - option: unix_socket_directories
     value: '{{ postgresql_unix_socket_directories | join(",") }}'
   - option: listen_addresses
-    value: '{{ inventory_hostname }}, localhost'
+    value: '{{ansible_default_ipv4.address}}, {{ inventory_hostname }}, localhost'
   - option: shared_buffers
     value: '{{ (ansible_memtotal_mb * 0.25)|int|abs }}MB'
   - option: max_connections

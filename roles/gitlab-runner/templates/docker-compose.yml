@@ -18,10 +18,10 @@ services:
     volumes:
     - /srv/gitlab-runner/config:/etc/gitlab-runner
     - /var/run/docker.sock:/var/run/docker.sock
-    - '/srv/{{ gitlab_cert_source }}:/var/ssl'
+#    - '/srv/{{ gitlab_cert_source }}:/var/ssl'
     environment:
     - DOCKER_HOST=tcp://dind:2375
-    - CA_CERTIFICATES_PATH=/var/ssl/rootCA.crt
+#    - CA_CERTIFICATES_PATH=/var/ssl/rootCA.crt
     networks:
     - gitlab-runner-net
 
