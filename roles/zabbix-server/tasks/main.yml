@@ -103,6 +103,10 @@
 #  systemd:
 #    enabled: yes
 #    name: zabbix-server.service
+- name: enable zabbix-server
+  systemd:
+    enabled: yes
+    name: zabbix-server.service
 
 - name: enable zabbix-client
   systemd:
