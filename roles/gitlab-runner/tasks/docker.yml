@@ -15,6 +15,10 @@
     build: yes
     restarted: true
 
+- name: Create a network
+  docker_network:
+    name: gitlab-runner-net
+
 - name: register runner
   docker_container:
     name: register-runner
