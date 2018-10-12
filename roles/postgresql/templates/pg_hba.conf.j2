@@ -17,9 +17,9 @@ host    {{ rep_db }}    {{ rep_user }}  {{ item }}/32 trust
 {% if groups['radius'] is defined %}
 {% for item in groups['radius'] %}
 {% for db in postgresql_databases %}
-{% if db.owner == radius_user %}
+#{% if db.owner == radius_user %}
 host    {{ db.name }}    {{ radius_user }}  {{ item }}/32 md5
-{% endif %}
+#{% endif %}
 {% endfor %}
 {% endfor %}
 {% endif %}
@@ -32,6 +32,14 @@ host    {{ db.name }}    {{ db.owner }}  {{ hostvars[groups['openvpn'][0]].priva
 
 {% if groups['web'] is defined %}
 {% for item in groups['web'] %}
+{% for db in postgresql_databases %}
+host    {{ db.name }}    {{ db.owner }}  {{ item }}/32 md5
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+{% if postgresql_external_connect is defined %}
+{% for item in postgresql_external_connect %}
 {% for db in postgresql_databases %}
 host    {{ db.name }}    {{ db.owner }}  {{ item }}/32 md5
 {% endfor %}

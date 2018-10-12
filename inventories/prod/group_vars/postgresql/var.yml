@@ -1,21 +1,39 @@
 ---
 postgresql_users:
-  - name: "{{ hotspot_user }}"
-    password: "{{ hotspot_user_pass }}"
-  - name: "{{ radius_user }}"
-    password: "{{ radius_user_pass }}"
+  - name: "{{ gw_hotspot_user }}"
+    password: "{{ gw_hotspot_user_pass }}"
+  - name: "{{ gw_radius_user }}"
+    password: "{{ gw_radius_user_pass }}"
+  - name: "{{ ad_hotspot_user }}"
+    password: "{{ ad_hotspot_user_pass }}"
+  - name: "{{ ad_radius_user }}"
+    password: "{{ ad_radius_user_pass }}"
 
 postgresql_databases:
-  - name: hotspot
-    owner: "{{ hotspot_user }}"
-  - name: radius_users_mikrotik
-    owner: "{{ radius_user }}"
-  - name: radius_users_cisco
-    owner: "{{ radius_user }}"
-  - name: radius_users_chilli
-    owner: "{{ radius_user }}"
-  - name: radius_access_points
-    owner: "{{ radius_user }}"
+  - name: gw_hotspot
+    owner: "{{ gw_hotspot_user }}"
+  - name: gw_radius_users_mikrotik
+    owner: "{{ gw_radius_user }}"
+  - name: gw_radius_users_cisco
+    owner: "{{ gw_radius_user }}"
+  - name: gw_radius_users_chilli
+    owner: "{{ gw_radius_user }}"
+  - name: gw_radius_access_points
+    owner: "{{ gw_radius_user }}"
+  - name: ad_hotspot
+    owner: "{{ ad_hotspot_user }}"
+  - name: ad_radius_users_mikrotik
+    owner: "{{ ad_radius_user }}"
+  - name: ad_radius_users_cisco
+    owner: "{{ ad_radius_user }}"
+  - name: ad_radius_users_chilli
+    owner: "{{ ad_radius_user }}"
+  - name: ad_radius_access_points
+    owner: "{{ ad_radius_user }}"
+
+postgresql_external_connect:
+  - 89.108.106.171
+  - 89.108.86.192
 
 ufw_rules:
   - rule: 'allow'
