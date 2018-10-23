@@ -1,4 +1,4 @@
-server karma_users_cisco {
+server gw_karma_users_cisco {
   listen {
     type = auth
     ipaddr = {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
@@ -21,7 +21,7 @@ server karma_users_cisco {
     preprocess
     
     #auth_log
-    sql_users_cisco
+    gw_sql_users_cisco
     
     pap
   }
@@ -40,7 +40,7 @@ server karma_users_cisco {
   accounting {
     #detail
     #sql_log
-    sql_users_cisco
+    gw_sql_users_cisco
   }
   
   #session {

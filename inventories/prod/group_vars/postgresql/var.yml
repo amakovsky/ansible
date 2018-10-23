@@ -45,7 +45,7 @@ ufw_rules:
   - rule: 'allow'
     port: 5432
     proto: 'tcp'
-    from_ip: "{{ [groups['postgresql'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
+    from_ip: "{{ [groups['postgresql'], groups['radius'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
 #    from_ip: "{{ [groups['radius'], groups['postgresql'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
     to_ip: "{{ inventory_hostname }}"
   - rule: 'allow'

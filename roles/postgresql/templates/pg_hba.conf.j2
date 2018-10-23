@@ -17,9 +17,7 @@ host    {{ rep_db }}    {{ rep_user }}  {{ item }}/32 trust
 {% if groups['radius'] is defined %}
 {% for item in groups['radius'] %}
 {% for db in postgresql_databases %}
-#{% if db.owner == radius_user %}
-host    {{ db.name }}    {{ radius_user }}  {{ item }}/32 md5
-#{% endif %}
+host    {{ db.name }}    {{ db.owner }}  {{ item }}/32 md5
 {% endfor %}
 {% endfor %}
 {% endif %}

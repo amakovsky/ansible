@@ -1,4 +1,4 @@
-server karma_users_mikrotik {
+server gw_karma_users_mikrotik {
   listen {
     type = auth
     ipaddr = {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
@@ -21,7 +21,7 @@ server karma_users_mikrotik {
     preprocess
     
     #auth_log
-    sql_users_mikrotik
+    gw_sql_users_mikrotik
     
     pap
   }
@@ -40,7 +40,7 @@ server karma_users_mikrotik {
   accounting {
     #detail
     #sql_log
-    sql_users_mikrotik
+    gw_sql_users_mikrotik
   }
   
   #session {

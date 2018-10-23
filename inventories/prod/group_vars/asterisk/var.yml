@@ -12,6 +12,11 @@ ufw_rules:
     from_ip:
       - 0.0.0.0/0
     to_ip: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+    from_ip: "{{ groups['zabbix'] }}"
+    to_ip: "{{ inventory_hostname }}"
 
 asterisk_optdir: /opt/asterisk
 
