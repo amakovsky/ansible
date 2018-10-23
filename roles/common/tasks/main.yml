@@ -33,5 +33,5 @@
 - import_tasks: defaults.yml
 - import_tasks: netplan_dns.yml
   when: ansible_distribution_release == 'bionic' and enable_local_dns
-#- import_tasks: dns.yml
-#  when: enable_local_dns
+- import_tasks: dns.yml
+  when: ansible_distribution_release != 'bionic' and enable_local_dns

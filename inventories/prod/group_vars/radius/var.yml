@@ -44,6 +44,11 @@ ufw_rules:
     proto: 'udp'
     from_ip:
       - 0.0.0.0/0
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+    from_ip: "{{ groups['zabbix'] }}"
+    to_ip: "{{ inventory_hostname }}"
 
 radius_template:
   - dir: mods-available

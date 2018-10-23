@@ -20,9 +20,9 @@ records:
       last: 169.56
       rev: 135.10.in-addr.arpa
     runner1:
-      forward: 10.135.8.173
+      forward: 10.135.94.37
       type: A
-      last: 173.8
+      last: 37.94
       rev: 135.10.in-addr.arpa
     db-master:
       forward: 10.135.72.192

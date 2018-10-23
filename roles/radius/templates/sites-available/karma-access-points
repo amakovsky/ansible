@@ -1,4 +1,4 @@
-server karma_access_points {
+server gw_karma_access_points {
   listen {
     type = auth
     ipaddr = {{ inventory_hostname }}
@@ -14,7 +14,7 @@ server karma_access_points {
   authorize {
     preprocess
     
-    sql_access_points
+    gw_sql_access_points
     
     pap
   }

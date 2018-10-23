@@ -1,4 +1,4 @@
-server karma_users_chilli {
+server gw_karma_users_chilli {
   listen {
     type = auth
     ipaddr = {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
@@ -21,7 +21,7 @@ server karma_users_chilli {
     preprocess
 
     #auth_log
-    sql_users_chilli
+    gw_sql_users_chilli
 
     pap
   }
@@ -40,7 +40,7 @@ server karma_users_chilli {
   accounting {
     #detail
     #sql_log
-    sql_users_chilli
+    gw_sql_users_chilli
   }
 
   #session {

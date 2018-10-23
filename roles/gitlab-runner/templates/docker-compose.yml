@@ -47,6 +47,13 @@ services:
 #    - REGISTRATION_TOKEN={{ gitlab_tocken }}
 #    - CA_CERTIFICATES_PATH=/var/ssl/rootCA.crt
 
+#networks:
+#  gitlab-runner-net:
+#    driver: "bridge"
+#networks:
+#  default:
+#    external:
+#      name: gitlab-runner-net
 networks:
   gitlab-runner-net:
-    driver: "bridge"
+    external: true

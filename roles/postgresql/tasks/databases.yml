@@ -27,13 +27,13 @@
     dest: /tmp/schema.sql
   when: not postgresql_server_register_version.stdout
 
-- name: restore PostgreSQL databases on first install.
-  postgresql_db:
-    name: "{{ item.name }}"
-    state: restore
-    target: /tmp/schema.sql
-  with_items: "{{ postgresql_databases }}"
-  become: yes
-  no_log: true
-  become_user: "{{ postgresql_user }}"
-  when: not postgresql_server_register_version.stdout and item.name != 'hotspot'
+#- name: restore PostgreSQL databases on first install.
+#  postgresql_db:
+#    name: "{{ item.name }}"
+#    state: restore
+#    target: /tmp/schema.sql
+#  with_items: "{{ postgresql_databases }}"
+#  become: yes
+#  no_log: true
+#  become_user: "{{ postgresql_user }}"
+#  when: not postgresql_server_register_version.stdout #and item.name != 'hotspot'

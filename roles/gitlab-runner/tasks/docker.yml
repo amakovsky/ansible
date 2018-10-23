@@ -9,15 +9,15 @@
     src: docker-compose.yml
     dest: ~/docker-compose.yml
 
+- name: Create a network
+  docker_network:
+    name: gitlab-runner-net
+
 - name: build and start docker containers
   docker_service:
     project_src: /root
     build: yes
     restarted: true
-
-- name: Create a network
-  docker_network:
-    name: gitlab-runner-net
 
 - name: register runner
   docker_container:

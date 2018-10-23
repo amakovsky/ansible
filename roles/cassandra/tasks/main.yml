@@ -10,17 +10,17 @@
   failed_when: False
   register: cassandra_available
 
-- name: add repository for cassandra
-  apt_repository:
-    repo: "{{ cassandra_repository }}"
-    state: present
-
 - name: add key for cassandra repositories
   apt_key:
     keyserver: "{{ item.keyserver }}"
     id: "{{ item.id }}"
     state: present
   with_items: "{{ cassandra_key }}"
+
+- name: add repository for cassandra
+  apt_repository:
+    repo: "{{ cassandra_repository }}"
+    state: present
 
 - name: Install cassandra
   apt:

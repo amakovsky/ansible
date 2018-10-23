@@ -10,3 +10,4 @@
     - ufw
     - radius
     - monit
+    - zabbix

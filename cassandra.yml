@@ -1,5 +1,5 @@
 ---
-- name: softether server
+- name: cassandra server
   hosts: cassandra
   become: yes
   become_method: sudo
@@ -9,3 +9,4 @@
     - common
     - ufw
     - cassandra
+    - zabbix
