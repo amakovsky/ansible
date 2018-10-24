@@ -1,0 +1,14 @@
+---
+- name: test server
+  hosts: test
+  become: yes
+  become_method: sudo
+  become_user: root
+  serial: 1
+
+  roles:
+    - common
+    - ufw
+    - postgresql
+    - monit
+    - zabbix

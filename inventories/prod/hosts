@@ -33,3 +33,6 @@
 [radius]
 10.135.67.41
 10.135.90.66
+
+[test]
+10.135.17.78 postgresrep_role=skip

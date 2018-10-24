@@ -49,6 +49,26 @@
     mysql: 1
   when: mysql_available.stat.exists == true
 
+#- name: Check for postgres
+#  command: which postgres
+#  register: postgres_avail
+#  check_mode: no
+#  changed_when: false  # Never report as changed
+#  ignore_errors: yes
+- name: Check if postgresql is installed
+  environment:
+    LC_MESSAGES: 'C'
+  shell: dpkg-query -W -f='${Version}\n' 'postgresql*' | grep -v '^$'
+  register: postgres_avail
+  check_mode: no
+  changed_when: False
+  failed_when: False
+
+- name: Set variable 'postgres'
+  set_fact:
+    postgres: 1
+  when: postgres_avail.rc == 0
+
 - name: create folder for project zabbix
   file:
     path: '{{ item }}'
@@ -143,6 +163,9 @@
 
 - include_tasks: "mysql.yml"
   when: mysql_available.stat.exists == true
+
+- include_tasks: "postgresql.yml"
+  when: postgres == 1
 
 - include_tasks: "mysql_slave.yml"
   when: mysql_slave == 1

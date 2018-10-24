@@ -31,10 +31,6 @@ postgresql_databases:
   - name: ad_radius_access_points
     owner: "{{ ad_radius_user }}"
 
-postgresql_external_connect:
-  - 89.108.106.171
-  - 89.108.86.192
-
 ufw_rules:
   - rule: 'allow'
     port: 22
@@ -48,13 +44,6 @@ ufw_rules:
     from_ip: "{{ [groups['postgresql'], groups['radius'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
 #    from_ip: "{{ [groups['radius'], groups['postgresql'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
     to_ip: "{{ inventory_hostname }}"
-  - rule: 'allow'
-    port: 5432
-    proto: 'tcp'
-    from_ip:
-      - 89.108.106.171
-      - 89.108.86.192
-    to_ip: "{{ ansible_default_ipv4.address }}"
   - rule: 'allow'
     port: 10050
     proto: 'tcp'

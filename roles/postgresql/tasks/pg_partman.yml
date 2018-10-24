@@ -5,6 +5,7 @@
 
 - name: download pg_partman
   get_url:
+#    url: https://github.com/keithf4/pg_partman/archive/v4.0.0.tar.gz
     url: https://github.com/keithf4/pg_partman/archive/v3.1.1.tar.gz
     dest: /tmp/v3.1.1.tar.gz
     mode: 0740
