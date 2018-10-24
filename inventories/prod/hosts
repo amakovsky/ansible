@@ -35,4 +35,4 @@
 10.135.90.66
 
 [test]
-10.135.17.78 postgresrep_role=skip
+10.135.120.175 postgresrep_role=skip

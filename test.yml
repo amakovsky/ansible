@@ -12,3 +12,4 @@
     - postgresql
     - monit
     - zabbix
+    - s3cmd

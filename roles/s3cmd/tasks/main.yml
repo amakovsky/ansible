@@ -1,0 +1,11 @@
+---
+- name: Install s3cmd programm
+  apt:
+    name: s3cmd
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Copy config file
+  template:
+    src: s3cfg.j2
+    dest: ~/.s3cfg
