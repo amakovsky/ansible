@@ -1,33 +1,9 @@
 ---
 - name: Install common programm
   apt:
-    name: "{{ item }}"
+    name: "{{ common_programm }}"
     update_cache: yes
     cache_valid_time: 3600
-#    state: latest
-  with_items:
-    - git
-    - vim
-    - gzip
-    - wget
-    - curl
-    - unzip
-    - zip
-    - htop
-    - iotop
-    - nload
-    - iftop
-    - screen
-    - apt-transport-https
-    - dmidecode
-    - gnupg
-    - build-essential
-    - libcurl4-openssl-dev
-    - ca-certificates
-    - software-properties-common
-    - imagemagick
-    - tzdata
-    - ntp
 
 - import_tasks: bash.yml
 - import_tasks: defaults.yml

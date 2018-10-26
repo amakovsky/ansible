@@ -11,3 +11,27 @@ locales:
   - ru_RU.UTF-8
 
 enable_local_dns: true
+
+common_programm:
+    - git
+    - vim
+    - gzip
+    - wget
+    - curl
+    - unzip
+    - zip
+    - htop
+    - iotop
+    - nload
+    - iftop
+    - screen
+    - apt-transport-https
+    - dmidecode
+    - gnupg
+    - build-essential
+    - libcurl4-openssl-dev
+    - ca-certificates
+    - software-properties-common
+    - imagemagick
+    - tzdata
+    - ntp

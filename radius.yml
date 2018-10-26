@@ -1,5 +1,5 @@
 ---
-- name: postgresql server
+- name: radius server
   hosts: radius
   become: yes
   become_method: sudo

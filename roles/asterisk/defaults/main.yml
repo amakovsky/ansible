@@ -1,4 +1,15 @@
 ---
+asterisk_pre_requisites:
+    - build-essential
+    - libssl-dev
+    - libncurses5-dev
+    - libnewt-dev
+    - libxml2-dev
+    - linux-headers-{{ ansible_kernel }}
+    - libsqlite3-dev
+    - uuid-dev
+    - libjansson-dev
+
 del_config: []
 #del_config:
 #  - pjsip.conf

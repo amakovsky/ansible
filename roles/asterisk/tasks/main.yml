@@ -8,18 +8,18 @@
 
 - name: Install asterisk pre-requisites via apt
   apt:
-    name: "{{item}}"
+    name: "{{ asterisk_pre_requisites }}"
     state: present
-  with_items:
-    - build-essential
-    - libssl-dev
-    - libncurses5-dev
-    - libnewt-dev
-    - libxml2-dev
-    - linux-headers-{{ ansible_kernel }}
-    - libsqlite3-dev
-    - uuid-dev
-    - libjansson-dev
+#  with_items:
+#    - build-essential
+#    - libssl-dev
+#    - libncurses5-dev
+#    - libnewt-dev
+#    - libxml2-dev
+#    - linux-headers-{{ ansible_kernel }}
+#    - libsqlite3-dev
+#    - uuid-dev
+#    - libjansson-dev
 
 - name: create  user asterisk
   user:

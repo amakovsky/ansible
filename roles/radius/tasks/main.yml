@@ -3,8 +3,8 @@
   include_vars:
     file: "{{ postgrs_conf }}"
     name: postgresql_var
-- debug:
-    msg: "{{ postgresql_var }}"
+#- debug:
+#    msg: "{{ postgresql_var }}"
 
 - name: add radius repo
   apt_repository:
@@ -14,12 +14,8 @@
 
 - name: Install radius
   apt:
-    name: "{{ item }}"
+    name: "{{ radius_package }}"
     state: present
-  ignore_errors: yes
-  with_items:
-    - 'freeradius=3.0.15-ppa1~xenial'
-    - 'freeradius-postgresql'
   register: installed
 
 - name: fix broken dependences
@@ -32,10 +28,7 @@
 
     - name: run dpkg configure a
       command: dpkg --configure -a
-  when: installed.failed is defined
-
-#- debug:
-#    msg: "{{ radius_template }}"
+  when: installed.failed is defined and installed.failed
 
 - name: Copy freeradius template
   template:

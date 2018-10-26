@@ -1,11 +1,8 @@
 ---
 - name: Install ufw
   apt:
-    name: "{{ item }}"
+    name: ufw
     update_cache: yes
-#    state: latest
-  with_items:
-    - ufw
 
 #- set_fact:
 #      war_files_list_of_dicts: |

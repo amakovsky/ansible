@@ -18,13 +18,9 @@
 
 - name: Install common
   apt:
-    name: "{{ item }}"
+    name: "{{ zabbix_package }}"
     update_cache: yes
     state: present
-  with_items:
-    - python-pip
-#    - libcurl3
-    - zabbix-agent
   notify: restart zabbix
 
 - name: install pip-zabbix
