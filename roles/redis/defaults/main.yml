@@ -48,3 +48,7 @@ sentinel_global_config_options:
 #    value: "11883c15aff687915cfea6d8e00a16ffd1b23f7e"
 
 recreate_cluster: false
+
+redis_build_package:
+    - build-essential
+    - tcl

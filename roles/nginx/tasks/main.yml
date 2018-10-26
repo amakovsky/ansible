@@ -6,7 +6,9 @@
     update_cache: True
 
 - name: Install nginx
-  apt: name=nginx state=present
+  apt:
+    name: nginx
+    state: present
 
 - name: copy nginx configs
   template:
