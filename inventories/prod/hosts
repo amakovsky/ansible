@@ -15,7 +15,7 @@
 
 [postgresql]
 10.135.72.192 postgresrep_role=master
-10.135.20.228  postgresrep_role=slave
+10.135.20.228 postgresrep_role=slave
 
 [redis]
 10.135.118.233
@@ -33,6 +33,11 @@
 [radius]
 10.135.105.84 prefix=gw
 10.135.105.93 prefix=ad
+
+[softether]
+10.135.93.247
+10.135.121.54
+10.135.120.116
 
 [test]
 10.135.120.175 postgresrep_role=skip
