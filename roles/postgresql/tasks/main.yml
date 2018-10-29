@@ -39,5 +39,3 @@
 
 - import_tasks: databases.yml
   when: postgresrep_role != 'slave'
-
-

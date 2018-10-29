@@ -8,9 +8,6 @@
   debconf: name='oracle-java8-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
 
 - name: Install java 8
-  apt: name={{ item }} update_cache=yes state=latest
-  with_items:
-    - java-common
-    - ca-certificates
-    - oracle-java8-installer
-    - oracle-java8-set-default
+  apt:
+    name: "{{ java_package }}"
+    update_cache: yes

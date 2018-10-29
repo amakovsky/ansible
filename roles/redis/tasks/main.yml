@@ -8,12 +8,8 @@
 
 - name: Install required packet for build redis
   apt:
-    name: "{{ item }}"
+    name: "{{ redis_build_package }}"
     update_cache: yes
-#    state: latest
-  with_items:
-    - build-essential
-    - tcl
 
 - name: create  user redis
   user:

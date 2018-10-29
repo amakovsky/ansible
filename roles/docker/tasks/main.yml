@@ -19,20 +19,15 @@
 
 - name: Install common docker package
   apt:
-    name: "{{ item }}"
+    name: "{{ docker_package }}"
     update_cache: yes
-#    state: latest
-  with_items:
-    - docker-ce
-    - python-setuptools
-    - python-pip
 
 - name: install docker python
   pip:
-    name: "{{ item }}"
-  with_items:
-    - docker
-    - docker-compose
+    name: "{{ docker_pip_package }}"
+#  with_items:
+#    - docker
+#    - docker-compose
 
 - include_tasks: "registrator.yml"
   when: consul_docker_registrator
