@@ -1,10 +1,10 @@
 ---
 - name: Ensure PostgreSQL packages are installed.
   package:
-    name: "{{ item }}"
+    name: "{{ postgresql_packages }}"
     state: present
     enablerepo: "{{ postgresql_enablerepo }}"
-  with_items: "{{ postgresql_packages }}"
+#  with_items: "{{ postgresql_packages }}"
 
 - name: Ensure PostgreSQL Python libraries are installed.
   package:
