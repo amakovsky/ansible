@@ -1,0 +1,14 @@
+---
+- name: copy zabbix user parameter for openvpn
+  template:
+    src: userparameter_openvpn.conf.j2
+    dest: "{{ zabbix_conf_directory }}/userparameter_openvpn.conf"
+  notify: restart zabbix
+
+- name: copy openvpn script for zabbix
+  copy:
+    src: discover_vpn_ipp.sh
+    dest: "{{ zabbix_script_directory }}/discover_vpn_ipp.sh"
+    owner: root
+    group: zabbix
+    mode: 0770
