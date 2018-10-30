@@ -1,0 +1,43 @@
+---
+- name: copy zabbix user parameter for redis
+  template:
+    src: userparameter_redis.conf.j2
+    dest: "{{ zabbix_conf_directory }}/userparameter_redis.conf"
+  notify: restart zabbix
+
+- name: copy redis script for zabbix
+  copy:
+    src: zabbix-redis.py
+    dest: "{{ zabbix_script_directory }}/zabbix-redis.py"
+    owner: zabbix
+    group: zabbix
+    mode: 0770
+
+- name: check exist sender
+  stat: path=/usr/bin/zabbix_sender
+  register: sender_available
+
+- name: copy sender_agent
+  copy:
+    src: zabbix-sender_3.2.0-1+trusty_amd64.deb
+    dest: /tmp/zabbix-sender_3.2.0-1+trusty_amd64.deb
+  when: sender_available.stat.exists == false
+
+- name: Install sender package
+  apt:
+    deb: /tmp/zabbix-sender_3.2.0-1+trusty_amd64.deb
+  when: sender_available.stat.exists == false
+
+- name: enable cron
+  cron:
+    name: "redis monitoring cron"
+    minute: "*"
+    job: "/usr/lib/zabbix/externalscripts/zabbix-redis.py -i '6379' -t server send -c /etc/zabbix/zabbix_agentd.conf > /dev/null 2>&1"
+  become_user: zabbix
+
+- name: enable cron
+  cron:
+    name: "sentinel monitoring cron"
+    minute: "*"
+    job: "/usr/lib/zabbix/externalscripts/zabbix-redis.py -i '26379' -t sentinel send -c /etc/zabbix/zabbix_agentd.conf > /dev/null 2>&1"
+  become_user: zabbix

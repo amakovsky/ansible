@@ -45,6 +45,18 @@
     mysql: 1
   when: mysql_available.stat.exists == true
 
+- name: check exist redis
+  stat:
+    path: "{{ redis_bindir }}/redis-server"
+  changed_when: False
+  failed_when: False
+  register: redis_available
+
+- name: Set variable 'redis'
+  set_fact:
+   redis: 1
+  when: redis_available.stat.exists == true
+
 #- name: Check for postgres
 #  command: which postgres
 #  register: postgres_avail
@@ -165,3 +177,6 @@
 
 - include_tasks: "mysql_slave.yml"
   when: mysql_slave == 1
+
+- include_tasks: "redis.yml"
+  when: redis == 1

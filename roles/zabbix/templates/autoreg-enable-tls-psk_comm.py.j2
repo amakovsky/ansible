@@ -11,6 +11,7 @@ netstat={{ netstat }}
 smartctl={{ smartctl }}
 mysql={{ mysql }}
 postgres={{ postgres }}
+redis={{ redis }}
 #templ=[{"templateid":"10001"}]
 
 #Установка параметров подключения
@@ -61,6 +62,18 @@ if postgres == 1:
    res2 = str(res1.get(u'result')).split('\'')
    zabbix_templid = res2[3]
    templ.append({"templateid": zabbix_templid})
+
+#Добавление шаблона postgres
+if redis == 1:
+   res1 = zapi.do_request('template.get', { 'filter': {'name': '{{ zabbix_redis_template }}' }, 'output': 'hostid'})
+   res2 = str(res1.get(u'result')).split('\'')
+   zabbix_templid = res2[3]
+   templ.append({"templateid": zabbix_templid})
+   res1 = zapi.do_request('template.get', { 'filter': {'name': '{{ zabbix_sentinel_template }}' }, 'output': 'hostid'})
+   res2 = str(res1.get(u'result')).split('\'')
+   zabbix_templid = res2[3]
+   templ.append({"templateid": zabbix_templid})
+
 
 #Запрос на редактирование узла сети
 zapi.do_request('host.update', {'hostid': zabbix_hostid, 'tls_connect': 2, 'tls_accept': 2, 'tls_psk_identity': 'PSK {{ ansible_nodename }}', 'tls_psk': PSK, 'templates': templ })
