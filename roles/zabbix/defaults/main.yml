@@ -15,6 +15,7 @@ zabbix_mysql_slave_template: 'Template_MySQL_Slave'
 zabbix_postgres_template: 'PostgreSQL Simple Template'
 zabbix_redis_template: 'Template App Redis Server'
 zabbix_sentinel_template: 'Template App Redis Sentinel'
+zabbix_openvpn_template: 'Template App OpenVPN'
 zabbix_mysql_pass: 'Vy8XKARa3sqivR'
 zabbix_bindir: /usr/sbin/zabbix_agentd
 zabbix_apt_url: https://repo.zabbix.com/zabbix/3.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.4-1+{{ ansible_distribution_release }}_all.deb
@@ -25,6 +26,7 @@ mysql: 0
 postgres: 0
 mysql_slave: 0
 redis: 0
+openvpn: 0
 zabbix_script_directory: '/usr/lib/zabbix/externalscripts'
 zabbix_conf_directory: '/etc/zabbix/zabbix_agentd.d'
 another_port: false

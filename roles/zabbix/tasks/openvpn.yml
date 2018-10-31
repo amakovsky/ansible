@@ -6,9 +6,15 @@
   notify: restart zabbix
 
 - name: copy openvpn script for zabbix
-  copy:
+  template:
     src: discover_vpn_ipp.sh
     dest: "{{ zabbix_script_directory }}/discover_vpn_ipp.sh"
     owner: root
     group: zabbix
     mode: 0770
+
+- name: add scripts to sudo
+  lineinfile:
+    state: present
+    path: /etc/sudoers
+    line: 'zabbix ALL=(ALL) NOPASSWD:{{ zabbix_script_directory }}/discover_vpn_ipp.sh'

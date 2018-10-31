@@ -12,6 +12,7 @@ smartctl={{ smartctl }}
 mysql={{ mysql }}
 postgres={{ postgres }}
 redis={{ redis }}
+openvpn={{ openvpn }}
 #templ=[{"templateid":"10001"}]
 
 #Установка параметров подключения
@@ -63,13 +64,20 @@ if postgres == 1:
    zabbix_templid = res2[3]
    templ.append({"templateid": zabbix_templid})
 
-#Добавление шаблона postgres
+#Добавление шаблона redis
 if redis == 1:
    res1 = zapi.do_request('template.get', { 'filter': {'name': '{{ zabbix_redis_template }}' }, 'output': 'hostid'})
    res2 = str(res1.get(u'result')).split('\'')
    zabbix_templid = res2[3]
    templ.append({"templateid": zabbix_templid})
    res1 = zapi.do_request('template.get', { 'filter': {'name': '{{ zabbix_sentinel_template }}' }, 'output': 'hostid'})
+   res2 = str(res1.get(u'result')).split('\'')
+   zabbix_templid = res2[3]
+   templ.append({"templateid": zabbix_templid})
+
+#Добавление шаблона openvpn
+if openvpn == 1:
+   res1 = zapi.do_request('template.get', { 'filter': {'name': '{{ zabbix_openvpn_template }}' }, 'output': 'hostid'})
    res2 = str(res1.get(u'result')).split('\'')
    zabbix_templid = res2[3]
    templ.append({"templateid": zabbix_templid})

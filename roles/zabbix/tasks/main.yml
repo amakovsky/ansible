@@ -57,12 +57,18 @@
    redis: 1
   when: redis_available.stat.exists == true
 
-#- name: Check for postgres
-#  command: which postgres
-#  register: postgres_avail
-#  check_mode: no
-#  changed_when: false  # Never report as changed
-#  ignore_errors: yes
+- name: Check for openvpn
+  command: which openvpn
+  register: openvpn_avail
+  check_mode: no
+  changed_when: false  # Never report as changed
+  ignore_errors: yes
+
+- name: Set variable 'openvpn'
+  set_fact:
+   openvpn: 1
+  when: openvpn_available.stat.exists == true
+
 - name: Check if postgresql is installed
   environment:
     LC_MESSAGES: 'C'
@@ -180,3 +186,6 @@
 
 - include_tasks: "redis.yml"
   when: redis == 1
+
+- include_tasks: "openvpn.yml"
+  when: openvpn == 1
