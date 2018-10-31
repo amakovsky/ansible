@@ -1,6 +1,7 @@
 ---
 softether_srcdir: vpnserver
 softether_bindir: /usr/local
+softether_reinstall: false
 
 softether_source_url: https://ams3.digitaloceanspaces.com/gettwifi/source/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
 

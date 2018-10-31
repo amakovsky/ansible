@@ -49,3 +49,8 @@ ufw_rules:
     proto: 'tcp'
     from_ip: "{{ groups['zabbix'] }}"
     to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 7199
+    proto: 'tcp'
+    from_ip: "{{ groups['zabbix'] }}"
+    to_ip: "{{ inventory_hostname }}"

@@ -1,0 +1,527 @@
+# -*- text -*-
+##
+## sql.conf -- SQL modules
+##
+##	$Id: 29fb4b28e1b085d66415052dcdb5cc255392dcc3 $
+
+######################################################################
+#
+#  Configuration for the SQL module
+#
+#  The database schemas and queries are located in subdirectories:
+#
+#	sql/<DB>/main/schema.sql	Schema
+#	sql/<DB>/main/queries.conf	Authorisation and Accounting queries
+#
+#  Where "DB" is mysql, mssql, oracle, or postgresql.
+#
+#
+
+sql gw_sql_users_mikrotik {
+	driver = "rlm_sql_postgresql"
+
+#	postgresql {
+#		# Send application_name to the postgres server
+#		# Only supported in PG 9.0 and greater. Defaults to no.
+#		send_application_name = yes
+#	}
+#
+
+	# The dialect of SQL you want to use, this should usually match
+	# the driver you selected above.
+	dialect = "postgresql"
+
+	# Connection info:
+	#
+	server = "{{ postgres_server }}"
+	port = 5432
+	login = "{{ postgresql_var.gw_radius_user }}"
+	password = "{{ postgresql_var.gw_radius_user_pass }}"
+
+	# Database table configuration for everything except Oracle
+	radius_db = "gw_radius_users_mikrotik"
+
+	# If you want both stop and start records logged to the
+	# same SQL table, leave this as is.  If you want them in
+	# different tables, put the start table in acct_table1
+	# and stop table in acct_table2
+	acct_table1 = "radacct"
+	acct_table2 = "radacct"
+
+	# Allow for storing data after authentication
+	postauth_table = "radpostauth"
+
+	# Tables containing 'check' items
+	authcheck_table = "radcheck"
+	groupcheck_table = "radgroupcheck"
+
+	# Tables containing 'reply' items
+	authreply_table = "radreply"
+	groupreply_table = "radgroupreply"
+
+	# Table to keep group info
+	usergroup_table = "radusergroup"
+
+	# If set to 'yes' (default) we read the group tables unless Fall-Through = no in the reply table.
+	# If set to 'no' we do not read the group tables unless Fall-Through = yes in the reply table.
+#	read_groups = yes
+
+	# If set to 'yes' (default) we read profiles unless Fall-Through = no in the groupreply table.
+	# If set to 'no' we do not read profiles unless Fall-Through = yes in the groupreply table.
+#	read_profiles = yes
+
+	# Remove stale session if checkrad does not see a double login
+	delete_stale_sessions = yes
+
+	# Write SQL queries to a logfile. This is potentially useful for tracing
+	# issues with authorization queries.
+#	logfile = ${logdir}/sqllog.sql
+
+	pool {
+		# Number of connections to start
+		start = 5
+
+		# Minimum number of connections to keep open
+		min = 4
+
+		# Maximum number of connections
+		#
+		# If these connections are all in use and a new one
+		# is requested, the request will NOT get a connection.
+		#
+		# Setting 'max' to LESS than the number of threads means
+		# that some threads may starve, and you will see errors
+		# like "No connections available and at max connection limit"
+		#
+		# Setting 'max' to MORE than the number of threads means
+		# that there are more connections than necessary.
+		#
+		max = ${thread[pool].max_servers}
+
+		# Spare connections to be left idle
+		#
+		# NOTE: Idle connections WILL be closed if "idle_timeout"
+		# is set.
+		spare = 3
+
+		# Number of uses before the connection is closed
+		#
+		# 0 means "infinite"
+		uses = 0
+
+		# The lifetime (in seconds) of the connection
+		lifetime = 0
+
+		# idle timeout (in seconds).  A connection which is
+		# unused for this length of time will be closed.
+		idle_timeout = 60
+
+		# NOTE: All configuration settings are enforced.  If a
+		# connection is closed because of "idle_timeout",
+		# "uses", or "lifetime", then the total number of
+		# connections MAY fall below "min".  When that
+		# happens, it will open a new connection.  It will
+		# also log a WARNING message.
+		#
+		# The solution is to either lower the "min" connections,
+		# or increase lifetime/idle_timeout.
+	}
+
+	# Set to 'yes' to read radius clients from the database ('nas' table)
+	# Clients will ONLY be read on server startup.
+#	read_clients = yes
+
+	# Table to keep radius client info
+	client_table = "nas"
+
+  group_attribute = "${.:instance}-SQL-Group"
+
+	# Read database-specific queries
+	$INCLUDE ${modconfdir}/${.:name}/main/${dialect}/queries.conf
+}
+
+sql gw_sql_users_cisco {
+	driver = "rlm_sql_postgresql"
+	dialect = "postgresql"
+
+	# Connection info:
+	server = "{{ postgres_server }}"
+    port = 5432
+    login = "{{ postgresql_var.gw_radius_user }}"
+    password = "{{ postgresql_var.gw_radius_user_pass }}"
+
+	radius_db = "gw_radius_users_cisco"
+
+	acct_table1 = "radacct"
+	acct_table2 = "radacct"
+	postauth_table = "radpostauth"
+	authcheck_table = "radcheck"
+	groupcheck_table = "radgroupcheck"
+	authreply_table = "radreply"
+	groupreply_table = "radgroupreply"
+	usergroup_table = "radusergroup"
+
+	delete_stale_sessions = yes
+
+  pool {
+          start = 5
+          min = 4
+
+          max = ${thread[pool].max_servers}
+          spare = 3
+
+          uses = 0
+          lifetime = 0
+          idle_timeout = 60
+  }
+
+#	read_clients = yes
+	client_table = "nas"
+
+  group_attribute = "${.:instance}-SQL-Group"
+
+	# Read database-specific queries
+	$INCLUDE ${modconfdir}/${.:name}/main/${dialect}/queries.conf
+}
+
+sql gw_sql_users_chilli {
+	driver = "rlm_sql_postgresql"
+	dialect = "postgresql"
+
+	# Connection info:
+	server = "{{ postgres_server }}"
+    port = 5432
+    login = "{{ postgresql_var.gw_radius_user }}"
+    password = "{{ postgresql_var.gw_radius_user_pass }}"
+
+	radius_db = "gw_radius_users_chilli"
+
+	acct_table1 = "radacct"
+	acct_table2 = "radacct"
+	postauth_table = "radpostauth"
+	authcheck_table = "radcheck"
+	groupcheck_table = "radgroupcheck"
+	authreply_table = "radreply"
+	groupreply_table = "radgroupreply"
+	usergroup_table = "radusergroup"
+
+	delete_stale_sessions = yes
+
+  pool {
+          start = 5
+          min = 4
+
+          max = ${thread[pool].max_servers}
+          spare = 3
+
+          uses = 0
+          lifetime = 0
+          idle_timeout = 60
+  }
+
+#	read_clients = yes
+	client_table = "nas"
+
+  group_attribute = "${.:instance}-SQL-Group"
+
+	# Read database-specific queries
+	$INCLUDE ${modconfdir}/${.:name}/main/${dialect}/queries.conf
+}
+
+sql gw_sql_access_points {
+	driver = "rlm_sql_postgresql"
+	dialect = "postgresql"
+
+	# Connection info:
+	server = "{{ postgres_server }}"
+    port = 5432
+    login = "{{ postgresql_var.gw_radius_user }}"
+    password = "{{ postgresql_var.gw_radius_user_pass }}"
+
+	radius_db = "gw_radius_access_points"
+
+	acct_table1 = "radacct"
+	acct_table2 = "radacct"
+	postauth_table = "radpostauth"
+	authcheck_table = "radcheck"
+	groupcheck_table = "radgroupcheck"
+	authreply_table = "radreply"
+	groupreply_table = "radgroupreply"
+	usergroup_table = "radusergroup"
+
+	delete_stale_sessions = yes
+
+  pool {
+          start = 5
+          min = 4
+
+          max = ${thread[pool].max_servers}
+          spare = 3
+
+          uses = 0
+          lifetime = 0
+          idle_timeout = 60
+  }
+
+#	read_clients = yes
+	client_table = "nas"
+
+  group_attribute = "${.:instance}-SQL-Group"
+
+	# Read database-specific queries
+	$INCLUDE ${modconfdir}/${.:name}/main/${dialect}/queries.conf
+}
+sql ad_sql_users_mikrotik {
+	driver = "rlm_sql_postgresql"
+
+#	postgresql {
+#		# Send application_name to the postgres server
+#		# Only supported in PG 9.0 and greater. Defaults to no.
+#		send_application_name = yes
+#	}
+#
+
+	# The dialect of SQL you want to use, this should usually match
+	# the driver you selected above.
+	dialect = "postgresql"
+
+	# Connection info:
+	#
+	server = "{{ postgres_server }}"
+	port = 5432
+	login = "{{ postgresql_var.ad_radius_user }}"
+	password = "{{ postgresql_var.ad_radius_user_pass }}"
+
+	# Database table configuration for everything except Oracle
+	radius_db = "ad_radius_users_mikrotik"
+
+	# If you want both stop and start records logged to the
+	# same SQL table, leave this as is.  If you want them in
+	# different tables, put the start table in acct_table1
+	# and stop table in acct_table2
+	acct_table1 = "radacct"
+	acct_table2 = "radacct"
+
+	# Allow for storing data after authentication
+	postauth_table = "radpostauth"
+
+	# Tables containing 'check' items
+	authcheck_table = "radcheck"
+	groupcheck_table = "radgroupcheck"
+
+	# Tables containing 'reply' items
+	authreply_table = "radreply"
+	groupreply_table = "radgroupreply"
+
+	# Table to keep group info
+	usergroup_table = "radusergroup"
+
+	# If set to 'yes' (default) we read the group tables unless Fall-Through = no in the reply table.
+	# If set to 'no' we do not read the group tables unless Fall-Through = yes in the reply table.
+#	read_groups = yes
+
+	# If set to 'yes' (default) we read profiles unless Fall-Through = no in the groupreply table.
+	# If set to 'no' we do not read profiles unless Fall-Through = yes in the groupreply table.
+#	read_profiles = yes
+
+	# Remove stale session if checkrad does not see a double login
+	delete_stale_sessions = yes
+
+	# Write SQL queries to a logfile. This is potentially useful for tracing
+	# issues with authorization queries.
+#	logfile = ${logdir}/sqllog.sql
+
+	pool {
+		# Number of connections to start
+		start = 5
+
+		# Minimum number of connections to keep open
+		min = 4
+
+		# Maximum number of connections
+		#
+		# If these connections are all in use and a new one
+		# is requested, the request will NOT get a connection.
+		#
+		# Setting 'max' to LESS than the number of threads means
+		# that some threads may starve, and you will see errors
+		# like "No connections available and at max connection limit"
+		#
+		# Setting 'max' to MORE than the number of threads means
+		# that there are more connections than necessary.
+		#
+		max = ${thread[pool].max_servers}
+
+		# Spare connections to be left idle
+		#
+		# NOTE: Idle connections WILL be closed if "idle_timeout"
+		# is set.
+		spare = 3
+
+		# Number of uses before the connection is closed
+		#
+		# 0 means "infinite"
+		uses = 0
+
+		# The lifetime (in seconds) of the connection
+		lifetime = 0
+
+		# idle timeout (in seconds).  A connection which is
+		# unused for this length of time will be closed.
+		idle_timeout = 60
+
+		# NOTE: All configuration settings are enforced.  If a
+		# connection is closed because of "idle_timeout",
+		# "uses", or "lifetime", then the total number of
+		# connections MAY fall below "min".  When that
+		# happens, it will open a new connection.  It will
+		# also log a WARNING message.
+		#
+		# The solution is to either lower the "min" connections,
+		# or increase lifetime/idle_timeout.
+	}
+
+	# Set to 'yes' to read radius clients from the database ('nas' table)
+	# Clients will ONLY be read on server startup.
+#	read_clients = yes
+
+	# Table to keep radius client info
+	client_table = "nas"
+
+  group_attribute = "${.:instance}-SQL-Group"
+
+	# Read database-specific queries
+	$INCLUDE ${modconfdir}/${.:name}/main/${dialect}/queries.conf
+}
+
+sql ad_sql_users_cisco {
+	driver = "rlm_sql_postgresql"
+	dialect = "postgresql"
+
+	# Connection info:
+	server = "{{ postgres_server }}"
+    port = 5432
+    login = "{{ postgresql_var.ad_radius_user }}"
+    password = "{{ postgresql_var.ad_radius_user_pass }}"
+
+	radius_db = "ad_radius_users_cisco"
+
+	acct_table1 = "radacct"
+	acct_table2 = "radacct"
+	postauth_table = "radpostauth"
+	authcheck_table = "radcheck"
+	groupcheck_table = "radgroupcheck"
+	authreply_table = "radreply"
+	groupreply_table = "radgroupreply"
+	usergroup_table = "radusergroup"
+
+	delete_stale_sessions = yes
+
+  pool {
+          start = 5
+          min = 4
+
+          max = ${thread[pool].max_servers}
+          spare = 3
+
+          uses = 0
+          lifetime = 0
+          idle_timeout = 60
+  }
+
+#	read_clients = yes
+	client_table = "nas"
+
+  group_attribute = "${.:instance}-SQL-Group"
+
+	# Read database-specific queries
+	$INCLUDE ${modconfdir}/${.:name}/main/${dialect}/queries.conf
+}
+
+sql ad_sql_users_chilli {
+	driver = "rlm_sql_postgresql"
+	dialect = "postgresql"
+
+	# Connection info:
+	server = "{{ postgres_server }}"
+    port = 5432
+    login = "{{ postgresql_var.ad_radius_user }}"
+    password = "{{ postgresql_var.ad_radius_user_pass }}"
+
+	radius_db = "ad_radius_users_chilli"
+
+	acct_table1 = "radacct"
+	acct_table2 = "radacct"
+	postauth_table = "radpostauth"
+	authcheck_table = "radcheck"
+	groupcheck_table = "radgroupcheck"
+	authreply_table = "radreply"
+	groupreply_table = "radgroupreply"
+	usergroup_table = "radusergroup"
+
+	delete_stale_sessions = yes
+
+  pool {
+          start = 5
+          min = 4
+
+          max = ${thread[pool].max_servers}
+          spare = 3
+
+          uses = 0
+          lifetime = 0
+          idle_timeout = 60
+  }
+
+#	read_clients = yes
+	client_table = "nas"
+
+  group_attribute = "${.:instance}-SQL-Group"
+
+	# Read database-specific queries
+	$INCLUDE ${modconfdir}/${.:name}/main/${dialect}/queries.conf
+}
+
+sql ad_sql_access_points {
+	driver = "rlm_sql_postgresql"
+	dialect = "postgresql"
+
+	# Connection info:
+	server = "{{ postgres_server }}"
+    port = 5432
+    login = "{{ postgresql_var.ad_radius_user }}"
+    password = "{{ postgresql_var.ad_radius_user_pass }}"
+
+	radius_db = "ad_radius_access_points"
+
+	acct_table1 = "radacct"
+	acct_table2 = "radacct"
+	postauth_table = "radpostauth"
+	authcheck_table = "radcheck"
+	groupcheck_table = "radgroupcheck"
+	authreply_table = "radreply"
+	groupreply_table = "radgroupreply"
+	usergroup_table = "radusergroup"
+
+	delete_stale_sessions = yes
+
+  pool {
+          start = 5
+          min = 4
+
+          max = ${thread[pool].max_servers}
+          spare = 3
+
+          uses = 0
+          lifetime = 0
+          idle_timeout = 60
+  }
+
+#	read_clients = yes
+	client_table = "nas"
+
+  group_attribute = "${.:instance}-SQL-Group"
+
+	# Read database-specific queries
+	$INCLUDE ${modconfdir}/${.:name}/main/${dialect}/queries.conf
+}

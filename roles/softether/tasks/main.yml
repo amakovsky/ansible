@@ -11,6 +11,15 @@
     name: build-essential
     state: present
 
+- name: ReInstall softether
+  block:
+    - name: delete softether folder
+      file:
+        path: "{{ softether_bindir }}"
+        state: absent
+        force: yes
+  when: softether_reinstall
+
 - name: Install softether
   block:
     - name: create softether src folder
@@ -52,8 +61,9 @@
         dest: "{{ item.dest }}"
         mode: 0775
       with_items: "{{ softether_config }}"
+      notify: restart vpnserver
 
-  when: softether_available.stat.exists == false
+  when: softether_available.stat.exists == false or softether_reinstall
 
 - name: Copy systemd softether config
   template:

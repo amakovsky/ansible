@@ -2,12 +2,13 @@
 - name: fetch netplan file from server
   fetch:
     src: /etc/netplan/50-cloud-init.yaml
-    dest: /tmp/50-cloud-init.yaml
+    dest: "/tmp/{{ inventory_hostname }}50-cloud-init.yaml"
     flat: true
+  changed_when: False
 
 - name: load netplan file
   include_vars:
-    file: /tmp/50-cloud-init.yaml
+    file: "/tmp/{{ inventory_hostname }}50-cloud-init.yaml"
     name: cloud
 
 #- debug:

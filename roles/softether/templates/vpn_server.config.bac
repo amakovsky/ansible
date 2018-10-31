@@ -1,4 +1,4 @@
-﻿# Software Configuration File
+# Software Configuration File
 # ---------------------------
 #
 # You may edit this file when the VPN Server / Client / Bridge program is not running.
@@ -9,7 +9,7 @@
 #
 declare root
 {
-	uint ConfigRevision 11
+	uint ConfigRevision 7
 	bool IPsecMessageDisplayed true
 	string Region $
 	bool VgsMessageDisplayed false
@@ -88,7 +88,7 @@ declare root
 		bool DontBackupConfig false
 		bool EnableVpnOverDns false
 		bool EnableVpnOverIcmp false
-		byte HashedPassword RApfRy4tP8XZtbOdZ0ZGFl/Ssd0=
+		byte HashedPassword f7KaIrynKqAYO6FxZa9fWMRLnCA=
 		string KeepConnectHost keepalive.softether.org
 		uint KeepConnectInterval 50
 		uint KeepConnectPort 80
@@ -111,7 +111,7 @@ declare root
 		bool Tls_Disable1_0 false
 		bool Tls_Disable1_1 false
 		bool Tls_Disable1_2 false
-		bool UseKeepConnect false
+		bool UseKeepConnect true
 		bool UseWebTimePage false
 		bool UseWebUI false
 
@@ -142,23 +142,23 @@ declare root
 		{
 			declare RecvTraffic
 			{
-				uint64 BroadcastBytes 64618
-				uint64 BroadcastCount 1032
-				uint64 UnicastBytes 153132
-				uint64 UnicastCount 2094
+				uint64 BroadcastBytes 24258
+				uint64 BroadcastCount 374
+				uint64 UnicastBytes 73788
+				uint64 UnicastCount 978
 			}
 			declare SendTraffic
 			{
-				uint64 BroadcastBytes 84934
-				uint64 BroadcastCount 1344
-				uint64 UnicastBytes 76044
-				uint64 UnicastCount 1138
+				uint64 BroadcastBytes 44574
+				uint64 BroadcastCount 686
+				uint64 UnicastBytes 35170
+				uint64 UnicastCount 499
 			}
 		}
 		declare SyslogSettings
 		{
 			string HostName $
-			uint Port 514
+			uint Port 0
 			uint SaveType 0
 		}
 	}
@@ -168,7 +168,7 @@ declare root
 		{
 			uint64 CreatedTime 1536290764097
 			byte HashedPassword +WzqGYrR3VYXrAhKPZLGEHcIwO8=
-			uint64 LastCommTime 1540770416485
+			uint64 LastCommTime 1536302111237
 			uint64 LastLoginTime 1536301348166
 			uint NumLogin 1
 			bool Online true
@@ -396,17 +396,17 @@ declare root
 			{
 				declare RecvTraffic
 				{
-					uint64 BroadcastBytes 64618
-					uint64 BroadcastCount 1032
-					uint64 UnicastBytes 153132
-					uint64 UnicastCount 2094
+					uint64 BroadcastBytes 24258
+					uint64 BroadcastCount 374
+					uint64 UnicastBytes 73788
+					uint64 UnicastCount 978
 				}
 				declare SendTraffic
 				{
-					uint64 BroadcastBytes 84934
-					uint64 BroadcastCount 1344
-					uint64 UnicastBytes 76044
-					uint64 UnicastCount 1138
+					uint64 BroadcastBytes 44574
+					uint64 BroadcastCount 686
+					uint64 UnicastBytes 35170
+					uint64 UnicastCount 499
 				}
 			}
 		}
