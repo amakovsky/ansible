@@ -5,6 +5,7 @@ private_DNS: 10.135.101.26
 clients:
   - makovsky
   - vlad
+  - Yakovlev
 
 allow_ip:
   - 0.0.0.0/0

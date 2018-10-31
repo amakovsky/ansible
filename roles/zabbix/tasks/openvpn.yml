@@ -6,7 +6,7 @@
   notify: restart zabbix
 
 - name: copy openvpn script for zabbix
-  template:
+  copy:
     src: discover_vpn_ipp.sh
     dest: "{{ zabbix_script_directory }}/discover_vpn_ipp.sh"
     owner: root
