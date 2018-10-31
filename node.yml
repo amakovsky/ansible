@@ -11,4 +11,6 @@
     - user
     - nginx
     - nodejs
+    - letsencrypt
     - zabbix
+    - web_nodejs
