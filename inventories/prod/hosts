@@ -41,3 +41,6 @@
 
 [test]
 10.135.120.175 postgresrep_role=skip
+
+[node]
+10.135.111.116

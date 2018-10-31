@@ -64,10 +64,13 @@
   changed_when: false  # Never report as changed
   ignore_errors: yes
 
+- debug:
+    msg: "{{ openvpn_avail }}"
+
 - name: Set variable 'openvpn'
   set_fact:
    openvpn: 1
-  when: openvpn_available.stat.exists == true
+  when: openvpn_avail.rc == 0
 
 - name: Check if postgresql is installed
   environment:
