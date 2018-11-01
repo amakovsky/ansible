@@ -1,0 +1,12 @@
+common: &common
+  scope: 'r_basicprofile r_emailaddress w_share'
+  app_id: ''
+  app_secret: ''
+  post:
+    image_host: 'http://auth.hot-spot.by'
+
+development:
+  <<: *common
+    
+production:
+  <<: *common  

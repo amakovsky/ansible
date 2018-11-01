@@ -1,0 +1,32 @@
+---
+- name: check exist node
+  stat: path=/usr/bin/npm
+  register: node_available
+
+- name: Download nodejs
+  get_url:
+    url: https://deb.nodesource.com/setup_8.x
+    dest: /tmp/nodesource_setup.sh
+    mode: 0740
+  when: node_available.stat.exists == false
+
+- name: setup nodejs
+  command: /tmp/nodesource_setup.sh
+  args:
+    creates: /usr/bin/npm
+  tags: skip_ansible_lint
+
+- name: install nodejs
+  apt:
+    name: nodejs
+    update_cache: yes
+
+- name: install gulp
+  npm:
+    name: pm2
+    global: yes
+
+- name: install npm
+  npm:
+    name: npm
+    global: yes

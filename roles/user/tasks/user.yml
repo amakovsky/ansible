@@ -82,5 +82,14 @@
     with_items: "{{ local_user }}"
     no_log: true
     changed_when: False
-
   when: item.password_lock is defined and item.password_lock == true
+
+- name: Set authorized key for
+  authorized_key:
+    user: "{{ item.0.name }}"
+    state: present
+    key: "{{ item.1 }}"
+  with_subelements:
+    - "{{ local_user | selectattr('allow_key', 'defined') | list }}"
+    - allow_key
+  no_log: true

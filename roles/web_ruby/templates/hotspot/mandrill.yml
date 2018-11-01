@@ -1,0 +1,12 @@
+common: &common
+  username: vizoria@the-karma.com
+  api_key: umiOUEFolLBaXBUJ8qBi9g
+
+development:
+  <<: *common
+
+test:
+  <<: *common
+
+production:
+  <<: *common

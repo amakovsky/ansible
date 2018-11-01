@@ -32,7 +32,8 @@
     - template
     - ufw
     - user
-    - web_node
+    - web_ruby
     - xtrabackup
     - zabbix
     - zabbix-server
+    - web_node

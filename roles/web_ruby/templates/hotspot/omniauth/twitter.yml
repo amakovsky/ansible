@@ -1,0 +1,13 @@
+common: &common
+  scope: 'user_birthday,email'
+  embed_session_id: true
+  app_id: ''
+  app_secret: ''
+  post:
+    image_host: 'http://auth.hot-spot.by'
+
+development:
+  <<: *common
+  
+production:
+  <<: *common  

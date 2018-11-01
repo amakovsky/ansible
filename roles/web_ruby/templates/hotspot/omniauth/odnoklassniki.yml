@@ -1,0 +1,15 @@
+common: &common
+  scope: 'VALUABLE_ACCESS'
+  embed_session_id: false
+  app_id: ''
+  app_secret: ''
+  extra_options:
+    public_key: ''
+  post:
+    image_host: 'http://auth.hot-spot.by'
+
+development:
+  <<: *common
+  
+production:
+  <<: *common  
