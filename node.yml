@@ -1,5 +1,5 @@
 ---
-- name: web server
+- name: nodejs server
   hosts: node
   become: yes
   become_method: sudo

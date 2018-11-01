@@ -1,0 +1,10 @@
+common: &common
+  scope: 'basic likes relationships'
+  app_id: ''
+  app_secret: ''
+
+development:
+  <<: *common
+    
+production:
+  <<: *common

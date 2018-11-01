@@ -1,0 +1,28 @@
+common: &common
+  vpn:
+    enabled: true
+    server: hub.the-karma.com
+    #servers:
+    #  scanner: hub2.the-karma.com
+    gateway_ip: "172.22.0.1"
+    netmask: 16
+    fetch_host: "fetch.karmawifi.ru"
+    fetch_ip: "172.22.0.2"
+    #sniffr_ip: "172.22.0.2"
+    #log_collect_port: 2514
+    #fetch_setup: true
+  hotspot:
+    gateway_ip: "10.7.0.1"
+    netmask: 16
+    # common: 16 # gateway_ip( place_id = 2 ): 192.168.2.1
+    ssid: "The Karma FREE"
+  private:
+    gateway_ip: "10.5.0.1"
+    netmask: 16
+    ssid: "The Karma Private"
+
+development:
+  <<: *common
+
+production:
+  <<: *common

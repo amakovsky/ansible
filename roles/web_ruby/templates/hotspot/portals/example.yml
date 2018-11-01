@@ -1,0 +1,47 @@
+common: &common
+  demo:
+    host: "auth.hot-spot.by"
+
+  hotspot:
+    ap_dns_name: "hotspot.hot-spot.by"
+    #ap_certificate_password: ""
+    ap_https_redirect: false
+    fetch_host: "auth.hot-spot.by"
+    fetch_mode: "http"
+    walled_garden: ["yandex", "google", "by"]
+    directory: "by"
+    white_label: true
+    accounting: null
+    #scanner: true
+    #terms_checkbox: true
+    #mailing_checkbox: true
+    #mandatory_identification: true
+    #ym_counter: 23811418
+
+  strategies:
+    avaiable: ["social", "password", "skip", "sms_code"]
+    default: ["social", "password", "skip"]
+    #default_config:
+    #  phone_call:
+    #    sms_fallback: true
+    #    call_button: true
+    avaiable_social_networks: ["vkontakte", "facebook", "twitter", "instagram", "linkedin", "odnoklassniki"]
+    default_social_networks: ["vkontakte", "facebook", "twitter", "instagram"]
+
+  office:
+    hide_msisdn: false
+    mask_msisdn: false
+    #crm_api: true
+    #show_contract_number: true
+    #ym_counter: 29629885
+
+  styles:
+    favicon: "by.ico"
+    hotspot_css: "by_hotspot"
+    office_css: "by_office"
+
+development:
+  <<: *common
+
+production:
+  <<: *common

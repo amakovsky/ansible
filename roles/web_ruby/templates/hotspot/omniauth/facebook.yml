@@ -1,0 +1,17 @@
+common: &common
+  scope: 'user_birthday,email,user_friends,user_link,user_gender,publish_actions'
+  scope_without_post: 'user_birthday,email,user_friends,user_link,user_gender'
+  extra_options:
+    info_fields: 'name,email,birthday,devices,gender,link'
+  embed_session_id: false
+  auto_post: false
+  app_id: ''
+  app_secret: ''
+  post:
+    image_host: 'http://auth.hot-spot.by'
+
+development:
+  <<: *common
+
+production:
+  <<: *common

@@ -1,0 +1,18 @@
+common: &common
+  scope: 'email,wall'
+  scope_without_post: 'email'
+  embed_session_id: true
+  upload_banner:
+    scope: 'email,wall,photos,offline'
+    token: '28d7c0745c604731d7447018d64e5fd0d48193a31edea6b55ad9f08f59a003d06bb80dc61d7835c5031ab'
+    group_id: ''
+  app_id: ''
+  app_secret: ''
+  post:
+    image_host: 'http://auth.hot-spot.by'
+
+development:
+  <<: *common
+
+production:
+  <<: *common

@@ -1,0 +1,11 @@
+common: &common
+  server: 178.159.244.211
+  port: 17771
+  acc_port: 17772
+  secret: Emv4fxD2YP9b
+
+development:
+  <<: *common
+    
+production:
+  <<: *common  
