@@ -5,13 +5,13 @@ After=syslog.target network.target remote-fs.target nss-lookup.target
 [Service]
 Type=forking
 PIDFile=/run/nginx.pid
-ExecStartPre={{ nginx_bindir }}/nginx -t
-ExecStart={{ nginx_bindir }}/nginx
-ExecReload={{ nginx_bindir }}/nginx -s reload
-ExecStop=/bin/kill -s QUIT $MAINPID
-PrivateTmp=true
-Restart=always
-RestartSecs=10
+ExecStartPre={{ nginx_bindir }}/nginx -t -q -g 'daemon on; master_process on;'
+ExecStart={{ nginx_bindir }}/nginx -g 'daemon on; master_process on;'
+ExecReload={{ nginx_bindir }}/nginx -g 'daemon on; master_process on;' -s reload
+ExecStop=-/sbin/start-stop-daemon --quiet --stop --retry QUIT/5 --pidfile /run/nginx.pid
+TimeoutStopSec=5
+KillMode=mixed
+
 
 [Install]
 WantedBy=multi-user.target

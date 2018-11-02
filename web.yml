@@ -11,3 +11,5 @@
     - user
     - rvm
     - passenger
+    - web_ruby
+#    - zabbix
