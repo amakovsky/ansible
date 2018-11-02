@@ -38,6 +38,7 @@
 - name: get passenger version
   shell: "passenger -v | cut -d ' ' -f 3"
   register: passenger_version
+  tags: skip_ansible_lint
 
 - debug:
     msg: "{{ passenger_version }}"
