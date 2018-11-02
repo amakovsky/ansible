@@ -43,3 +43,5 @@ zabbix_postgresql_config_options:
 postgresql_user: postgres
 
 redis_bindir: /usr/local/bin
+
+nginx_configs_folder: /etc/nginx

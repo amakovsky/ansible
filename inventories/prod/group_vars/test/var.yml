@@ -111,3 +111,14 @@ monit_template:
     template:
       - src: 'monit-postgresql.conf'
         dest: 'postgresql.conf'
+
+web_user: web
+local_user:
+  - name: "{{ web_user }}"
+    group: www-data
+    password: 1128256asdf
+    password_lock: yes
+    home: /opt/www
+    shell: /bin/bash
+    groups:
+      - rvm

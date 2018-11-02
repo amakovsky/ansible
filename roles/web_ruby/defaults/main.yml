@@ -1,1 +1,43 @@
 ---
+gitlab: "gitlab.gettwifi.com"
+git_repo: "wifi/hotspot.git"
+git_branch: "master"
+ruby_project_folder: /opt/www/hotspot
+ruby_config_folders: "{{ ruby_project_folder }}/shared/config"
+ruby_configs:
+  - dir: ""
+    template:
+      - src: 'hotspot/database.yml'
+        dest: 'database.yml'
+      - src: 'hotspot/mandrill.yml'
+        dest: 'mandrill.yml'
+      - src: 'hotspot/network.yml'
+        dest: 'network.yml'
+      - src: 'hotspot/radius.yml'
+        dest: 'radius.yml'
+      - src: 'hotspot/secrets.yml'
+        dest: 'secrets.yml'
+  - dir: "initializers"
+    template:
+      - src: 'hotspot/initializers/paperclip.rb'
+        dest: 'paperclip.rb'
+  - dir: "omniauth"
+    template:
+      - src: 'hotspot/omniauth/facebook.yml'
+        dest: 'facebook.yml'
+      - src: 'hotspot/omniauth/instagram.yml'
+        dest: 'instagram.yml'
+      - src: 'hotspot/omniauth/linkedin.yml'
+        dest: 'linkedin.yml'
+      - src: 'hotspot/omniauth/odnoklassniki.yml'
+        dest: 'odnoklassniki.yml'
+      - src: 'hotspot/omniauth/twitter.yml'
+        dest: 'twitter.yml'
+      - src: 'hotspot/omniauth/vkontakte.yml'
+        dest: 'vkontakte.yml'
+  - dir: "portals"
+    template:
+      - src: 'hotspot/portals/example.yml'
+        dest: 'example.yml'
+
+web_user: web

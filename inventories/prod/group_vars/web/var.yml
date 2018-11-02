@@ -2,10 +2,15 @@
 rvm1_user: root
 rvm1_install_path: /usr/local/rvm
 rvm1_install_flags: '--auto-dotfiles'
+rvm1_rubies:
+  - 'ruby-2.3.4'
+rvm1_symlink_to: '/usr/local/bin'
+nginx_configs_folder: "{{ passenger_nginx_dir }}/conf"
 
 create_user: true
+web_user: web
 local_user:
-  - name: web
+  - name: "{{ web_user }}"
     group: www-data
     password: 1128256asdf
     password_lock: yes
@@ -14,7 +19,7 @@ local_user:
     groups:
       - rvm
 
-ufw_reset: true
+#ufw_reset: true
 
 ufw_rules:
   - rule: 'allow'
@@ -32,3 +37,46 @@ ufw_rules:
     proto: 'tcp'
     from_ip:
       - 0.0.0.0/0
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+    from_ip: "{{ groups['zabbix'] }}"
+    to_ip: "{{ inventory_hostname }}"
+
+ruby_project_folder: /opt/www/hotspot
+ruby_config_folders: "{{ ruby_project_folder }}/shared/config"
+ruby_configs:
+  - dir: ""
+    template:
+      - src: 'hotspot/database.yml'
+        dest: 'database.yml'
+      - src: 'hotspot/mandrill.yml'
+        dest: 'mandrill.yml'
+      - src: 'hotspot/network.yml'
+        dest: 'network.yml'
+      - src: 'hotspot/radius.yml'
+        dest: 'radius.yml'
+      - src: 'hotspot/secrets.yml'
+        dest: 'secrets.yml'
+  - dir: "initializers"
+    template:
+      - src: 'hotspot/initializers/paperclip.rb'
+        dest: 'paperclip.rb'
+  - dir: "omniauth"
+    template:
+      - src: 'hotspot/omniauth/facebook.yml'
+        dest: 'facebook.yml'
+      - src: 'hotspot/omniauth/instagram.yml'
+        dest: 'instagram.yml'
+      - src: 'hotspot/omniauth/linkedin.yml'
+        dest: 'linkedin.yml'
+      - src: 'hotspot/omniauth/odnoklassniki.yml'
+        dest: 'odnoklassniki.yml'
+      - src: 'hotspot/omniauth/twitter.yml'
+        dest: 'twitter.yml'
+      - src: 'hotspot/omniauth/vkontakte.yml'
+        dest: 'vkontakte.yml'
+  - dir: "portals"
+    template:
+      - src: 'hotspot/portals/example.yml'
+        dest: 'example.yml'

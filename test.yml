@@ -9,7 +9,9 @@
   roles:
     - common
     - ufw
-    - postgresql
-    - monit
-    - zabbix
-    - s3cmd
+    - user
+#    - postgresql
+#    - monit
+#    - zabbix
+#    - s3cmd
+    - web_ruby
