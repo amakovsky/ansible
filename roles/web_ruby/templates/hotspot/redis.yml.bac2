@@ -1,0 +1,17 @@
+common: &common
+  sidekiq:
+    url: 'redis://10.135.118.226:6379/0'
+  session:
+    url: 'redis://10.135.118.226:6379/1'
+  cache:
+    url: 'redis://10.135.118.226:6379/2'
+  mutex:
+    url: 'redis://10.135.118.226:6379/3'
+    pool:
+      size: 16
+      timeout: 2
+
+development:
+  <<: *common
+production:
+  <<: *common

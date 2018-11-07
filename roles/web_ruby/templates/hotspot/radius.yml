@@ -1,8 +1,8 @@
 common: &common
-  server: 178.159.244.211
+  server: "{{ groups['radius'][0] }}"
   port: 17771
   acc_port: 17772
-  secret: Emv4fxD2YP9b
+  secret: "{{ radius_var.radius_secret }}"
 
 development:
   <<: *common

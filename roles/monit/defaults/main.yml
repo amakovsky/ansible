@@ -7,6 +7,8 @@ monit_global_config_options:
     value: 'localhost'
   - option: 'allow'
     value: 'localhost'
+  - option: 'include'
+    value: '/etc/monit/conf.d/hotspot/*.conf'
 
 monit_template: []
 #monit_template:

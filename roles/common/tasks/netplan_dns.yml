@@ -40,3 +40,7 @@
 - name: validate netpaln conf
   command: netplan try
   changed_when: false
+
+- name: netplan apply
+  command: netplan apply
+  changed_when: false

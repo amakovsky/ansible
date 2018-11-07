@@ -17,6 +17,8 @@ ruby_configs:
         dest: 'radius.yml'
       - src: 'hotspot/secrets.yml'
         dest: 'secrets.yml'
+      - src: 'hotspot/redis.yml'
+        dest: 'redis.yml'
   - dir: "initializers"
     template:
       - src: 'hotspot/initializers/paperclip.rb'

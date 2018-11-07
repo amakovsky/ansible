@@ -26,6 +26,11 @@
     name: pm2
     global: yes
 
+- name: install bower
+  npm:
+    name: bower
+    global: yes
+
 - name: install npm
   npm:
     name: npm

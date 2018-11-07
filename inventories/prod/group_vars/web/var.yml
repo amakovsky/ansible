@@ -6,16 +6,21 @@ rvm1_rubies:
   - 'ruby-2.3.4'
 rvm1_symlink_to: '/usr/local/bin'
 nginx_configs_folder: "{{ passenger_nginx_dir }}/conf"
-
-create_user: true
+passenger_nginx_dir: /opt/nginx
+nginx_bindir: /usr/sbin
+postgrs_conf: "{{ inventory_dir }}/group_vars/postgresql/vault.yml"
+radius_conf: "{{ inventory_dir }}/group_vars/radius/vault.yml"
+postgres_server: "{{ groups['postgresql'][0] }}"
 web_user: web
 local_user:
   - name: "{{ web_user }}"
-    group: www-data
+    group: web
     password: 1128256asdf
     password_lock: yes
     home: /opt/www
     shell: /bin/bash
+    allow_key:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9ekjWWGmeAACPWwfyq2p7DiIwBSQ8TxfKWt/Jlv2BjOH4KxrMkcxvAqvgVXkQZEfR0f+KtbM9Kp1f7ug52XNsZMXe2gB7u3D7g6qyWcXqbudCji7sPOypcp7j72KxOCH6zVOuDeC6BSbH34CZYi+oTsOW8G7jWtVxYe4h7hV+teqVHFGf1P1ThbLAx5pqD4MTjkjaV/lf6Lm8uX/5pNX7Bzegxd8S6feDnKl/ylMwJs2DPNf10AGa1YwILJZJcWbW9rbsMzG0UbXbfgY2mrjFO8+aEPezPvzNNyEP6ob9sLBqkP8+QCb/DthqO7sGiRaxIJtZCucpGhRtxaYj7Yfb web@gettwifi.com'
     groups:
       - rvm
 
@@ -25,8 +30,7 @@ ufw_rules:
   - rule: 'allow'
     port: 22
     proto: 'tcp'
-    from_ip:
-      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+    from_ip: "{{ [groups['gitlab-runner'], groups['web'], hostvars[groups['openvpn'][0]].private_ip] |flatten }}"
   - rule: 'allow'
     port: 443
     proto: 'tcp'
@@ -58,6 +62,10 @@ ruby_configs:
         dest: 'radius.yml'
       - src: 'hotspot/secrets.yml'
         dest: 'secrets.yml'
+      - src: 'hotspot/redis.yml'
+        dest: 'redis.yml'
+      - src: 'hotspot/cequel.yml'
+        dest: 'cequel.yml'
   - dir: "initializers"
     template:
       - src: 'hotspot/initializers/paperclip.rb'
