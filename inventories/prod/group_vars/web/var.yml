@@ -14,7 +14,7 @@ postgres_server: "{{ groups['postgresql'][0] }}"
 web_user: web
 local_user:
   - name: "{{ web_user }}"
-    group: web
+#    group: web
     password: 1128256asdf
     password_lock: yes
     home: /opt/www

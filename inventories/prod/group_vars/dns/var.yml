@@ -74,6 +74,16 @@ records:
       type: A
       last: 10.116
       rev: 135.10.in-addr.arpa
+    web1:
+      forward: 10.135.112.29
+      type: A
+      last: 29.112
+      rev: 135.10.in-addr.arpa
+    web2:
+      forward: 10.135.124.179
+      type: A
+      last: 179.124
+      rev: 135.10.in-addr.arpa
 
   gettwifi:
     "@":
@@ -93,7 +103,8 @@ ufw_rules:
     port: 22
     proto: 'tcp'
     from_ip:
-      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+      - 10.135.0.0/16
+#      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
   - rule: 'allow'
     port: 53
     proto: 'tcp'
@@ -109,5 +120,7 @@ ufw_rules:
   - rule: 'allow'
     port: 10050
     proto: 'tcp'
-    from_ip: "{{ groups['zabbix'] }}"
+#    from_ip: "{{ groups['zabbix'] }}"
+    from_ip:
+      - 10.135.0.0/16
     to_ip: "{{ inventory_hostname }}"

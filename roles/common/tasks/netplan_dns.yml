@@ -38,7 +38,7 @@
   notify: netplan apply
 
 - name: validate netpaln conf
-  command: netplan try
+  command: netplan try --timeout 0
   changed_when: false
 
 - name: netplan apply
