@@ -6,6 +6,42 @@ cassandra_global_config_options:
     value: '{{ cassandra_cluster_name }}'
     regex: ''
     tab: ''
+  - option: authenticator
+    value: 'PasswordAuthenticator'
+    regex: ''
+    tab: ''
+  - option: concurrent_reads
+    value: '32'
+    regex: ''
+    tab: ''
+  - option: concurrent_writes
+    value: '64'
+    regex: ''
+    tab: ''
+  - option: concurrent_counter_writes
+    value: '32'
+    regex: ''
+    tab: ''
+  - option: disk_optimization_strategy
+    value: 'ssd'
+    regex: ''
+    tab: ''
+  - option: memtable_allocation_type
+    value: 'offheap_objects'
+    regex: ''
+    tab: ''
+  - option: memtable_offheap_space_in_mb
+    value: '256'
+    regex: ''
+    tab: ''
+  - option: write_request_timeout_in_ms
+    value: '3000'
+    regex: ''
+    tab: ''
+  - option: memtable_flush_writers
+    value: '{{ ansible_processor_vcpus }}'
+    regex: ''
+    tab: ''
   - option: '- seeds'
     value: "{{ lookup('flattened', groups['cassandra']) }}"
     regex: '.*'
@@ -15,6 +51,10 @@ cassandra_global_config_options:
     regex: ''
     tab: ''
   - option: rpc_address
+    value: '0.0.0.0'
+    regex: ''
+    tab: ''
+  - option: broadcast_rpc_address
     value: '{{ inventory_hostname }}'
     regex: ''
     tab: ''
@@ -26,13 +66,38 @@ cassandra_global_config_options:
     value: 'false'
     regex: ''
     tab: ''
+#cassandra_global_config_options:
+#  - option: cluster_name
+#    value: '{{ cassandra_cluster_name }}'
+#    regex: ''
+#    tab: ''
+#  - option: '- seeds'
+#    value: "{{ lookup('flattened', groups['cassandra']) }}"
+#    regex: '.*'
+#    tab: '          '
+#  - option: listen_address
+#    value: '{{ inventory_hostname }}'
+#    regex: ''
+#    tab: ''
+#  - option: rpc_address
+#    value: '{{ inventory_hostname }}'
+#    regex: ''
+#    tab: ''
+#  - option: endpoint_snitch
+#    value: 'GossipingPropertyFileSnitch'
+#    regex: ''
+#    tab: ''
+#  - option: auto_bootstrap
+#    value: 'false'
+#    regex: ''
+#    tab: ''
 
 ufw_rules:
   - rule: 'allow'
     port: 22
     proto: 'tcp'
     from_ip:
-      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+      - 10.135.0.0/16
     to_ip: "{{ inventory_hostname }}"
   - rule: 'allow'
     port: 7000
@@ -42,15 +107,18 @@ ufw_rules:
   - rule: 'allow'
     port: 9042
     proto: 'tcp'
-    from_ip: "{{ [groups['cassandra']]|flatten }}"
+    from_ip:
+      - 10.135.0.0/16
     to_ip: "{{ inventory_hostname }}"
   - rule: 'allow'
     port: 10050
     proto: 'tcp'
-    from_ip: "{{ groups['zabbix'] }}"
+    from_ip:
+      - 10.135.0.0/16
     to_ip: "{{ inventory_hostname }}"
   - rule: 'allow'
     port: 7199
     proto: 'tcp'
-    from_ip: "{{ groups['zabbix'] }}"
+    from_ip:
+      - 10.135.0.0/16
     to_ip: "{{ inventory_hostname }}"

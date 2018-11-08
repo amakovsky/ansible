@@ -43,8 +43,8 @@
   register: passenger_version
   tags: skip_ansible_lint
 
-- debug:
-    msg: "{{ passenger_version }}"
+#- debug:
+#    msg: "{{ passenger_version }}"
 
 - name: Ensure nginx directory exists.
   file:

@@ -15,6 +15,26 @@
     path: /etc/sudoers
     line: "{{ web_user }} ALL=(ALL) NOPASSWD: /usr/bin/monit unmonitor sidekiq_*, /usr/bin/monit monitor sidekiq_*, /bin/mv /tmp/monit.conf /opt/www/hotspot/shared/tmp/monit/sidekiq_*.conf, /usr/bin/monit reload"
 
+#- name: Install common programm
+#  apt:
+#    name: libpq-dev
+#    update_cache: yes
+#    cache_valid_time: 3600
+
+#- name: '(Hack: keep SSH forwarding socket)'
+#  lineinfile:
+#    dest: /etc/sudoers
+#    insertafter: '^#?\s*Defaults\s+env_keep\b'
+#    line: 'Defaults    env_keep += "SSH_AUTH_SOCK"'
+#    state: present
+#
+#- name: '(Hack: grant access to the socket to {{web_user}})'
+#  become: false
+#  acl: name='{{item}}' etype=user entity='{{web_user}}' permissions="rwx" state=present
+#  with_items:
+#      - "{{ ansible_env.SSH_AUTH_SOCK|dirname }}"
+#      - "{{ ansible_env.SSH_AUTH_SOCK }}"
+
 - name: Copy ssl cert for gitlab
   copy:
     src: "../../files/rsa-keys/id_rsa"
@@ -22,6 +42,18 @@
     mode: 0600
   become_user: "{{ web_user }}"
   become: yes
+
+#- name: Clone project repositories
+#  git:
+#    repo: "git@{{ gitlab }}:{{ git_repo }}"
+#    dest: "{{ ruby_project_folder }}/shared"
+#    version: "{{ git_branch }}"
+#    force: yes
+#    accept_hostkey: yes
+##    key_file: /home/{{ local_user }}/id_rsa
+#  become_user: "{{ web_user }}"
+#  become: yes
+#  register: cloned
 
 - name: create web folder
   file:
@@ -64,7 +96,7 @@
   become_user: "{{ web_user }}"
   become: yes
 
-- name: link monit config
+- name: link nginx config
   file:
     src: '{{ ruby_project_folder }}/shared/tmp/monit/'
     dest: '/etc/monit/conf.d/hotspot'
