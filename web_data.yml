@@ -1,0 +1,16 @@
+---
+- name: web server
+  hosts: web_data
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - common
+    - ufw
+    - user
+    - rvm
+    - nodejs
+    - monit
+    - web_ruby
+    - zabbix

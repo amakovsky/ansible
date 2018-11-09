@@ -46,20 +46,23 @@
     - "{{ ruby_configs | selectattr('template', 'defined') | list }}"
     - template
 
-- name: copy nginx configs
-  template:
-    src: 'nginx.conf'
-    dest: '{{ nginx_configs_folder }}/sites-available/nginx.conf'
-  notify: restart nginx
+- name: create nginx config
+  block:
+  - name: copy nginx configs
+    template:
+      src: 'nginx.conf'
+      dest: '{{ nginx_configs_folder }}/sites-available/nginx.conf'
+    notify: restart nginx
 
-- name: link nginx config
-  file:
-    src: '{{ nginx_configs_folder }}/sites-available/nginx.conf'
-    dest: '{{ nginx_configs_folder }}/sites-enabled/nginx.conf'
-    state: link
-    force: yes
-  notify: restart nginx
-  no_log: true
+  - name: link nginx config
+    file:
+      src: '{{ nginx_configs_folder }}/sites-available/nginx.conf'
+      dest: '{{ nginx_configs_folder }}/sites-enabled/nginx.conf'
+      state: link
+      force: yes
+    notify: restart nginx
+    no_log: true
+  when: virtual_hosts is defined
 
 - name: create monit config
   file:
