@@ -41,6 +41,19 @@
         force: yes
   when: cassandra_recriate_cluster or cassandra_available.stat.exists == false
 
+- name: inithialize cluser
+  block:
+    - name: set password for cassandra user
+      shell: "cqlsh -u cassandra -p cassandra -e \"ALTER USER cassandra WITH PASSWORD '{{ cassandra_pass }}'\""
+      tags: skip_ansible_lint
+
+    - name: set password for common user
+      shell: "cqlsh -u cassandra -p '{{ cassandra_pass }}' -e \"CREATE USER hotspot WITH PASSWORD '{{ user_pass }}' NOSUPERUSER\""
+      tags: skip_ansible_lint
+  when: cassandra_recriate_cluster or cassandra_available.stat.exists == false or cassandra_update_password
+  run_once: true
+
+
 - name: Configure global settings.
   lineinfile:
     dest: "{{ cassandra_config_path }}"

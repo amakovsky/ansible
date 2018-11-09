@@ -14,9 +14,28 @@
 #          {%- endfor %}
 #          {{ res }}
 
-- name: Resetting firewall
+#- name: Resetting firewall
+#  ufw:
+#    state: reset
+#  when: ufw_reset
+
+- name: Delete OpenSSH rule
+  shell: "ufw status numbered | grep IN |awk -F\"[][]\" '{print $2}'"
+  register: ufw_rules_list
+  when: ufw_reset
+
+- name: Configure default incoming/outgoing rules with ufw.
   ufw:
-    state: reset
+    direction: "{{ item.direction }}"
+    policy: "{{ item.policy }}"
+    state: enabled
+  with_items:
+    - { direction: incoming, policy: allow }
+  when: ufw_reset
+
+- name: Delete OpenSSH rule
+  shell: "yes y | ufw delete 1"
+  with_items: "{{ ufw_rules_list.stdout_lines }}"
   when: ufw_reset
 
 - name: Configuring port/protocol/network rules
@@ -48,6 +67,6 @@
     policy: "{{ item.policy }}"
     state: enabled
   with_items:
-    - { direction: outgoing, policy: allow }
     - { direction: incoming, policy: deny }
+    - { direction: outgoing, policy: allow }
   when: ufw_change is changed

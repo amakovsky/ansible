@@ -39,6 +39,51 @@ records:
       type: A
       last: 158.16
       rev: 135.10.in-addr.arpa
+    redis1:
+      forward: 10.135.118.233
+      type: A
+      last: 233.118
+      rev: 135.10.in-addr.arpa
+    redis2:
+      forward: 10.135.118.227
+      type: A
+      last: 227.118
+      rev: 135.10.in-addr.arpa
+    redis3:
+      forward: 10.135.118.226
+      type: A
+      last: 226.118
+      rev: 135.10.in-addr.arpa
+    cassandra1:
+      forward: 10.135.119.43
+      type: A
+      last: 43.119
+      rev: 135.10.in-addr.arpa
+    cassandra2:
+      forward: 10.135.119.68
+      type: A
+      last: 68.119
+      rev: 135.10.in-addr.arpa
+    cassandra3:
+      forward: 10.135.119.200
+      type: A
+      last: 200.119
+      rev: 135.10.in-addr.arpa
+    asterisk:
+      forward: 10.135.116.10
+      type: A
+      last: 10.116
+      rev: 135.10.in-addr.arpa
+    web1:
+      forward: 10.135.112.29
+      type: A
+      last: 29.112
+      rev: 135.10.in-addr.arpa
+    web2:
+      forward: 10.135.124.179
+      type: A
+      last: 179.124
+      rev: 135.10.in-addr.arpa
 
   gettwifi:
     "@":
@@ -58,7 +103,8 @@ ufw_rules:
     port: 22
     proto: 'tcp'
     from_ip:
-      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+      - 10.135.0.0/16
+#      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
   - rule: 'allow'
     port: 53
     proto: 'tcp'
@@ -74,5 +120,7 @@ ufw_rules:
   - rule: 'allow'
     port: 10050
     proto: 'tcp'
-    from_ip: "{{ groups['zabbix'] }}"
+#    from_ip: "{{ groups['zabbix'] }}"
+    from_ip:
+      - 10.135.0.0/16
     to_ip: "{{ inventory_hostname }}"

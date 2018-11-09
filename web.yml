@@ -10,6 +10,8 @@
     - ufw
     - user
     - rvm
+    - nodejs
     - passenger
+    - monit
     - web_ruby
 #    - zabbix

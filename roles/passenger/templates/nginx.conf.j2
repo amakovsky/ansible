@@ -1,4 +1,5 @@
-user  {{ nginx_user }};
+#user  {{ nginx_user }};
+user  {{ web_user }};
 worker_processes  4;
 
 #error_log  logs/error.log;
@@ -20,7 +21,7 @@ http {
     passenger_ruby /usr/local/rvm/gems/{{ ruby }}/wrappers/ruby;
 {% endfor %}
 
-
+    passenger_enabled on;
     passenger_max_pool_size 16;
     passenger_pool_idle_time 60;
 

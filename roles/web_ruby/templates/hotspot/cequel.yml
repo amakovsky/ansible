@@ -1,0 +1,26 @@
+default: &default
+  hosts:
+    - '127.0.0.1'
+  port: 9042
+  username: 'cassandra'
+  password: 'cassandra'
+  keyspace: hotspot
+  max_retries: 3
+  retry_delay: 0.5
+  newrelic: false
+
+development:
+  <<: *default
+
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  keyspace: hotspot_test
+
+production:
+  <<: *default
+  newrelic: true
+  replication:
+    class: SimpleStrategy
+    replication_factor: 1
+# durable_writes: false

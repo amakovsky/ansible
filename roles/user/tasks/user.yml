@@ -73,7 +73,7 @@
       system: "{{ item.system | default(omit) }}"
       uid: "{{ item.uid | default(omit) }}"
     with_items: "{{ local_user }}"
-    no_log: true
+#    no_log: true
 
   - name: lock user
     user:
