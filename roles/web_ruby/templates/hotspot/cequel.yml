@@ -1,9 +1,11 @@
 default: &default
   hosts:
-    - '127.0.0.1'
+{% for item in groups['cassandra'] %}
+  - {{ item }}
+{% endfor %}
   port: 9042
-  username: 'cassandra'
-  password: 'cassandra'
+  username: 'hotspot'
+  password: "{{ cassandra_var.user_pass }}"
   keyspace: hotspot
   max_retries: 3
   retry_delay: 0.5

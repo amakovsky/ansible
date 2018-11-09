@@ -11,7 +11,9 @@ passenger_nginx_dir: /opt/nginx
 nginx_bindir: /usr/sbin
 postgrs_conf: "{{ inventory_dir }}/group_vars/postgresql/vault.yml"
 radius_conf: "{{ inventory_dir }}/group_vars/radius/vault.yml"
+cassandra_conf: "{{ inventory_dir }}/group_vars/cassandra/vault.yml"
 postgres_server: "{{ groups['postgresql'][0] }}"
+#cassandra_server: "{{ groups['cassandra'][0] }}"
 web_user: web
 virtual_hosts: gettwifi.com
 

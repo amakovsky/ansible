@@ -9,6 +9,11 @@
     file: "{{ radius_conf }}"
     name: radius_var
 
+- name: Include cassandra vars files
+  include_vars:
+    file: "{{ cassandra_conf }}"
+    name: cassandra_var
+
 - name: add rule for monit to sudo
   lineinfile:
     state: present
