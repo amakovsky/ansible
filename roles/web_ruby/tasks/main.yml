@@ -69,3 +69,24 @@
     src: '{{ ruby_project_folder }}/shared/tmp/monit/'
     dest: '/etc/monit/conf.d/hotspot'
     state: link
+
+- name: Configuration cron vars
+  cronvar:
+    name: "{{ item.name | default(omit) }}"
+    value: "{{ item.value | default(omit) }}"
+  with_items: "{{ web_cron_vars }}"
+  when: web_cron_vars | length > 0
+  become_user: "{{ web_user }}"
+  become: yes
+
+- name: Configuring cron
+  cron:
+    name: "{{ item.name | default(omit) }}"
+    minute: "{{ item.minute | default(omit) }}"
+    hour: "{{ item.hour | default(omit) }}"
+    day: "{{ item.day | default(omit) }}"
+    job: "{{ item.job | default(omit) }}"
+  with_items: "{{ web_cron }}"
+  when: web_cron | length > 0
+  become_user: "{{ web_user }}"
+  become: yes
