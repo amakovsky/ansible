@@ -63,14 +63,25 @@
   check_mode: no
   changed_when: false  # Never report as changed
   ignore_errors: yes
-
-- debug:
-    msg: "{{ openvpn_avail }}"
+  failed_when: False
 
 - name: Set variable 'openvpn'
   set_fact:
    openvpn: 1
   when: openvpn_avail.rc == 0
+
+- name: Check for bind
+  command: which named
+  register: bind_avail
+  check_mode: no
+  changed_when: false  # Never report as changed
+  ignore_errors: yes
+  failed_when: False
+
+- name: Set variable 'bind'
+  set_fact:
+   bind: 1
+  when: bind_avail.rc == 0
 
 - name: Check if postgresql is installed
   environment:
@@ -192,3 +203,6 @@
 
 - include_tasks: "openvpn.yml"
   when: openvpn == 1
+
+- include_tasks: "bind9.yml"
+  when: bind == 1

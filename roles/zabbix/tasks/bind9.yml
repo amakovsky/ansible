@@ -1,0 +1,14 @@
+---
+- name: copy zabbix user parameter for bind9
+  template:
+    src: userparameter_bind.conf
+    dest: "{{ zabbix_conf_directory }}/userparameter_bind.conf"
+  notify: restart zabbix
+
+- name: copy bind9 script for zabbix
+  copy:
+    src: bind-stats.py
+    dest: "{{ zabbix_script_directory }}/bind-stats.py"
+    owner: root
+    group: zabbix
+    mode: 0770

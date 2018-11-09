@@ -14,4 +14,4 @@
     - passenger
     - monit
     - web_ruby
-#    - zabbix
+    - zabbix
