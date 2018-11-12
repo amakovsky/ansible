@@ -43,3 +43,6 @@ ruby_configs:
         dest: 'example.yml'
 
 web_user: web
+
+web_cron: []
+web_cron_vars: []

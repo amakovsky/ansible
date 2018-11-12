@@ -9,11 +9,22 @@
     file: "{{ radius_conf }}"
     name: radius_var
 
+- name: Include cassandra vars files
+  include_vars:
+    file: "{{ cassandra_conf }}"
+    name: cassandra_var
+
 - name: add rule for monit to sudo
   lineinfile:
     state: present
     path: /etc/sudoers
     line: "{{ web_user }} ALL=(ALL) NOPASSWD: /usr/bin/monit unmonitor sidekiq_*, /usr/bin/monit monitor sidekiq_*, /bin/mv /tmp/monit.conf /opt/www/hotspot/shared/tmp/monit/sidekiq_*.conf, /usr/bin/monit reload"
+
+- name: Install common programm
+  apt:
+    name: libpq-dev
+    update_cache: yes
+    cache_valid_time: 3600
 
 - name: Copy ssl cert for gitlab
   copy:
@@ -41,20 +52,23 @@
     - "{{ ruby_configs | selectattr('template', 'defined') | list }}"
     - template
 
-- name: copy nginx configs
-  template:
-    src: 'nginx.conf'
-    dest: '{{ nginx_configs_folder }}/sites-available/nginx.conf'
-  notify: restart nginx
+- name: create nginx config
+  block:
+  - name: copy nginx configs
+    template:
+      src: 'nginx.conf'
+      dest: '{{ nginx_configs_folder }}/sites-available/nginx.conf'
+    notify: restart nginx
 
-- name: link nginx config
-  file:
-    src: '{{ nginx_configs_folder }}/sites-available/nginx.conf'
-    dest: '{{ nginx_configs_folder }}/sites-enabled/nginx.conf'
-    state: link
-    force: yes
-  notify: restart nginx
-  no_log: true
+  - name: link nginx config
+    file:
+      src: '{{ nginx_configs_folder }}/sites-available/nginx.conf'
+      dest: '{{ nginx_configs_folder }}/sites-enabled/nginx.conf'
+      state: link
+      force: yes
+    notify: restart nginx
+    no_log: true
+  when: virtual_hosts is defined
 
 - name: create monit config
   file:
@@ -69,3 +83,24 @@
     src: '{{ ruby_project_folder }}/shared/tmp/monit/'
     dest: '/etc/monit/conf.d/hotspot'
     state: link
+
+- name: Configuration cron vars
+  cronvar:
+    name: "{{ item.name | default(omit) }}"
+    value: "{{ item.value | default(omit) }}"
+  with_items: "{{ web_cron_vars }}"
+  when: web_cron_vars | length > 0
+  become_user: "{{ web_user }}"
+  become: yes
+
+- name: Configuring cron
+  cron:
+    name: "{{ item.name | default(omit) }}"
+    minute: "{{ item.minute | default(omit) }}"
+    hour: "{{ item.hour | default(omit) }}"
+    day: "{{ item.day | default(omit) }}"
+    job: "{{ item.job | default(omit) }}"
+  with_items: "{{ web_cron }}"
+  when: web_cron | length > 0
+  become_user: "{{ web_user }}"
+  become: yes

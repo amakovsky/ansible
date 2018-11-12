@@ -84,6 +84,11 @@ records:
       type: A
       last: 179.124
       rev: 135.10.in-addr.arpa
+    web-data1:
+      forward: 10.135.68.78
+      type: A
+      last: 78.68
+      rev: 135.10.in-addr.arpa
 
   gettwifi:
     "@":

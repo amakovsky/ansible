@@ -1,32 +1,40 @@
 common: &common
   sidekiq:
     url: 'redis://mymaster/0'
-    SENTINELS:
-      - { host: "10.135.118.233", port: 26379 }
-      - { host: "10.135.118.227", port: 26379 }
-      - { host: "10.135.118.226", port: 26379 }
-#    role: master
+    sentinels:
+      - :host: "10.135.118.233"
+        :port: 26379
+      - :host: "10.135.118.227"
+        :port: 26379
+      - :host: "10.135.118.226"
+        :port: 26379
   session:
     url: 'redis://mymaster/1'
-    SENTINELS:
-      - { host: "10.135.118.233", port: 26379 }
-      - { host: "10.135.118.227", port: 26379 }
-      - { host: "10.135.118.226", port: 26379 }
-#    role: master
+    sentinels:
+      - :host: "10.135.118.233"
+        :port: 26379
+      - :host: "10.135.118.227"
+        :port: 26379
+      - :host: "10.135.118.226"
+        :port: 26379
   cache:
     url: 'redis://mymaster/2'
-    SENTINELS:
-      - { host: "10.135.118.233", port: 26379 }
-      - { host: "10.135.118.227", port: 26379 }
-      - { host: "10.135.118.226", port: 26379 }
-#    role: master
+    sentinels:
+      - :host: "10.135.118.233"
+        :port: 26379
+      - :host: "10.135.118.227"
+        :port: 26379
+      - :host: "10.135.118.226"
+        :port: 26379
   mutex:
     url: 'redis://mymaster/3'
-    SENTINELS:
-      - { host: "10.135.118.233", port: 26379 }
-      - { host: "10.135.118.227", port: 26379 }
-      - { host: "10.135.118.226", port: 26379 }
-#    role: master
+    sentinels:
+      - :host: "10.135.118.233"
+        :port: 26379
+      - :host: "10.135.118.227"
+        :port: 26379
+      - :host: "10.135.118.226"
+        :port: 26379
     pool:
       size: 16
       timeout: 2

@@ -15,7 +15,6 @@ cassandra_conf: "{{ inventory_dir }}/group_vars/cassandra/vault.yml"
 postgres_server: "{{ groups['postgresql'][0] }}"
 #cassandra_server: "{{ groups['cassandra'][0] }}"
 web_user: web
-virtual_hosts: gettwifi.com
 
 local_user:
   - name: "{{ web_user }}"
@@ -91,22 +90,3 @@ ruby_configs:
     template:
       - src: 'hotspot/portals/example.yml'
         dest: 'example.yml'
-web_cron:
-  - name: "Scheduler ticks"
-    minute: "{{ ansible_play_hosts.index(inventory_hostname) }}-59/{{ ansible_play_hosts | length }}"
-    job: "cd {{ ruby_project_folder }}/current && bundle exec bin/sidekiq_pusher scheduler > /dev/null"
-  - name: "Cleaner ticks"
-    minute: "{{ ansible_play_hosts.index(inventory_hostname) }}-59/{{ ansible_play_hosts | length }}"
-    job: "cd {{ ruby_project_folder }}/current && bundle exec bin/sidekiq_pusher cleaner > /dev/null"
-  - name: "Integration tokens refresh"
-    minute: 0
-    hour: "{{ ansible_play_hosts.index(inventory_hostname) }}-23/{{ ansible_play_hosts | length }}"
-    job: "cd {{ ruby_project_folder }}/current && bundle exec bin/sidekiq_pusher integration_refresh > /dev/null"
-
-web_cron_vars:
-  - name: RAILS_ENV
-    value: production
-  - name: GEM_PATH
-    value: "{{ rvm1_install_path }}/gems/{{ ruby_default }}:{{ rvm1_install_path }}/gems/{{ ruby_default }}@global"
-  - name: PATH
-    value: "{{ rvm1_install_path }}/gems/{{ ruby_default }}/bin:{{ rvm1_install_path }}/gems/{{ ruby_default }}@global/bin:{{ rvm1_install_path }}/rubies/{{ ruby_default }}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/snap/bin:{{ rvm1_install_path }}/bin"

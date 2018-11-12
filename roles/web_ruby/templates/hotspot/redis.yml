@@ -8,7 +8,7 @@ common: &common
         :port: 26379
       - :host: "10.135.118.226"
         :port: 26379
-#    role: master
+    :role: :master
   session:
     url: 'redis://mymaster/1'
     sentinels:
@@ -18,7 +18,7 @@ common: &common
         :port: 26379
       - :host: "10.135.118.226"
         :port: 26379
-#    role: master
+    :role: :master
   cache:
     url: 'redis://mymaster/2'
     sentinels:
@@ -28,7 +28,7 @@ common: &common
         :port: 26379
       - :host: "10.135.118.226"
         :port: 26379
-#    role: master
+    :role: :master
   mutex:
     url: 'redis://mymaster/3'
     sentinels:
@@ -38,7 +38,7 @@ common: &common
         :port: 26379
       - :host: "10.135.118.226"
         :port: 26379
-#    role: master
+    :role: :master
     pool:
       size: 16
       timeout: 2
