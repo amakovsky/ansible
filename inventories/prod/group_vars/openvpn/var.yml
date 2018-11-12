@@ -6,6 +6,7 @@ clients:
   - makovsky
   - vlad
   - Yakovlev
+  - kirill
 
 allow_ip:
   - 0.0.0.0/0
