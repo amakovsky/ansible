@@ -20,6 +20,12 @@
     path: /etc/sudoers
     line: "{{ web_user }} ALL=(ALL) NOPASSWD: /usr/bin/monit unmonitor sidekiq_*, /usr/bin/monit monitor sidekiq_*, /bin/mv /tmp/monit.conf /opt/www/hotspot/shared/tmp/monit/sidekiq_*.conf, /usr/bin/monit reload"
 
+- name: Install common programm
+  apt:
+    name: libpq-dev
+    update_cache: yes
+    cache_valid_time: 3600
+
 - name: Copy ssl cert for gitlab
   copy:
     src: "../../files/rsa-keys/id_rsa"
