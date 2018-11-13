@@ -112,3 +112,13 @@ web_cron_vars:
     value: "{{ rvm1_install_path }}/gems/{{ ruby_default }}:{{ rvm1_install_path }}/gems/{{ ruby_default }}@global"
   - name: PATH
     value: "{{ rvm1_install_path }}/gems/{{ ruby_default }}/bin:{{ rvm1_install_path }}/gems/{{ ruby_default }}@global/bin:{{ rvm1_install_path }}/rubies/{{ ruby_default }}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/snap/bin:{{ rvm1_install_path }}/bin"
+
+monit_global_config_options:
+  - option: 'set httpd'
+    value: 'port 2812 and'
+  - option: 'use address'
+    value: 'localhost'
+  - option: 'allow'
+    value: 'localhost'
+  - option: 'include'
+    value: '/etc/monit/conf.d/hotspot/*.conf'

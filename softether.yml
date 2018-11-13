@@ -9,4 +9,8 @@
     - common
     - ufw
     - softether
+    - user
+    - monit
+    - haproxy
+    - sniffr
     - zabbix

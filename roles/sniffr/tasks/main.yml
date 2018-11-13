@@ -12,8 +12,8 @@
   file:
     path: "{{ sniffr_dir }}/log"
     state: directory
-    owner: web
-    group: sniffr
+    owner: "{{ sniffr_user }}"
+    group: "{{ sniffr_group }}"
     mode: 0775
 
 - name: Download and unarchive sniff
@@ -21,14 +21,14 @@
     src: "https://gitlab.gettwifi.com/api/v4/projects/wifi%2Fsniffr/jobs/artifacts/master/download?job=build_app&private_token={{ gitlab_private_token }}"
     dest: "{{ sniffr_dir }}"
     remote_src: yes
-    owner: web
-    group: sniffr
+    owner: "{{ sniffr_user }}"
+    group: "{{ sniffr_group }}"
     mode: 0775
 
 - name: copy sniffr start script
   template:
     src: 'sniffr.sh.j2'
     dest: "{{ sniffr_dir }}/sniffr.sh"
-    owner: web
-    group: sniffr
+    owner: "{{ sniffr_user }}"
+    group: "{{ sniffr_group }}"
     mode: '0770'

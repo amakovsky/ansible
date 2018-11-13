@@ -12,7 +12,7 @@ ufw_rules:
     port: 22
     proto: 'tcp'
     from_ip:
-      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+      - 10.135.0.0/16
   - rule: 'allow'
     port: 8443
     proto: 'tcp'
@@ -36,5 +36,35 @@ ufw_rules:
   - rule: 'allow'
     port: 10050
     proto: 'tcp'
-    from_ip: "{{ groups['zabbix'] }}"
+    from_ip:
+      - 10.135.0.0/16
     to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 80
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+
+sniffr_dir: /var/www/sniffr
+sniffr_port: 37008
+sniffr_pass: 123456
+sniffr_user: web
+sniffr_group: sniffr
+
+local_user:
+  - name: "{{ sniffr_user }}"
+    group: "{{ sniffr_group }}"
+    password: 1128256asdf
+    password_lock: yes
+    home: /opt/www
+    shell: /bin/bash
+    groups:
+      - sniffr
+      - "{{ sniffr_group }}"
+
+monit_template:
+  - dir: conf-available
+    link: 'conf-enabled'
+    template:
+      - src: 'monit-sniffr.conf'
+        dest: 'sniffr.conf'
