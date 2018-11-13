@@ -1,0 +1,4 @@
+---
+sniffr_dir: /var/www/sniffr
+sniffr_port: 37008
+sniffr_pass: 123456

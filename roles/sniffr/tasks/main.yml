@@ -1,0 +1,34 @@
+---
+- name: Include vault vars files
+  include_vars:
+    file: ../../files/vault_var.yml
+
+- name: Install libhiredis-dev
+  apt:
+    name: libhiredis-dev
+    update_cache: yes
+
+- name: create snifr config
+  file:
+    path: "{{ sniffr_dir }}/log"
+    state: directory
+    owner: web
+    group: sniffr
+    mode: 0775
+
+- name: Download and unarchive sniff
+  unarchive:
+    src: "https://gitlab.gettwifi.com/api/v4/projects/wifi%2Fsniffr/jobs/artifacts/master/download?job=build_app&private_token={{ gitlab_private_token }}"
+    dest: "{{ sniffr_dir }}"
+    remote_src: yes
+    owner: web
+    group: sniffr
+    mode: 0775
+
+- name: copy sniffr start script
+  template:
+    src: 'sniffr.sh.j2'
+    dest: "{{ sniffr_dir }}/sniffr.sh"
+    owner: web
+    group: sniffr
+    mode: '0770'

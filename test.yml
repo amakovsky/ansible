@@ -7,18 +7,13 @@
   serial: 1
 
   roles:
-#    - common
-#    - ufw
-#    - user
-#    - postgresql
-#    - monit
-#    - zabbix
-#    - s3cmd
-#    - web_ruby
     - common
     - ufw
     - user
-    - rvm
-    - nodejs
-    - passenger
-    - zabbix
+#    - postgresql
+    - monit
+    - haproxy
+    - sniffr
+#    - zabbix
+#    - s3cmd
+#    - web_ruby

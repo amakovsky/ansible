@@ -119,8 +119,8 @@ monit_template:
   - dir: conf-available
     link: 'conf-enabled'
     template:
-      - src: 'monit-postgresql.conf'
-        dest: 'postgresql.conf'
+      - src: 'monit-sniffr.conf'
+        dest: 'sniffr.conf'
 
 web_user: web
 local_user:
@@ -132,3 +132,5 @@ local_user:
     shell: /bin/bash
     groups:
       - rvm
+      - sniffr
+      - web

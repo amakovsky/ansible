@@ -181,7 +181,7 @@
     name: zabbix-agent.service
 
 - include_tasks: "nginx.yml"
-  when: nginx_available.stat.exists == true and not zabbix_nginx_vts
+  when: nginx_available.stat.exists == true
 
 - include_tasks: "nginx_vts.yml"
   when: nginx_available.stat.exists == true and zabbix_nginx_vts

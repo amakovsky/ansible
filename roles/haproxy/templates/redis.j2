@@ -1,0 +1,79 @@
+#---------------------------------------------------------------------
+# Global settings
+#---------------------------------------------------------------------
+global
+  # to have these messages end up in /var/log/haproxy.log you will
+  # need to:
+  #
+  # 1) configure syslog to accept network log events.  This is done
+  #    by adding the '-r' option to the SYSLOGD_OPTIONS in
+  #    /etc/sysconfig/syslog
+  #
+  # 2) configure local2 events to go to the /var/log/haproxy.log
+  #   file. A line like the following can be added to
+  #   /etc/sysconfig/syslog
+  #
+  #    local2.*                       /var/log/haproxy.log
+  #
+  log         127.0.0.1 local2
+
+  chroot      /var/lib/haproxy
+  pidfile     /var/run/haproxy.pid
+  maxconn     2000   # See also: ulimit -n
+  user        haproxy
+  group       haproxy
+  daemon
+
+  # turn on stats unix socket
+  stats socket /var/lib/haproxy/stats.sock mode 600 level admin
+  stats timeout 2m
+
+#---------------------------------------------------------------------
+# common defaults that all the 'frontend' and 'backend' sections will
+# use if not designated in their block
+#---------------------------------------------------------------------
+defaults
+  mode    tcp
+  log     global
+  option  dontlognull
+  option  redispatch
+  retries                   3
+  timeout queue             45s
+  timeout connect           5s
+  timeout client            1m
+  timeout server            1m
+  timeout check             10s
+  maxconn                   2000
+
+#---------------------------------------------------------------------
+# HAProxy statistics backend
+#---------------------------------------------------------------------
+listen haproxy-monitoring
+  bind    *:80
+  mode    http
+  stats   enable
+  stats   show-legends
+  stats   refresh           5s
+  stats   uri               /
+  stats   realm             Haproxy\ Statistics
+  stats   auth              admin:GaQuu7auch2exoh
+  stats   admin             if TRUE
+
+
+listen redis-postprocess-TCP-6379
+    bind 127.0.0.1:6379
+    mode tcp
+    option tcplog
+    option tcp-check
+    #uncomment these lines if you have basic auth
+    #tcp-check send AUTH\ yourpassword\r\n
+    #tcp-check expect +OK
+    tcp-check send PING\r\n
+    tcp-check expect string +PONG
+    tcp-check send info\ replication\r\n
+    tcp-check expect string role:master
+    tcp-check send QUIT\r\n
+    tcp-check expect string +OK
+    {% for item in groups['redis'] %}
+                      server redis{{ loop.index }} {{ item }}:6379 maxconn 1024 check inter 1s
+    {% endfor %}
