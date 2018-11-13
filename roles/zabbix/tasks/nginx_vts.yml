@@ -1,0 +1,30 @@
+---
+- name: Copy zabbix configuration for nginx
+  copy:
+    src: zabbix-vts.conf
+    dest: "{{ nginx_configs_folder }}/sites-available/zabbix.conf"
+
+- name: link zabbix.conf
+  file:
+    src: "{{ nginx_configs_folder }}/sites-available/zabbix.conf"
+    dest: "{{ nginx_configs_folder }}/sites-enabled/zabbix.conf"
+    state: link
+    force: yes
+  notify: restart nginx
+
+- name: copy zabbix user parameter for nginx
+  template:
+    src: nginx_vts_parameter.conf.j2
+    dest: "{{ zabbix_conf_directory }}/nginx_vts_parameter.conf"
+  notify: restart zabbix
+
+- name: copy nginx script for zabbix
+  copy:
+    src: "{{ item }}"
+    dest: "{{ zabbix_script_directory }}/{{ item }}"
+    owner: zabbix
+    group: zabbix
+    mode: 0770
+  with_items:
+    - "nginx-discovery.py"
+    - "nginx-stats.py"

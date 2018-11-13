@@ -17,6 +17,8 @@ postgres_server: "{{ groups['postgresql'][0] }}"
 web_user: web
 virtual_hosts: gettwifi.com
 
+zabbix_nginx_vts: true
+
 local_user:
   - name: "{{ web_user }}"
 #    group: web

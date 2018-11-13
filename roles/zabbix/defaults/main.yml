@@ -29,6 +29,7 @@ mysql_slave: 0
 redis: 0
 openvpn: 0
 bind: 0
+zabbix_nginx_vts: false
 zabbix_script_directory: '/usr/lib/zabbix/externalscripts'
 zabbix_conf_directory: '/etc/zabbix/zabbix_agentd.d'
 another_port: false
