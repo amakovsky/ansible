@@ -7,13 +7,13 @@ ufw_rules:
     port: 22
     proto: 'tcp'
     from_ip:
-      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+      - 10.135.0.0/16
     to_ip: "{{ inventory_hostname }}"
   - rule: 'allow'
     port: "{{ karma_access_points_auth_port }}"
     proto: 'udp'
     from_ip:
-      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+      - 10.135.0.0/16
   - rule: 'allow'
     port: "{{ karma_users_chilli_auth_port }}"
     proto: 'udp'
@@ -47,7 +47,8 @@ ufw_rules:
   - rule: 'allow'
     port: 10050
     proto: 'tcp'
-    from_ip: "{{ groups['zabbix'] }}"
+    from_ip:
+      - 10.135.0.0/16
     to_ip: "{{ inventory_hostname }}"
 
 radius_template:
