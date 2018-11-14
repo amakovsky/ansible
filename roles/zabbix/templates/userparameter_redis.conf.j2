@@ -1,3 +1,3 @@
 # redis stats
-UserParameter=redis_server.discovery[*],/usr/lib/zabbix/externalscripts/zabbix-redis.py -i '$1' -t server discover $2 2> /dev/null
-UserParameter=redis_sentinel.discovery[*],/usr/lib/zabbix/externalscripts/zabbix-redis.py -i '$1' -t sentinel discover $2 2> /dev/null
+UserParameter=redis_server.discovery[*],{{ zabbix_script_directory }}/zabbix-redis.py -i '$1' -t server discover $2 2> /dev/null
+UserParameter=redis_sentinel.discovery[*],{{ zabbix_script_directory }}/zabbix-redis.py -i '$1' -t sentinel discover $2 2> /dev/null

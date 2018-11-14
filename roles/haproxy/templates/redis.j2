@@ -25,7 +25,7 @@ global
   daemon
 
   # turn on stats unix socket
-  stats socket /var/lib/haproxy/stats.sock mode 600 level admin
+  stats socket /var/lib/haproxy/stats.sock mode 666 level admin
   stats timeout 2m
 
 #---------------------------------------------------------------------

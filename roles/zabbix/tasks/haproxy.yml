@@ -1,0 +1,22 @@
+---
+- name: Install socat
+  apt:
+    name: socat
+    update_cache: yes
+
+- name: copy zabbix user parameter for haproxy
+  template:
+    src: userparameter_haproxy.conf.j2
+    dest: "{{ zabbix_conf_directory }}/userparameter_haproxy.conf"
+  notify: restart zabbix
+
+- name: copy haproxy script for zabbix
+  copy:
+    src: "{{ item }}"
+    dest: "{{ zabbix_script_directory }}/{{ item }}"
+    owner: zabbix
+    group: zabbix
+    mode: 0770
+  with_items:
+    - "haproxy_discovery.sh"
+    - "haproxy_stats.sh"
