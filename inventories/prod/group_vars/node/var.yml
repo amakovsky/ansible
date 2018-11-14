@@ -32,3 +32,11 @@ ufw_rules:
     from_ip:
       - 10.135.0.0/16
     to_ip: "{{ inventory_hostname }}"
+
+virtualhost:
+  www:
+    url: krispykreme.gettwifi.com
+    dir: "/home/node/gettwifi---krispy-kreme/dist"
+    upstream_proxy: "krispykreme_upstream"
+    index_file: index.php
+    ssl_cert: "krispykreme.gettwifi.com"

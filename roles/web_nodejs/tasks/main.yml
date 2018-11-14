@@ -1,4 +1,10 @@
 ---
+- name: Install common programm
+  apt:
+    name: libpng-dev
+    update_cache: yes
+    cache_valid_time: 3600
+
 - name: create folder for dhparam
   file:
     path: /etc/nginx/ssl/
@@ -38,7 +44,7 @@
 #  with_dict: "{{ virtualhost }}"
 
 - name: Generate new certificate if one doesn't exist.
-  shell: certonly --standalone --noninteractive --agree-tos \
+  shell: certbot certonly --standalone --noninteractive --agree-tos \
            --email {{ certbot_admin_email | default('mak@gettwifi.com') }} \
            -d {{ item.value.url | join(',') }}
   with_dict: "{{ virtualhost }}"
