@@ -10,7 +10,7 @@
     state: present
 #    validate_certs: no
 
-#- name: add key for docker repositories
+# - name: add key for docker repositories
 #  apt_key:
 #    keyserver: "{{ item.keyserver }}"
 #    id: "{{ item.id }}"
@@ -20,7 +20,7 @@
 - name: Install common docker package
   apt:
     name: "{{ docker_package }}"
-    update_cache: yes
+    update_cache: true
 
 - name: install docker python
   pip:

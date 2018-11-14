@@ -3,7 +3,7 @@ docker_key:
   - keyserver: "hkp://pgp.mit.edu:80"
     id: "58118E89F3A912897C070ADBF76221572C52609D"
 
-#docker_repository: "deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main"
+# docker_repository: "deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main"
 docker_repository: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
 
 consul_docker_registrator: false
@@ -12,10 +12,10 @@ registry_cert_source: self
 registry_hostname: registry.gettwifi.com
 
 docker_package:
-    - docker-ce
-    - python-setuptools
-    - python-pip
+  - docker-ce
+  - python-setuptools
+  - python-pip
 
 docker_pip_package:
-    - docker
-    - docker-compose
+  - docker
+  - docker-compose
