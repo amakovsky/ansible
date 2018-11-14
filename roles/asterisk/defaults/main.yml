@@ -10,6 +10,8 @@ asterisk_pre_requisites:
     - libsqlite3-dev
     - uuid-dev
     - libjansson-dev
+    - libcurl4-openssl-dev
+    - curl
 
 asterisk_del_config: []
 #  - pjsip.conf
@@ -18,19 +20,19 @@ asterisk_del_config: []
 
 
 asterisk_folders:
-  - /var/lib/asterisk
-  - /var/log/asterisk
-  - /var/run/asterisk
-  - /var/spool/asterisk
-  - /usr/lib/asterisk
-  - /etc/asterisk
-  - "{{ asterisk_optdir }}"
+    - /var/lib/asterisk
+    - /var/log/asterisk
+    - /var/run/asterisk
+    - /var/spool/asterisk
+    - /usr/lib/asterisk
+    - /etc/asterisk
+    - "{{ asterisk_optdir }}"
 
 asterisk_global_config_options:
-  - option: runuser
-    value: "{{ asterisk_username }}"
-  - option: rungroup
-    value: "{{ asterisk_username }}"
+    - option: runuser
+      value: "{{ asterisk_username }}"
+    - option: rungroup
+      value: "{{ asterisk_username }}"
 
 asterisk_srcdir: /tmp/asterisk
 asterisk_optdir: /opt/asterisk
@@ -49,4 +51,3 @@ asterisk_exec: []
 
 #  - "{{ asterisk_optdir }}/status.sh"
 #  - "{{ asterisk_optdir }}/dds.sh"
-

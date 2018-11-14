@@ -2,8 +2,8 @@
 - name: check exist asterisk
   stat:
     path: "{{ asterisk_bindir }}"
-  changed_when: False
-  failed_when: False
+  changed_when: false
+  failed_when: false
   register: asterisk_available
 
 - name: Install asterisk pre-requisites via apt
@@ -14,8 +14,8 @@
 - name: create  user asterisk
   user:
     name: "{{ asterisk_username }}"
-    system: yes
-    createhome: no
+    system: true
+    createhome: false
 
 - name: build asterisk from source
   block:
@@ -27,34 +27,17 @@
       with_items:
         - "{{ asterisk_srcdir }}"
 
-#    - name: Download asterisk source
-#      get_url:
-#        url: "{{ asterisk_source_url }}"
-#        dest: /tmp/asterisk-13-current.tar.gz
-#        mode: 0740
-
     - name: Extract asterisk source
       unarchive:
         src: "{{ asterisk_source_url }}"
         dest: "{{ asterisk_srcdir }}"
-        remote_src: yes
+        remote_src: true
         extra_opts: --strip-components=1
 
     - name: copy menuselect.makeopts file
       copy:
         src: "menuselect.makeopts"
         dest: "{{ asterisk_srcdir }}/menuselect.makeopts"
-
-    #- name: Install asterisk
-    #  shell: cd /tmp/{{ version }} && yes | ./contrib/scripts/install_prereq test; \
-    #         yes | ./contrib/scripts/install_prereq install; \
-    #         ./configure; \
-    #         make NOISY_BUILD=yes; \
-    #         make install; \
-    #         make config; \
-    #         make install-logrotate; \
-    #         make samples
-    #  when: asterisk_available.stat.exists == false
 
     - name: Build Asterisk from tarball
       command: "{{ item }} chdir={{ asterisk_srcdir }}"
@@ -94,7 +77,7 @@
   file:
     path: "/etc/asterisk/{{ item }}"
     state: absent
-    force: yes
+    force: true
   with_items: "{{ asterisk_del_config }}"
   notify: restart asterisk
 
@@ -103,7 +86,7 @@
     path: "{{ item }}"
     owner: asterisk
     group: asterisk
-    recurse: yes
+    recurse: true
   with_items: "{{ asterisk_folders }}"
 #  notify: restart asterisk
 

@@ -8,12 +8,14 @@
 
   roles:
     - common
-    - ufw
-    - user
-#    - postgresql
-    - monit
-    - haproxy
-    - sniffr
-    - zabbix
+    - asterisk
+#    - common
+#    - ufw
+#    - user
+##    - postgresql
+#    - monit
+#    - haproxy
+#    - sniffr
+#    - zabbix
 #    - s3cmd
 #    - web_ruby
