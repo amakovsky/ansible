@@ -104,3 +104,8 @@
   when: web_cron | length > 0
   become_user: "{{ web_user }}"
   become: yes
+
+- name: Copy  template for logrotate
+  template:
+    src: "logrotate_hotspot.j2"
+    dest: "/etc/logrotate.d/hotspot"

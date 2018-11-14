@@ -34,7 +34,8 @@ deploy to preprod:
 
 deploy to prod:
   stage: prod
-  when: manual
+#  when: manual
+  when: on_success
   script:
     - echo "deploy to prod"
   allow_failure: false
