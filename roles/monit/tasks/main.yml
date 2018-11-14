@@ -27,7 +27,7 @@
     src: "{{ monit_config_dir }}/{{ item.0.dir }}/{{ item.1.dest }}"
     dest: "{{ monit_config_dir }}/{{ item.0.link }}/{{ item.1.dest }}"
     state: link
-    force: yes
+    force: true
   with_subelements:
     - "{{ monit_template | selectattr('template', 'defined') | list }}"
     - template
