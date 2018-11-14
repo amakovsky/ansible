@@ -1,4 +1,14 @@
 ---
+rvm1_user: root
+rvm1_install_path: /usr/local/rvm
+rvm1_install_flags: '--auto-dotfiles'
+ruby_default: 'ruby-2.3.4'
+rvm1_rubies:
+  - '{{ ruby_default }}'
+rvm1_symlink_to: '/usr/local/bin'
+nginx_configs_folder: "{{ passenger_nginx_dir }}/conf"
+passenger_nginx_dir: /opt/nginx
+nginx_bindir: /usr/sbin
 postgresql_users:
   - name: "{{ gw_hotspot_user }}"
     password: "{{ gw_hotspot_user_pass }}"
@@ -109,16 +119,18 @@ monit_template:
   - dir: conf-available
     link: 'conf-enabled'
     template:
-      - src: 'monit-postgresql.conf'
-        dest: 'postgresql.conf'
+      - src: 'monit-sniffr.conf'
+        dest: 'sniffr.conf'
 
 web_user: web
 local_user:
   - name: "{{ web_user }}"
-    group: www-data
+    group: web
     password: 1128256asdf
     password_lock: yes
     home: /opt/www
     shell: /bin/bash
     groups:
       - rvm
+      - sniffr
+      - web

@@ -1,0 +1,2 @@
+---
+haproxy_config: redis.j2

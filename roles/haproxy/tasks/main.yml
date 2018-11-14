@@ -1,0 +1,16 @@
+---
+- name: Install haproxy
+  apt:
+    name: haproxy
+    update_cache: yes
+
+- name: Copy galera configuration
+  template:
+    src: "{{ haproxy_config }}"
+    dest: /etc/haproxy/haproxy.cfg
+  notify: restart haproxy
+
+- name: enable haproxy
+  systemd:
+    enabled: yes
+    name: haproxy

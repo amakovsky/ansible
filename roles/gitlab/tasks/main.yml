@@ -21,4 +21,4 @@
     name: "gitlab backup"
     minute: "0"
     hour: "0"
-    job: "docker exec -t root_web_1 gitlab-rake gitlab:backup:create DIRECTORY=gitlab"
+    job: "docker exec -t root_web_1 gitlab-rake gitlab:backup:create SKIP=registry,uploads,builds DIRECTORY=gitlab"

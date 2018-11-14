@@ -70,6 +70,19 @@
    openvpn: 1
   when: openvpn_avail.rc == 0
 
+- name: Check for haproxy
+  command: which haproxy
+  register: haproxy_avail
+  check_mode: no
+  changed_when: false  # Never report as changed
+  ignore_errors: yes
+  failed_when: False
+
+- name: Set variable 'haproxy'
+  set_fact:
+   haproxy: 1
+  when: haproxy_avail.rc == 0
+
 - name: Check for bind
   command: which named
   register: bind_avail
@@ -183,6 +196,9 @@
 - include_tasks: "nginx.yml"
   when: nginx_available.stat.exists == true
 
+- include_tasks: "nginx_vts.yml"
+  when: nginx_available.stat.exists == true and zabbix_nginx_vts
+
 - include_tasks: "netstat.yml"
   when: netstat == 1
 
@@ -206,3 +222,6 @@
 
 - include_tasks: "bind9.yml"
   when: bind == 1
+
+- include_tasks: "haproxy.yml"
+  when: haproxy == 1

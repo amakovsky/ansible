@@ -11,7 +11,9 @@
     - ufw
     - user
 #    - postgresql
-#    - monit
-#    - zabbix
+    - monit
+    - haproxy
+    - sniffr
+    - zabbix
 #    - s3cmd
-    - web_ruby
+#    - web_ruby

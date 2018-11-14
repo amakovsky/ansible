@@ -1,0 +1,12 @@
+#!/bin/bash
+
+_term() {
+    kill -TERM "$child" 2>/dev/null
+}
+
+trap _term SIGTERM
+
+{{ sniffr_dir }}/sniffr -p {{ sniffr_port }} -r 127.0.0.1 >> {{ sniffr_dir }}/log/sniffr.data 2>> {{ sniffr_dir }}/log/sniffr.log &
+
+child=$(jobs -p)
+wait "$child"

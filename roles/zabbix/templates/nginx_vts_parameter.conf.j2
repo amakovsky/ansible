@@ -1,0 +1,2 @@
+UserParameter=nginx.stat.[*],{{ zabbix_script_directory }}/nginx-stats.py "$1" "$2" "$3" "$4" "$5" "$6" "$7"
+UserParameter=nginx.discovery[*],{{ zabbix_script_directory }}/nginx-discovery.py "$1"

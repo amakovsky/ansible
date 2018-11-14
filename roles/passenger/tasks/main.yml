@@ -21,6 +21,19 @@
     - name: Install Passenger
       command: 'gem install passenger'
 
+    - name: create redis src folder
+      file:
+        path: "/tmp/nginx-module-vts"
+        state: directory
+        mode: 0755
+
+    - name: Download and unarchive a nginx-module-vts
+      unarchive:
+        src: "https://github.com/vozlt/nginx-module-vts/archive/v0.1.18.tar.gz"
+        dest: "/tmp/nginx-module-vts"
+        remote_src: yes
+        extra_opts: --strip-components=1
+
     - name: Symlink bundler binaries on the system path
       file:
         state: 'link'
@@ -32,7 +45,7 @@
 
     - name: Passenger and Nginx
     #  shell: bash -lc "passenger-install-nginx-module --auto --auto-download --extra-configure-flags='--conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log' --languages ruby --prefix={{ passenger_nginx_dir }}"
-      command: bash -lc "passenger-install-nginx-module --auto --auto-download --extra-configure-flags='--error-log-path=/var/log/nginx/error.log' --languages ruby --prefix={{ passenger_nginx_dir }}"
+      command: bash -lc "passenger-install-nginx-module --auto --auto-download --extra-configure-flags='--error-log-path=/var/log/nginx/error.log --add-module=/tmp/nginx-module-vts' --languages ruby --prefix={{ passenger_nginx_dir }}"
 
     - name: move nginx bin to /usr/sbin
       command: 'cp {{ passenger_nginx_dir }}/sbin/nginx {{ nginx_bindir }}/'

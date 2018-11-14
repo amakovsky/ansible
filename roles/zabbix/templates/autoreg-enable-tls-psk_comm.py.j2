@@ -14,6 +14,7 @@ postgres={{ postgres }}
 redis={{ redis }}
 openvpn={{ openvpn }}
 bind={{ bind }}
+haproxy={{ haproxy }}
 
 #templ=[{"templateid":"10001"}]
 
@@ -87,6 +88,13 @@ if openvpn == 1:
 #Добавление шаблона bind
 if bind == 1:
    res1 = zapi.do_request('template.get', { 'filter': {'name': '{{ zabbix_bind_template }}' }, 'output': 'hostid'})
+   res2 = str(res1.get(u'result')).split('\'')
+   zabbix_templid = res2[3]
+   templ.append({"templateid": zabbix_templid})
+
+#Добавление шаблона haproxy
+if haproxy == 1:
+   res1 = zapi.do_request('template.get', { 'filter': {'name': '{{ zabbix_haproxy_template }}' }, 'output': 'hostid'})
    res2 = str(res1.get(u'result')).split('\'')
    zabbix_templid = res2[3]
    templ.append({"templateid": zabbix_templid})
