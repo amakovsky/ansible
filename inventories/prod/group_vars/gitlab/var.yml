@@ -1,5 +1,4 @@
 ---
-ansible_user: root
 gitlab_name: gitlab.gettwifi.com
 gitlab_registry_port: 5001
 ufw_rules:

@@ -15,7 +15,7 @@ server {
 server {
     listen 443 ssl;
     server_name {{ item.value.url }} {% if item.value.www_host is defined and item.value.www_host %} www.{{ item.value.url }} {% endif %} ;
-    root /var/www ;
+    root {{ item.value.dir }} ;
 
     index {{ item.value.index_file }};
     access_log /var/log/nginx/{{ item.value.url }}.access.ssl.log;
@@ -31,7 +31,7 @@ server {
   access_log /var/log/nginx/{{ item.value.url }}.log;
   error_log /var/log/nginx/{{ item.value.url }}.error.log error;
   index {{ item.value.index_file }};
-  root /var/www ;
+  root {{ item.value.dir }} ;
 
   error_page 401 403 404 /404.html;
 {% endif %}

@@ -2,30 +2,20 @@
 - name: check exist asterisk
   stat:
     path: "{{ asterisk_bindir }}"
-  changed_when: False
-  failed_when: False
+  changed_when: false
+  failed_when: false
   register: asterisk_available
 
 - name: Install asterisk pre-requisites via apt
   apt:
     name: "{{ asterisk_pre_requisites }}"
     state: present
-#  with_items:
-#    - build-essential
-#    - libssl-dev
-#    - libncurses5-dev
-#    - libnewt-dev
-#    - libxml2-dev
-#    - linux-headers-{{ ansible_kernel }}
-#    - libsqlite3-dev
-#    - uuid-dev
-#    - libjansson-dev
 
 - name: create  user asterisk
   user:
     name: "{{ asterisk_username }}"
-    system: yes
-    createhome: no
+    system: true
+    createhome: false
 
 - name: build asterisk from source
   block:
@@ -37,39 +27,17 @@
       with_items:
         - "{{ asterisk_srcdir }}"
 
-    - name: Download asterisk source
-      get_url:
-#        url: https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-13-current.tar.gz
-        url: https://ams3.digitaloceanspaces.com/gettwifi/source/asterisk-13-current.tar.gz
-        dest: /tmp/asterisk-13-current.tar.gz
-        mode: 0740
-#      when: asterisk_available.stat.exists == false
-
     - name: Extract asterisk source
       unarchive:
-        src: /tmp/asterisk-13-current.tar.gz
+        src: "{{ asterisk_source_url }}"
         dest: "{{ asterisk_srcdir }}"
-        remote_src: yes
+        remote_src: true
         extra_opts: --strip-components=1
-      register: extract
-#      when: asterisk_available.stat.exists == false
 
     - name: copy menuselect.makeopts file
       copy:
-        src: test
+        src: "menuselect.makeopts"
         dest: "{{ asterisk_srcdir }}/menuselect.makeopts"
-#      when: asterisk_available.stat.exists == false
-
-    #- name: Install asterisk
-    #  shell: cd /tmp/{{ version }} && yes | ./contrib/scripts/install_prereq test; \
-    #         yes | ./contrib/scripts/install_prereq install; \
-    #         ./configure; \
-    #         make NOISY_BUILD=yes; \
-    #         make install; \
-    #         make config; \
-    #         make install-logrotate; \
-    #         make samples
-    #  when: asterisk_available.stat.exists == false
 
     - name: Build Asterisk from tarball
       command: "{{ item }} chdir={{ asterisk_srcdir }}"
@@ -80,6 +48,13 @@
         - make config
         - make install-logrotate
         - make samples
+
+    - name: Clear out directory after install
+      file:
+        state: absent
+        path: "{{ item }}/"
+      with_items:
+        - "{{ asterisk_srcdir }}"
   when: asterisk_available.stat.exists == false
 
 - name: create asterisk opt folder
@@ -102,8 +77,8 @@
   file:
     path: "/etc/asterisk/{{ item }}"
     state: absent
-    force: yes
-  with_items: "{{ del_config }}"
+    force: true
+  with_items: "{{ asterisk_del_config }}"
   notify: restart asterisk
 
 - name: change user and group for asterisk folders
@@ -111,9 +86,9 @@
     path: "{{ item }}"
     owner: asterisk
     group: asterisk
-    recurse: yes
+    recurse: true
   with_items: "{{ asterisk_folders }}"
-  notify: restart asterisk
+#  notify: restart asterisk
 
 
 - name: asterisk configure global settings.
@@ -142,10 +117,3 @@
     job: "{{ item.job | default(omit) }}"
   with_items: "{{ asterisk_exec }}"
   when: asterisk_exec|length > 0
-
-- name: Clear out directory after install
-  file:
-    state: absent
-    path: "{{ item }}/"
-  with_items:
-    - "{{ asterisk_srcdir }}"

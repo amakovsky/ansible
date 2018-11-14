@@ -2,7 +2,7 @@
 - name: Install common programm
   apt:
     name: "{{ bind_package }}"
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
 
 - name: Set hostname
@@ -15,7 +15,7 @@
 
 - name: edit bind9 systemctl config file
   lineinfile:
-    backup: no
+    backup: false
     path: /etc/default/bind9
     regexp: "{{ item.path }}"
     line: "{{ item.regexp }}"
@@ -58,10 +58,10 @@
     owner: root
     group: bind
     mode: 0640
-#    validate: "named-checkzone /etc/bind/zones/db.{{ item.value.name }} %s"
   with_dict:
     - "{{ zones }}"
   notify: restart bind9
+# validate: "named-checkzone /etc/bind/zones/db.{{ item.value.name }} %s"
 
 
 - name: Copy reverse file
@@ -71,14 +71,5 @@
     owner: root
     group: bind
     mode: 0640
-#    validate: "named-checkzone /etc/bind/zones/db.{{ rev_domain }} %s"
   notify: restart bind9
-
-#- name: Configure open ports for bind9
-#  ufw:
-#    rule: "{{ item.rule }}"
-#    port: "{{ item.port }}"
-#    proto: "{{ item.proto }}"
-#  with_items:
-#    - { rule: 'allow', port: 53, proto: 'tcp' }
-#    - { rule: 'allow', port: 53, proto: 'udp' }
+# validate: "named-checkzone /etc/bind/zones/db.{{ rev_domain }} %s"

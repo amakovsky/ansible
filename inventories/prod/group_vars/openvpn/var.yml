@@ -1,12 +1,14 @@
 ---
-ansible_user: root
 private_network: 10.135.0.0/16
-private_DNS: 10.135.101.26
 clients:
   - makovsky
   - vlad
   - Yakovlev
   - kirill
 
-allow_ip:
-  - 0.0.0.0/0
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0

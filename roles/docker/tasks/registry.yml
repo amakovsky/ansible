@@ -13,6 +13,6 @@
   docker_service:
     project_src: /root
     files: docker-registry.yml
-    build: yes
+    build: true
     restarted: true
-  changed_when: False
+  changed_when: false

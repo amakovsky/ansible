@@ -3,4 +3,4 @@
   systemd:
     name: asterisk
     state: restarted
-    enabled: yes
+    enabled: true

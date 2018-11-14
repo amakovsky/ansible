@@ -1,1 +1,6 @@
 ---
+java_package:
+    - java-common
+    - ca-certificates
+    - oracle-java8-installer
+    - oracle-java8-set-default
