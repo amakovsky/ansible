@@ -1,24 +1,25 @@
 ---
+asterisk_username: asterisk
+
 ufw_rules:
   - rule: 'allow'
     port: 22
     proto: 'tcp'
     from_ip:
-      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+      - 10.135.0.0/16
     to_ip: "{{ inventory_hostname }}"
   - rule: 'allow'
     port: 5060
     proto: 'udp'
     from_ip:
       - 0.0.0.0/0
-    to_ip: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+    to_ip: "{{ ansible_default_ipv4.address }}"
   - rule: 'allow'
     port: 10050
     proto: 'tcp'
-    from_ip: "{{ groups['zabbix'] }}"
+    from_ip:
+      - 10.135.0.0/16
     to_ip: "{{ inventory_hostname }}"
-
-asterisk_optdir: /opt/asterisk
 
 asterisk_template:
   - src: 'etc/asterisk.conf'
@@ -44,7 +45,7 @@ asterisk_template:
   - src: 'opt/status.url'
     dest: '{{ asterisk_optdir }}/status.url'
 
-del_config:
+asterisk_del_config:
   - pjsip.conf
   - queues.conf
   - indications.conf

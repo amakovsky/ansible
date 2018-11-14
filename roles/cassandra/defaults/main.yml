@@ -1,9 +1,4 @@
 ---
-java_package:
-    - java-common
-    - ca-certificates
-    - oracle-java8-installer
-    - oracle-java8-set-default
 cassandra_bindir: /usr/sbin/cassandra
 cassandra_repository: "deb http://www.apache.org/dist/cassandra/debian 311x main"
 cassandra_key:

@@ -1,4 +1,5 @@
 ---
+asterisk_source_url: https://ams3.digitaloceanspaces.com/gettwifi/source/asterisk-13-current.tar.gz
 asterisk_pre_requisites:
     - build-essential
     - libssl-dev
@@ -10,14 +11,11 @@ asterisk_pre_requisites:
     - uuid-dev
     - libjansson-dev
 
-del_config: []
-#del_config:
+asterisk_del_config: []
 #  - pjsip.conf
 #  - queues.conf
 #  - indications.conf
-#  - confbridge.conf
-#  - voicemail.conf
-#  - musiconhold.conf
+
 
 asterisk_folders:
   - /var/lib/asterisk
@@ -39,24 +37,6 @@ asterisk_optdir: /opt/asterisk
 asterisk_bindir: /usr/sbin/asterisk
 
 asterisk_template: []
-#asterisk_template:
-#  - src: 'etc/asterisk.conf'
-#    dest: '/etc/asterisk/asterisk.conf'
-#  - src: 'etc/cdr.conf'
-#    dest: '/etc/asterisk/cdr.conf'
-#  - src: 'etc/cdr_custom.conf'
-#    dest: '/etc/asterisk/cdr_custom.conf'
-#  - src: 'etc/extensions.conf'
-#    dest: '/etc/asterisk/extensions.conf'
-#  - src: 'etc/logger.conf'
-#    dest: '/etc/asterisk/logger.conf'
-#  - src: 'etc/modules.conf'
-#    dest: '/etc/asterisk/modules.conf'
-#  - src: 'etc/sip.conf'
-#    dest: '/etc/asterisk/sip.conf'
-#  - src: 'opt/call.url'
-#    dest: '/opt/asterisk/call.url'
-#  - src: 'opt/dds.sh'
 #    dest: '/opt/asterisk/dds.sh'
 #  - src: 'opt/status.sh'
 #    dest: '/opt/asterisk/status.sh'
@@ -67,7 +47,6 @@ asterisk_username: asterisk
 
 asterisk_exec: []
 
-#asterisk_exec:
 #  - "{{ asterisk_optdir }}/status.sh"
 #  - "{{ asterisk_optdir }}/dds.sh"
 

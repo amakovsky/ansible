@@ -87,7 +87,7 @@ asterisk_template:
   - src: 'opt/status.url'
     dest: '{{ asterisk_optdir }}/status.url'
 
-del_config:
+asterisk_del_config:
   - pjsip.conf
   - queues.conf
   - indications.conf

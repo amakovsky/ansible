@@ -24,8 +24,3 @@ zones:
     name: gitlab.gettwifi.com
 
 list_public: true
-
-bind_package:
-    - bind9
-    - bind9utils
-    - bind9-doc

@@ -73,12 +73,3 @@
     mode: 0640
 #    validate: "named-checkzone /etc/bind/zones/db.{{ rev_domain }} %s"
   notify: restart bind9
-
-#- name: Configure open ports for bind9
-#  ufw:
-#    rule: "{{ item.rule }}"
-#    port: "{{ item.port }}"
-#    proto: "{{ item.proto }}"
-#  with_items:
-#    - { rule: 'allow', port: 53, proto: 'tcp' }
-#    - { rule: 'allow', port: 53, proto: 'udp' }
