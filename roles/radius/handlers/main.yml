@@ -1,3 +1,6 @@
 ---
 - name: restart freeradius
-  service: name=freeradius state=restarted enabled=yes
+  service:
+    name: freeradius
+    state: restarted
+    enabled: true
