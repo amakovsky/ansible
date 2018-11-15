@@ -12,3 +12,7 @@ def test_hosts_file(host):
     assert f.exists
     assert f.user == 'root'
     assert f.group == 'root'
+
+
+def test_service_is_running(host):
+    assert host.service('asterisk').is_running

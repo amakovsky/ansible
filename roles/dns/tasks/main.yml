@@ -1,17 +1,20 @@
 ---
-- name: Install common programm
-  apt:
-    name: "{{ bind_package }}"
-    update_cache: true
-    cache_valid_time: 3600
-
 - name: Set hostname
   hostname:
     name: "{{ host_name }}"
+  when: host_name is defined
+  register: change_hostname
 
 - name: Set hostname fact
   set_fact:
     ansible_fqdn: "{{ host_name }}"
+  when: change_hostname is changed
+
+- name: Install bind utilits
+  apt:
+    name: "{{ bind_package }}"
+    update_cache: true
+    cache_valid_time: 3600
 
 - name: edit bind9 systemctl config file
   lineinfile:
