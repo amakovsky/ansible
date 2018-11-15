@@ -1,10 +1,11 @@
+---
 - name: Search for bashrc Backup
   stat: path=/etc/bash.bashrc.backup
   register: bashrc_backup
 
 - name: Backup current bashrc
   copy:
-    remote_src: True
+    remote_src: true
     src: /etc/bash.bashrc
     dest: /etc/bash.bashrc.backup
   when: not bashrc_backup.stat.exists

@@ -1,3 +1,4 @@
+---
 - name: set ViM as default editor
   alternatives:
     name: editor

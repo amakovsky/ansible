@@ -1,24 +1,24 @@
 ---
 - name: fetch netplan file from server
   fetch:
-    src: /etc/netplan/50-cloud-init.yaml
-    dest: "/tmp/{{ inventory_hostname }}50-cloud-init.yaml"
+    src: "/etc/netplan/{{ netplan_config }}"
+    dest: "/tmp/{{ inventory_hostname }}{{ netplan_config }}"
     flat: true
-  changed_when: False
+  changed_when: false
 
 - name: load netplan file
   include_vars:
-    file: "/tmp/{{ inventory_hostname }}50-cloud-init.yaml"
+    file: "/tmp/{{ inventory_hostname }}{{ netplan_config }}"
     name: cloud
 
-#- debug:
+# - debug:
 #    msg: "{{ item }}"
 #  with_items: "{{ cloud.network.ethernets.eth0.nameservers.addresses[0] }}"
 
 - name: edit netpaln config file for all servers
   lineinfile:
-    backup: yes
-    path: /etc/netplan/50-cloud-init.yaml
+    backup: true
+    path: "/etc/netplan/{{ netplan_config }}"
     regexp: "{{ item.path }}"
     line: "{{ item.regexp }}"
   with_items:
@@ -29,8 +29,8 @@
 
 - name: edit netpaln config file for dns server
   lineinfile:
-    backup: yes
-    path: /etc/netplan/50-cloud-init.yaml
+    backup: true
+    path: "/etc/netplan/{{ netplan_config }}"
     regexp: "{{ item.path }}"
     line: "{{ item.regexp }}"
   with_items:

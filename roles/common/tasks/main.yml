@@ -2,12 +2,20 @@
 - name: Install common programm
   apt:
     name: "{{ common_programm }}"
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
 
 - import_tasks: bash.yml
+
 - import_tasks: defaults.yml
+
+- name: Check that netplan config exists
+  stat:
+    path: "/etc/netplan/{{ netplan_config }}"
+  register: stat_result
+
 - import_tasks: netplan_dns.yml
-  when: ansible_distribution_release == 'bionic' and enable_local_dns
+  when: ansible_distribution_release == 'bionic' and enable_local_dns and stat_result.stat.exists == true
+
 - import_tasks: dns.yml
   when: ansible_distribution_release != 'bionic' and enable_local_dns
