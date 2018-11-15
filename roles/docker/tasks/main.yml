@@ -1,21 +1,18 @@
 ---
+- name: Install required package
+  apt:
+    name: "gnupg"
+    update_cache: true
+
 - name: add docker key
   apt_key:
-    url: "https://download.docker.com/linux/ubuntu/gpg"
+    url: "{{ docker_key }}"
     state: present
 
 - name: add repository for docker
   apt_repository:
     repo: "{{ docker_repository }}"
     state: present
-#    validate_certs: no
-
-# - name: add key for docker repositories
-#  apt_key:
-#    keyserver: "{{ item.keyserver }}"
-#    id: "{{ item.id }}"
-#    state: present
-#  with_items: "{{ docker_key }}"
 
 - name: Install common docker package
   apt:
@@ -25,9 +22,6 @@
 - name: install docker python
   pip:
     name: "{{ docker_pip_package }}"
-#  with_items:
-#    - docker
-#    - docker-compose
 
 - include_tasks: "registrator.yml"
   when: consul_docker_registrator
