@@ -50,5 +50,5 @@ sentinel_global_config_options:
 recreate_cluster: false
 
 redis_build_package:
-    - build-essential
-    - tcl
+  - build-essential
+  - tcl

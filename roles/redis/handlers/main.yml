@@ -3,12 +3,12 @@
   systemd:
     name: redis-server
     state: restarted
-    enabled: yes
-    daemon_reload: yes
+    enabled: true
+    daemon_reload: true
 
 - name: restart redis-sentinel
   systemd:
     name: redis-sentinel
     state: restarted
-    enabled: yes
-    daemon_reload: yes
+    enabled: true
+    daemon_reload: true

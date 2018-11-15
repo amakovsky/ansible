@@ -1,10 +1,10 @@
 ---
-#- name: Copy zabbix configuration for nginx
+# - name: Copy zabbix configuration for nginx
 #  copy:
 #    src: zabbix.conf
 #    dest: "{{ nginx_configs_folder }}/sites-available/zabbix.conf"
 #
-#- name: link zabbix.conf
+# - name: link zabbix.conf
 #  file:
 #    src: "{{ nginx_configs_folder }}/sites-available/zabbix.conf"
 #    dest: "{{ nginx_configs_folder }}/sites-enabled/zabbix.conf"

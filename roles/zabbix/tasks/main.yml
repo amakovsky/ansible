@@ -19,7 +19,7 @@
 - name: Install common
   apt:
     name: "{{ zabbix_package }}"
-    update_cache: yes
+    update_cache: true
     state: present
   notify: restart zabbix
 
@@ -48,52 +48,52 @@
 - name: check exist redis
   stat:
     path: "{{ redis_bindir }}/redis-server"
-  changed_when: False
-  failed_when: False
+  changed_when: false
+  failed_when: false
   register: redis_available
 
 - name: Set variable 'redis'
   set_fact:
-   redis: 1
+    redis: 1
   when: redis_available.stat.exists == true
 
 - name: Check for openvpn
   command: which openvpn
   register: openvpn_avail
-  check_mode: no
+  check_mode: false
   changed_when: false  # Never report as changed
-  ignore_errors: yes
-  failed_when: False
+  ignore_errors: true
+  failed_when: false
 
 - name: Set variable 'openvpn'
   set_fact:
-   openvpn: 1
+    openvpn: 1
   when: openvpn_avail.rc == 0
 
 - name: Check for haproxy
   command: which haproxy
   register: haproxy_avail
-  check_mode: no
+  check_mode: false
   changed_when: false  # Never report as changed
-  ignore_errors: yes
-  failed_when: False
+  ignore_errors: true
+  failed_when: false
 
 - name: Set variable 'haproxy'
   set_fact:
-   haproxy: 1
+    haproxy: 1
   when: haproxy_avail.rc == 0
 
 - name: Check for bind
   command: which named
   register: bind_avail
-  check_mode: no
+  check_mode: false
   changed_when: false  # Never report as changed
-  ignore_errors: yes
-  failed_when: False
+  ignore_errors: true
+  failed_when: false
 
 - name: Set variable 'bind'
   set_fact:
-   bind: 1
+    bind: 1
   when: bind_avail.rc == 0
 
 - name: Check if postgresql is installed
@@ -101,9 +101,9 @@
     LC_MESSAGES: 'C'
   shell: dpkg-query -W -f='${Version}\n' 'postgresql*' | grep -v '^$'
   register: postgres_avail
-  check_mode: no
-  changed_when: False
-  failed_when: False
+  check_mode: false
+  changed_when: false
+  failed_when: false
 
 - name: Set variable 'postgres'
   set_fact:
@@ -152,7 +152,7 @@
 
 - name: edit config file
   lineinfile:
-    backup: yes
+    backup: true
     path: /etc/zabbix/zabbix_agentd.conf
     regexp: "{{ item.path }}"
     line: "{{ item.regexp }}"
@@ -166,7 +166,6 @@
     - { path: '^(.*)TLSAccept=unencrypted', regexp: 'TLSAccept=unencrypted,psk' }
     - { path: '^(.*)TLSPSKIdentity=', regexp: 'TLSPSKIdentity=PSK {{ ansible_nodename }}' }
     - { path: '^(.*)TLSPSKFile=', regexp: 'TLSPSKFile=/etc/zabbix/zabbix_agentd.psk' }
-#    - { path: '^(.*)Include=/etc/zabbix/zabbix_agentd.conf.d/', regexp: 'Include=/etc/zabbix/zabbix_agentd.d/*.conf' }
   when: zabbix_available.stat.exists == false
 
 - name: copy zabbix_agent auto register script
@@ -189,7 +188,7 @@
 
 - name: enable zabbix
   systemd:
-    enabled: yes
+    enabled: true
     state: started
     name: zabbix-agent.service
 
