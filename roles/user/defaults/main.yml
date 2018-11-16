@@ -1,8 +1,6 @@
 ---
 password: 128256asdf
 
-#create_user: false
-#
-#local_user:
-#  - name: user
-#    password: 123456asdf
+local_user:
+  - name: user
+    password: 123456asdf
