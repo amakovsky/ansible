@@ -3,8 +3,8 @@
   systemd:
     name: zabbix-server
     state: restarted
-    enabled: yes
-    daemon_reload: yes
+    enabled: true
+    daemon_reload: true
 
 - name: restart apache2
   service: name=apache2 state=restarted enabled=yes

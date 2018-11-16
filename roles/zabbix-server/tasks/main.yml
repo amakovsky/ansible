@@ -2,8 +2,8 @@
 - name: check exist zabbix-server
   stat:
     path: "{{ zabbix_bindir }}"
-  changed_when: False
-  failed_when: False
+  changed_when: false
+  failed_when: false
   register: zabbix_available
 
 - name: Download zabbix apt source
@@ -18,15 +18,11 @@
     deb: "/tmp/zabbix.deb"
   when: zabbix_available.stat.exists == false
 
-- name: Install common
+- name: Install required
   apt:
-    name: "{{ item }}"
-    update_cache: yes
+    name: "{{ zabbix_required_package }}"
+    update_cache: true
     state: present
-  with_items:
-    - zabbix-server-mysql
-    - zabbix-frontend-php
-    - zabbix-agent
 
 - name: Copy zabbix-server database dump
   copy:
@@ -51,7 +47,7 @@
 
 - name: edit zabbix-server config file
   lineinfile:
-    backup: no
+    backup: false
     path: /etc/zabbix/zabbix_server.conf
     regexp: "{{ item.path }}"
     line: "{{ item.regexp }}"
@@ -64,7 +60,7 @@
 
 - name: edit apache2 config file
   lineinfile:
-    backup: no
+    backup: false
     path: /etc/apache2/conf-enabled/zabbix.conf
     regexp: "{{ item.path }}"
     line: "{{ item.regexp }}"
@@ -76,14 +72,14 @@
   template:
     src: 'mysqld.cnf'
     dest: '/etc/mysql/conf.d/mariadb.cnf'
-    force: yes
+    force: true
   notify: restart mariadb
 
 - name: copy telegramm config
   template:
     src: 'telegram.sh'
     dest: '/usr/lib/zabbix/alertscripts/telegram.sh'
-    force: yes
+    force: true
     owner: zabbix
     group: zabbix
     mode: 0760
@@ -92,25 +88,25 @@
   template:
     src: 'zabbix.conf.php'
     dest: '/usr/share/zabbix/conf/zabbix.conf.php'
-    force: yes
+    force: true
 
-#- name: starte zabbix-server
+# - name: starte zabbix-server
 #  systemd:
 #    state: started
 #    name: zabbix-server
 #
-#- name: enable zabbix-server
+# - name: enable zabbix-server
 #  systemd:
 #    enabled: yes
 #    name: zabbix-server.service
 - name: enable zabbix-server
   systemd:
-    enabled: yes
+    enabled: true
     name: zabbix-server.service
 
 - name: enable zabbix-client
   systemd:
-    enabled: yes
+    enabled: true
     name: zabbix-agent.service
 
 - name: starte zabbix-client
@@ -122,7 +118,7 @@
   template:
     src: 'apache.conf'
     dest: '/etc/apache2/sites-available/000-default.conf'
-    force: yes
+    force: true
   notify: restart apache2
 
 - name: link nginx config
@@ -130,5 +126,5 @@
     src: '/etc/apache2/sites-available/000-default.conf'
     dest: '/etc/apache2/sites-enabled/000-default.conf'
     state: link
-    force: yes
+    force: true
   notify: restart apache2
