@@ -2,8 +2,8 @@
 - name: check exist softether
   stat:
     path: "{{ softether_bindir }}/{{ softether_srcdir }}"
-  changed_when: False
-  failed_when: False
+  changed_when: false
+  failed_when: false
   register: softether_available
 
 - name: Install softether pre-requisites via apt
@@ -17,7 +17,7 @@
       file:
         path: "{{ softether_bindir }}"
         state: absent
-        force: yes
+        force: true
   when: softether_reinstall
 
 - name: Install softether
@@ -30,18 +30,17 @@
       with_items:
         - "{{ softether_srcdir }}"
 
-    - name: Download softether source
-      get_url:
-#        url: http://www.softether-download.com/files/softether/v4.27-9668-beta-2018.05.29-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
-        url: "{{ softether_source_url }}"
-        dest: /tmp/softether.tar.gz
-        mode: 0740
+    #    - name: Download softether source
+    #      get_url:
+    #        url: "{{ softether_source_url }}"
+    #        dest: /tmp/softether.tar.gz
+    #        mode: 0740
 
     - name: Extract softether
       unarchive:
-        src: /tmp/softether.tar.gz
+        src: "{{ softether_source_url }}"
         dest: "/tmp/{{ softether_srcdir }}"
-        remote_src: yes
+        remote_src: true
         extra_opts: --strip-components=1
 
     - name: Build softether from tarball
@@ -49,7 +48,7 @@
       args:
         chdir: "/tmp/{{ softether_srcdir }}"
       with_items:
-       - make i_read_and_agree_the_license_agreement
+        - make i_read_and_agree_the_license_agreement
       notify: restart vpnserver
 
     - name: move softether to folder

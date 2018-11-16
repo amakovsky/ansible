@@ -13,6 +13,6 @@ softether_template:
 
 softether_config: []
 
-#softether_config:
+# softether_config:
 #  - src: 'vpn_server.config'
 #    dest: '/usr/local/{{ softether_srcdir }}'
