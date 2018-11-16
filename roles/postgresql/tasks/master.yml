@@ -12,10 +12,10 @@
   postgresql_user:
     name: "{{ rep_user }}"
     role_attr_flags: "{{ rep_db }}"
-  become: True
+  become: true
   become_user: postgres
 
-#- name: Add trust in pg_hba.conf
+# - name: Add trust in pg_hba.conf
 #  lineinfile:
 #    state: present
 #    dest: "{{ postgresql_config_path }}/pg_hba.conf"
@@ -27,4 +27,4 @@
   service:
     name: "{{ postgresql_daemon }}"
     state: restarted
-  when: master_config is changed #or pg_hba_conf is changed
+  when: master_config is changed  # or pg_hba_conf is changed

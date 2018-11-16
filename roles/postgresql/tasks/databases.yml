@@ -14,7 +14,7 @@
     owner: "{{ item.owner | default(postgresql_user) }}"
     state: "{{ item.state | default('present') }}"
   with_items: "{{ postgresql_databases }}"
-  become: yes
+  become: true
   no_log: true
   become_user: "{{ postgresql_user }}"
   # See: https://github.com/ansible/ansible/issues/16048#issuecomment-229012509
@@ -33,7 +33,7 @@
     state: restore
     target: /tmp/schema.sql
   with_items: "{{ postgresql_databases }}"
-  become: yes
+  become: true
   no_log: true
   become_user: "{{ postgresql_user }}"
   when: not postgresql_server_register_version.stdout and item.name != 'hotspot'

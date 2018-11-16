@@ -5,7 +5,7 @@
     state: stopped
   when: getbase_from_master
 
-#- name: Clear out data directory
+# - name: Clear out data directory
 #  shell: rm -rf {{ __postgresql_data_dir }}/*
 #  when: getbase_from_master
 
@@ -17,11 +17,11 @@
 
 - name: Create base backup
   command: pg_basebackup -D {{ __postgresql_data_dir }} -h {{ groups['postgresql'][0] }} -R -P -U {{ rep_user }} -X stream
-  become: yes
+  become: true
   become_user: postgres
   when: getbase_from_master
 
-#- name: Create recovery.conf
+# - name: Create recovery.conf
 #  template:
 #    src: recovery.conf.j2
 #    dest: /var/lib/pgsql/9.4/data/recovery.conf
@@ -32,12 +32,12 @@
 - name: Enable hot standby
   lineinfile:
     state: present
-    backup: yes
+    backup: true
     dest: "{{ postgresql_config_path }}/postgresql.conf"
     regexp: '^#?hot_standby = \w+(\s+#.*)'
     line: 'hot_standby = yes\1'
-    backrefs: yes
-  become: yes
+    backrefs: true
+  become: true
   become_user: postgres
   notify: restart postgresql
 
@@ -45,4 +45,4 @@
   service:
     name: "{{ postgresql_daemon }}"
     state: started
-    enabled: yes
+    enabled: true

@@ -3,21 +3,32 @@
   stat: path=/usr/share/postgresql/{{ __postgresql_version }}/extension/pg_partman.control
   register: pg_partman_available
 
-- name: download pg_partman
-  get_url:
-#    url: https://github.com/keithf4/pg_partman/archive/v4.0.0.tar.gz
-    url: https://github.com/keithf4/pg_partman/archive/v3.1.1.tar.gz
-    dest: /tmp/v3.1.1.tar.gz
-    mode: 0740
-  when: pg_partman_available.stat.exists == false
+- name: Install required package
+  apt:
+    name: "build-essential"
+    update_cache: true
 
-- name: Extract pg_partman
-  unarchive:
-    src: /tmp/v3.1.1.tar.gz
-    dest: /tmp
-    remote_src: yes
-  when: pg_partman_available.stat.exists == false
+# - name: download pg_partman
+#  get_url:
+#    url: "{{ postgresql_pg_partman_url }}"
+#    dest: /tmp/v3.1.1.tar.gz
+#    mode: 0740
+#  when: pg_partman_available.stat.exists == false
+- name: install pg_partman block
+  block:
+    - name: create pg_partman src folder
+      file:
+        path: "/tmp/pg_partman"
+        state: directory
+        mode: 0755
 
-- name: Install pg_partman
-  shell: cd /tmp/pg_partman-3.1.1 && make install
+    - name: Extract pg_partman
+      unarchive:
+        src: "{{ postgresql_pg_partman_url }}"
+        dest: "/tmp/pg_partman"
+        remote_src: true
+        extra_opts: --strip-components=1
+
+    - name: Install pg_partman
+      shell: cd /tmp/pg_partman && make install
   when: pg_partman_available.stat.exists == false
