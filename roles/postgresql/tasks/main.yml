@@ -39,3 +39,6 @@
 
 - import_tasks: databases.yml
   when: postgresrep_role != 'slave'
+
+- import_tasks: backup.yml
+  when: postgresrep_role is defined and postgresrep_role != 'master'

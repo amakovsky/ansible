@@ -1,5 +1,7 @@
 ---
 postgresql_backup: schema.sql
+postgresql_backup_dir: "~/backup"
+postgresql_cron: []
 # RHEL/CentOS only. Set a repository to use for PostgreSQL installation.
 postgresql_enablerepo: ""
 

@@ -1,0 +1,28 @@
+---
+- name: create backup folders
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - "{{ postgresql_backup_dir }}"
+    - "{{ postgresql_backup_dir }}/logs"
+
+- name: Copy backup scripts
+  template:
+    src: "{{ item }}"
+    dest: "{{ postgresql_backup_dir}}/{{ item }}"
+    mode: 0755
+  with_items:
+    - backup.sh
+    - backup_list.txt
+
+- name: Configuring cron
+  cron:
+    name: "{{ item.name | default(omit) }}"
+    minute: "{{ item.minute | default(omit) }}"
+    hour: "{{ item.hour | default(omit) }}"
+    day: "{{ item.day | default(omit) }}"
+    job: "{{ item.job | default(omit) }}"
+  with_items: "{{ postgresql_cron }}"
+  when: postgresql_cron | length > 0

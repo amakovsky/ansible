@@ -11,4 +11,5 @@
     - ufw
     - postgresql
     - monit
+    - s3cmd
     - zabbix
