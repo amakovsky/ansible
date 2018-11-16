@@ -6,7 +6,7 @@
 - name: Install libhiredis-dev
   apt:
     name: libhiredis-dev
-    update_cache: yes
+    update_cache: true
 
 - name: create snifr config
   file:

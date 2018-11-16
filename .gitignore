@@ -3,3 +3,4 @@
 #inventories/local
 #roles/consul
 #roles/nomad
+**__pycache__

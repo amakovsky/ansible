@@ -1,16 +1,18 @@
 ---
+- debug:
+    msg: "{{ postgrs_conf }}"
+
 - name: Include postgresql vars files
   include_vars:
     file: "{{ postgrs_conf }}"
     name: postgresql_var
-#- debug:
-#    msg: "{{ postgresql_var }}"
+  when: postgrs_conf is defined and postgrs_conf
 
 - name: add radius repo
   apt_repository:
     repo: 'ppa:freeradius/stable-3.0'
     state: present
-    update_cache: True
+    update_cache: true
 
 - name: Install radius
   apt:
@@ -51,7 +53,7 @@
     src: "{{ radius_config_dir }}/{{ item.0.dir }}/{{ item.1.dest }}"
     dest: "{{ radius_config_dir }}/{{ item.0.link }}/{{ item.1.dest }}"
     state: link
-    force: yes
+    force: true
   with_subelements:
     - "{{ radius_template | selectattr('template', 'defined') | list }}"
     - template
@@ -62,7 +64,7 @@
   file:
     path: "{{ item }}"
     state: absent
-    force: yes
+    force: true
   with_items: "{{ unlink_config }}"
   notify: restart freeradius
 

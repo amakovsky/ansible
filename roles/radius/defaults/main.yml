@@ -1,10 +1,10 @@
 ---
 radius_package:
-    - 'freeradius=3.0.15-ppa1~xenial'
-    - 'freeradius-postgresql'
+  - 'freeradius=3.0.15-ppa1~xenial'
+  - 'freeradius-postgresql'
 radius_config_dir: '/etc/freeradius'
 radius_template: []
-#radius_template:
+# radius_template:
 #  - dir: mods-available
 #    link: 'mods-enabled'
 #    template:
@@ -27,12 +27,12 @@ radius_template: []
 #        dest: 'karma-users-mikrotik'
 
 radius_file: []
-#radius_file:
+# radius_file:
 #  - src: 'freeradius/mods-config/queries.conf'
 #    dest: '/etc/freeradius/mods-config/queries.conf'
 
 unlink_config: []
-#unlink_config:
+# unlink_config:
 #  - '/etc/freeradius/sites-enabled/default'
 #  - '/etc/freeradius/sites-enabled/inner-tunnel'
 #  - '/etc/freeradius/mods-enabled/eap'
@@ -52,6 +52,7 @@ freeradius_include_options:
     value: 'proxy_requests  = no'
 
 postgres_server: "{{ groups['postgresql'][0] }}"
+postgrs_conf:
 
 radius_secret: "nungeiThai6ieze"
 

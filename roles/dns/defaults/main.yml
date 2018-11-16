@@ -1,7 +1,9 @@
 ---
 domain: gw.local
 rev_domain: 135.10.in-addr.arpa
-host_name: ns1.{{ domain }}
+# host_name: ns1.{{ domain }}
+ansible_fqdn: ns1.{{ domain }}
+
 records:
   local:
     ns1:
@@ -23,4 +25,4 @@ zones:
   gettwifi:
     name: gitlab.gettwifi.com
 
-list_public: true
+dns_list_public: true

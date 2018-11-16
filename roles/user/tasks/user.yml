@@ -12,7 +12,6 @@
     name: "{{ item.name | default(omit) }}"
     group: "{{ item.group | default(omit) }}"
     shell: "{{ item.shell | default(omit) }}"
-#    password: "{{ (item.password | password_hash('sha512', 'mysecretsalt')) | default(omit)  }}"
     password: "{{ (item.password | default('123456')) | password_hash('sha512', 'mysecretsalt') }}"
     append: "{{ item.append | default(omit) }}"
     comment: "{{ item.comment | default(omit) }}"
@@ -43,45 +42,44 @@
   when: item.password_lock is not defined or item.password_lock == false
 
 - block:
-  - name: create user with lock password
-    user:
-      name: "{{ item.name | default(omit) }}"
-      group: "{{ item.group | default(omit) }}"
-      shell: "{{ item.shell | default(omit) }}"
-      append: "{{ item.append | default(omit) }}"
-      comment: "{{ item.comment | default(omit) }}"
-      create_home: "{{ item.create_home | default(omit) }}"
-      expires: "{{ item.expires | default(omit) }}"
-      force: "{{ item.force | default(omit) }}"
-      generate_ssh_key: "{{ item.generate_ssh_key | default(omit) }}"
-      groups: "{{ item.groups | default(omit) }}"
-      hidden: "{{ item.hidden | default(omit) }}"
-      home: "{{ item.home | default(omit) }}"
-      local: "{{ item.local | default(omit) }}"
-      login_class: "{{ item.login_class | default(omit) }}"
-      move_home: "{{ item.move_home | default(omit) }}"
-      non_unique: "{{ item.non_unique | default(omit) }}"
-#      password_lock: "{{ item.password_lock | default(omit) }}"
-      remove: "{{ item.remove | default(omit) }}"
-      skeleton: "{{ item.skeleton | default(omit) }}"
-      ssh_key_bits: "{{ item.ssh_key_bits | default(omit) }}"
-      ssh_key_comment: "{{ item.ssh_key_comment | default(omit) }}"
-      ssh_key_file: "{{ item.ssh_key_file | default(omit) }}"
-      ssh_key_passphrase: "{{ item.ssh_key_passphrase | default(omit) }}"
-      ssh_key_type: "{{ item.ssh_key_type | default(omit) }}"
-      state: "{{ item.state | default(omit) }}"
-      system: "{{ item.system | default(omit) }}"
-      uid: "{{ item.uid | default(omit) }}"
-    with_items: "{{ local_user }}"
-#    no_log: true
+    - name: create user with lock password
+      user:
+        name: "{{ item.name | default(omit) }}"
+        group: "{{ item.group | default(omit) }}"
+        shell: "{{ item.shell | default(omit) }}"
+        append: "{{ item.append | default(omit) }}"
+        comment: "{{ item.comment | default(omit) }}"
+        create_home: "{{ item.create_home | default(omit) }}"
+        expires: "{{ item.expires | default(omit) }}"
+        force: "{{ item.force | default(omit) }}"
+        generate_ssh_key: "{{ item.generate_ssh_key | default(omit) }}"
+        groups: "{{ item.groups | default(omit) }}"
+        hidden: "{{ item.hidden | default(omit) }}"
+        home: "{{ item.home | default(omit) }}"
+        local: "{{ item.local | default(omit) }}"
+        login_class: "{{ item.login_class | default(omit) }}"
+        move_home: "{{ item.move_home | default(omit) }}"
+        non_unique: "{{ item.non_unique | default(omit) }}"
+        remove: "{{ item.remove | default(omit) }}"
+        skeleton: "{{ item.skeleton | default(omit) }}"
+        ssh_key_bits: "{{ item.ssh_key_bits | default(omit) }}"
+        ssh_key_comment: "{{ item.ssh_key_comment | default(omit) }}"
+        ssh_key_file: "{{ item.ssh_key_file | default(omit) }}"
+        ssh_key_passphrase: "{{ item.ssh_key_passphrase | default(omit) }}"
+        ssh_key_type: "{{ item.ssh_key_type | default(omit) }}"
+        state: "{{ item.state | default(omit) }}"
+        system: "{{ item.system | default(omit) }}"
+        uid: "{{ item.uid | default(omit) }}"
+      with_items: "{{ local_user }}"
+      no_log: true
 
-  - name: lock user
-    user:
-      name: "{{ item.name | default(omit) }}"
-      password_lock: "{{ item.password_lock | default(omit) }}"
-    with_items: "{{ local_user }}"
-    no_log: true
-    changed_when: False
+    - name: lock user
+      user:
+        name: "{{ item.name | default(omit) }}"
+        password_lock: "{{ item.password_lock | default(omit) }}"
+      with_items: "{{ local_user }}"
+      no_log: true
+      changed_when: false
   when: item.password_lock is defined and item.password_lock == true
 
 - name: Set authorized key for

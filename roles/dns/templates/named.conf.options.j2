@@ -5,11 +5,11 @@ options {
         allow-recursion { any; };
         allow-query { any; };
         allow-query-cache { any; };
-{% if list_public %}
-        listen-on { 127.0.0.1; {{ ansible_eth0.ipv4.address }}; {{ ansible_eth1.ipv4.address }}; };
+{% if dns_list_public %}
+        listen-on { any; };
 
 {% else %}
-        listen-on { 127.0.0.1; {{ ansible_eth1.ipv4.address }}; };
+        listen-on { 127.0.0.1; {{ ansible_host }}; };
 {% endif %}
 
         allow-transfer { none; };

@@ -1,4 +1,5 @@
 ---
+dns_list_public: true
 rvm1_user: root
 rvm1_install_path: /usr/local/rvm
 rvm1_install_flags: '--auto-dotfiles'

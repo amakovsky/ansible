@@ -7,8 +7,8 @@
   serial: 1
 
   roles:
-    - common
-    - asterisk
+#    - common
+#    - asterisk
 #    - common
 #    - ufw
 #    - user
@@ -19,3 +19,4 @@
 #    - zabbix
 #    - s3cmd
 #    - web_ruby
+    - dns

@@ -4,7 +4,7 @@
     path: /etc/network/interfaces.d/50-cloud-init.cfg
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
-    firstmatch: yes
+    firstmatch: true
   with_items:
     - {
       regexp: "dns-nameservers*",
@@ -18,7 +18,7 @@
     path: /etc/network/interfaces.d/50-cloud-init.cfg
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
-    firstmatch: yes
+    firstmatch: true
   with_items:
     - {
       regexp: "dns-nameservers*",
@@ -38,7 +38,7 @@
     path: /etc/resolv.conf
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
-    create: yes
+    create: true
   with_items:
     - {
       regexp: "^nameserver*",
@@ -51,11 +51,10 @@
     path: /etc/resolv.conf
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
-    create: yes
+    create: true
   with_items:
     - {
       regexp: "^nameserver*",
       line: "nameserver 127.0.0.1"
     }
   when: inventory_hostname == groups['dns'][0] and change_dns_2 is changed
-

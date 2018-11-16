@@ -2,7 +2,7 @@
 - name: Install socat
   apt:
     name: socat
-    update_cache: yes
+    update_cache: true
 
 - name: copy zabbix user parameter for haproxy
   template:

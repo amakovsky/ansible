@@ -2,20 +2,20 @@
 - name: check exist redis
   stat:
     path: "{{ redis_bindir }}/redis-server"
-  changed_when: False
-  failed_when: False
+  changed_when: false
+  failed_when: false
   register: redis_available
 
 - name: Install required packet for build redis
   apt:
     name: "{{ redis_build_package }}"
-    update_cache: yes
+    update_cache: true
 
 - name: create  user redis
   user:
     name: "{{ redis_user }}"
-    system: yes
-    createhome: no
+    system: true
+    createhome: false
 
 - name: create redis folders
   file:
@@ -75,7 +75,7 @@
       unarchive:
         src: /tmp/redis-stable.tar.gz
         dest: "{{ redis_srcdir }}"
-        remote_src: yes
+        remote_src: true
         extra_opts: --strip-components=1
 
     - name: build
@@ -88,13 +88,13 @@
         - make install
 
     - name: copy configs
-      command: cp {{ redis_srcdir }}/{{ item }} {{ redis_config_folder }}/{{ item }} #&& chown redis:redis {{ redis_config_folder }}/*
+      command: cp {{ redis_srcdir }}/{{ item }} {{ redis_config_folder }}/{{ item }}  # && chown redis:redis {{ redis_config_folder }}/*
       with_items: "{{ redis_configs }}"
-      become: yes
+      become: true
       become_user: '{{ redis_user }}'
   when: redis_available.stat.exists == false
 
-#- name: install redis
+# - name: install redis
 #  shell: echo -n | sudo utils/install_server.sh
 #  args:
 #    chdir: /tmp/redis-stable

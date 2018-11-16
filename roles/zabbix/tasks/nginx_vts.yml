@@ -9,7 +9,7 @@
     src: "{{ nginx_configs_folder }}/sites-available/zabbix.conf"
     dest: "{{ nginx_configs_folder }}/sites-enabled/zabbix.conf"
     state: link
-    force: yes
+    force: true
   notify: restart nginx
 
 - name: copy zabbix user parameter for nginx

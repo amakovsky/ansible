@@ -1,7 +1,7 @@
 ---
 zabbix_package:
-    - python-pip
-    - zabbix-agent
+  - python-pip
+  - zabbix-agent
 zabbix_user: Admin
 zabbix_pass: gonQuancajes
 zabbix_URL: http://zabbix.gw.lan
