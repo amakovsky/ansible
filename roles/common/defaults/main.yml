@@ -30,7 +30,7 @@ common_programm:
   - ntp
   - locales
   - rsyslog
-#  - gnupg
+  - gnupg
 #  - build-essential
 #  - libcurl4-openssl-dev
 #  - ca-certificates
