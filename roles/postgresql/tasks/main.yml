@@ -7,9 +7,9 @@
     LC_MESSAGES: 'C'
   shell: dpkg-query -W -f='${Version}\n' 'postgresql-{{ postgresql_version }}' | grep -v '^$'
   register: postgresql_server_register_version
-  check_mode: no
-  changed_when: False
-  failed_when: False
+  check_mode: false
+  changed_when: false
+  failed_when: false
 
 # Setup/install tasks.
 - include_tasks: setup-RedHat.yml
@@ -25,17 +25,20 @@
 - include_tasks: configure.yml
 
 - include: "{{ postgresrep_role }}.yml"
-  when: postgresrep_role != 'skip'
+  when: postgresrep_role is defined and postgresrep_role != 'skip'
 
 - name: Ensure PostgreSQL is started and enabled on boot.
   service:
     name: "{{ postgresql_daemon }}"
     state: started
-    enabled: yes
+    enabled: true
 
 # Configure PostgreSQL.
 - import_tasks: users.yml
-  when: postgresrep_role != 'slave'
+  when: postgresrep_role is not defined or postgresrep_role != 'slave'
 
 - import_tasks: databases.yml
-  when: postgresrep_role != 'slave'
+  when: postgresrep_role is not defined or postgresrep_role != 'slave'
+
+- import_tasks: backup.yml
+  when: postgresrep_role is defined and postgresrep_role != 'master'

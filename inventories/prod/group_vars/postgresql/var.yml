@@ -128,3 +128,11 @@ monit_template:
     template:
       - src: 'monit-postgresql.conf'
         dest: 'postgresql.conf'
+
+postgresql_backup_dir: "/root/backup"
+postgresql_cron:
+  - name: "create postgresql backup"
+    minute: "0"
+    hour: "2"
+    day: "*"
+    job: "{{ postgresql_backup_dir}}/backup.sh"

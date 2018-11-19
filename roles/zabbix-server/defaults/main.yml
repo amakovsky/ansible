@@ -8,3 +8,7 @@ zabbix_host_name: zabbix.{{ zabbix_domain }}
 telegram_bot: " "
 zabbix_bindir: /usr/sbin/zabbix_server
 zabbix_apt_url: https://repo.zabbix.com/zabbix/3.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.4-1+{{ ansible_distribution_release }}_all.deb
+zabbix_required_package:
+    - zabbix-server-mysql
+    - zabbix-frontend-php
+    - zabbix-agent

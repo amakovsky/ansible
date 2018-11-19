@@ -1,0 +1,3 @@
+{% for db in postgresql_databases %}
+{{ db.name }}
+{% endfor %}

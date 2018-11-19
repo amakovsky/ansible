@@ -1,6 +1,6 @@
 ---
 - name: restart vpnserver
   systemd:
-    enabled: yes
+    enabled: true
     name: vpnserver
-    daemon_reload: yes
+    daemon_reload: true

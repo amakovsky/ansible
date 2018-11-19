@@ -8,7 +8,7 @@ host    all             postgres        127.0.0.1/32            trust
 {{ client.type }} {{ client.database }} {{ client.user }} {{ client.address|default('') }} {{ client.ip_address|default('') }} {{ client.ip_mask|default('') }} {{ client.auth_method }} {{ client.auth_options|default("") }}
 {% endfor %}
 
-{% if postgresrep_role == 'master' %}
+{% if postgresrep_role is defined and postgresrep_role == 'master' %}
 {% for item in groups['postgresql'] %}
 host    {{ rep_db }}    {{ rep_user }}  {{ item }}/32 trust
 {% endfor %}

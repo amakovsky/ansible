@@ -2,7 +2,7 @@
 - name: Install s3cmd programm
   apt:
     name: s3cmd
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
 
 - name: Copy config file
