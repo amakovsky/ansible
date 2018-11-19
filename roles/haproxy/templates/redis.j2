@@ -59,7 +59,7 @@ listen haproxy-monitoring
   stats   auth              admin:GaQuu7auch2exoh
   stats   admin             if TRUE
 
-
+{% if groups['redis'] is defined %}
 listen redis-postprocess-TCP-6379
     bind 127.0.0.1:6379
     mode tcp
@@ -77,3 +77,4 @@ listen redis-postprocess-TCP-6379
     {% for item in groups['redis'] %}
                       server redis{{ loop.index }} {{ item }}:6379 maxconn 1024 check inter 1s
     {% endfor %}
+{% endif %}
