@@ -1,3 +1,4 @@
+---
 - name: Create openvpn key directory
   file:
     path: "{{openvpn_key_dir}}"

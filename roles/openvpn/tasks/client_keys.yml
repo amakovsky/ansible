@@ -65,5 +65,5 @@
   fetch:
     src: "{{ openvpn_base_dir }}/{{item}}-{{inventory_hostname}}.ovpn"
     dest: "{{ openvpn_fetch_config_dir }}/{{item}}/{{inventory_hostname}}.ovpn"
-    flat: yes
+    flat: true
   with_items: "{{clients}}"
