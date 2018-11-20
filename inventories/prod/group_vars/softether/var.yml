@@ -7,6 +7,12 @@ softether_config:
   - src: 'vpn_server.config'
     dest: '{{ softether_bindir }}/{{ softether_srcdir }}/vpn_server.config'
 
+softether_template:
+  - src: 'vpnserver.service'
+    dest: '/lib/systemd/system/vpnserver.service'
+  - src: 'tap.yaml'
+    dest: '/etc/netplan/tap.yaml'
+
 ufw_rules:
   - rule: 'allow'
     port: 22

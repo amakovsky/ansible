@@ -1,0 +1,6 @@
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    tap_aphub:
+      addresses: [ 172.20.0.2/16 ]

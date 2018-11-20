@@ -1,0 +1,46 @@
+common: &common
+  demo:
+    host: "auth.gettwifi.com"
+
+  hotspot:
+    ap_dns_name: "hotspot.gettwifi.com"
+    ap_certificate_password: "N0Ec2PbrlnBa"
+    ap_https_redirect: false
+    fetch_host: "app.karmawifi.ru"
+    fetch_mode: "https"
+    walled_garden: ["yandex", "google", "gettwifi"]
+    directory: "gettwifi"
+    white_label: true
+    accounting: "off"
+    scanner: true
+    #terms_checkbox: true
+    #mandatory_identification: true
+    ym_counter: 23811418
+
+  strategies:
+    avaiable: ["social", "password", "skip", "sms_code", "phone_call", "payment", "voucher", "creative", "quiz", "external"]
+    default: ["social", "password", "skip"]
+    #default_config:
+    #  phone_call:
+    #    sms_fallback: true
+    #    call_button: true
+    #avaiable_social_networks: ["vkontakte", "facebook", "twitter", "instagram", "odnoklassniki"]
+    avaiable_social_networks: ["vkontakte", "facebook", "twitter", "instagram"]
+    default_social_networks: ["vkontakte", "facebook", "twitter", "instagram"]
+
+  office:
+    #hide_msisdn: true
+    #crm_api: true
+    #show_contract_number: true
+    ym_counter: 29629885
+
+  styles:
+    favicon: null
+    hotspot_css: null
+    office_css: null
+
+development:
+  <<: *common
+
+production:
+  <<: *common

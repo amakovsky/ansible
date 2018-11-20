@@ -81,7 +81,18 @@
     dest: "{{ item.dest }}"
     mode: 0775
   with_items: "{{ softether_template }}"
+  register: add_tab
   notify: restart vpnserver
+
+- name: netplan apply
+  command: netplan apply
+  when: add_tab is changed and ansible_distribution_release == 'bionic'
+
+- name: start vpnserver
+  systemd:
+    state: restarted
+    name: nerworking
+  when: add_tab is changed and ansible_distribution_release != 'bionic'
 
 - name: start vpnserver
   systemd:
