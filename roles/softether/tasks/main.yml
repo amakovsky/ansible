@@ -13,6 +13,11 @@
 
 - name: ReInstall softether
   block:
+    - name: start vpnserver
+      systemd:
+        state: stopped
+        name: vpnserver
+
     - name: delete softether folder
       file:
         path: "{{ softether_bindir }}"
@@ -29,6 +34,12 @@
         mode: 0755
       with_items:
         - "{{ softether_srcdir }}"
+
+    - name: create softether src folder
+      file:
+        path: "{{ softether_bindir }}"
+        state: directory
+        mode: 0755
 
     #    - name: Download softether source
     #      get_url:

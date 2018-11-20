@@ -5,7 +5,7 @@ softether_source_url: https://ams3.digitaloceanspaces.com/gettwifi/source/softet
 
 softether_config:
   - src: 'vpn_server.config'
-    dest: '{{ softether_bindir }}/{{ softether_srcdir }}'
+    dest: '{{ softether_bindir }}/{{ softether_srcdir }}/vpn_server.config'
 
 ufw_rules:
   - rule: 'allow'
@@ -14,7 +14,7 @@ ufw_rules:
     from_ip:
       - 10.135.0.0/16
   - rule: 'allow'
-    port: 8443
+    port: 443
     proto: 'tcp'
     from_ip:
       - 0.0.0.0/0
