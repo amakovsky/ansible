@@ -45,7 +45,6 @@
 - name: Import GPG keys the other way
   shell: curl -sSL https://rvm.io/mpapis.asc | gpg --import -
   when: not ansible_check_mode and rvm1_gpg_keys != '' and gpg_result.rc != 0 and not rvm_binary.stat.exists
-  # when: not ansible_check_mode and rvm1_gpg_keys != '' and (not gpg_result.skipped and gpg_result.rc != 0) and not rvm_binary.stat.exists
   tags: skip_ansible_lint
 
 - name: Install rvm

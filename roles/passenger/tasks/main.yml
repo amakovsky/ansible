@@ -2,14 +2,14 @@
 - name: check exist nginx
   stat:
     path: "{{ nginx_bindir }}/nginx"
-  changed_when: False
-  failed_when: False
+  changed_when: false
+  failed_when: false
   register: nginx_available
 
 - name: Install required package
   apt:
     name: "{{ passenger_required }}"
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
 
 - name: backup nginx bin for upgrade
@@ -31,7 +31,7 @@
       unarchive:
         src: "https://github.com/vozlt/nginx-module-vts/archive/v0.1.18.tar.gz"
         dest: "/tmp/nginx-module-vts"
-        remote_src: yes
+        remote_src: true
         extra_opts: --strip-components=1
 
     - name: Symlink bundler binaries on the system path
@@ -44,7 +44,7 @@
         - passenger-config
 
     - name: Passenger and Nginx
-    #  shell: bash -lc "passenger-install-nginx-module --auto --auto-download --extra-configure-flags='--conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log' --languages ruby --prefix={{ passenger_nginx_dir }}"
+      #  shell: bash -lc "passenger-install-nginx-module --auto --auto-download --extra-configure-flags='--conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log' --languages ruby --prefix={{ passenger_nginx_dir }}"
       command: bash -lc "passenger-install-nginx-module --auto --auto-download --extra-configure-flags='--error-log-path=/var/log/nginx/error.log --add-module=/tmp/nginx-module-vts' --languages ruby --prefix={{ passenger_nginx_dir }}"
 
     - name: move nginx bin to /usr/sbin
@@ -54,16 +54,16 @@
 - name: get passenger version
   shell: "passenger -v | cut -d ' ' -f 3"
   register: passenger_version
-  changed_when: False
+  changed_when: false
   tags: skip_ansible_lint
 
-#- debug:
+# - debug:
 #    msg: "{{ passenger_version }}"
 
 - name: Ensure nginx directory exists.
   file:
     path: "{{ item }}"
-    owner: "{{ nginx_user }}"
+    owner: "{{ web_user }}"
     group: "root"
     state: directory
     mode: 0775
@@ -80,7 +80,7 @@
   with_items: "{{ passenger_template }}"
   notify: restart nginx
 
-#- name: Configure nginx global settings.
+# - name: Configure nginx global settings.
 #  lineinfile:
 #    dest: "{{ passenger_nginx_dir }}/conf/nginx.conf"
 #    regexp: "^#?{{ item.option }}.+$"
@@ -89,7 +89,7 @@
 #  with_items: "{{ nginx_global_config_options }}"
 #  notify: restart nginx
 
-#- name: Copy config for nginx
+# - name: Copy config for nginx
 #  template:
 #    src: "{{ item.src }}"
 #    dest: "{{ item.dest }}"

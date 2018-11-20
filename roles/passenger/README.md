@@ -31,7 +31,7 @@ Role Variables
     
 Директории необходимые для работы nginx
 
-    nginx_user
+    web_user
     
 Пользователь из под которого запускается nginx
 
