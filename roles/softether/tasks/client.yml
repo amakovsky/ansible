@@ -1,10 +1,4 @@
 ---
-- name: Include radius vars files
-  include_vars:
-    file: "{{ radius_conf }}"
-    name: radius_var
-  when: radius_conf is defined and radius_conf
-
 - name: check exist softether
   stat:
     path: "{{ softether_bindir }}/{{ softether_srcdir }}"
