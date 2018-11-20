@@ -2,9 +2,9 @@
 - name: Install ufw
   apt:
     name: ufw
-    update_cache: yes
+    update_cache: true
 
-#- set_fact:
+# - set_fact:
 #      war_files_list_of_dicts: |
 #          {% set res = [] -%}
 #          {% for key in with_dict.keys() -%}
@@ -14,7 +14,7 @@
 #          {%- endfor %}
 #          {{ res }}
 
-#- name: Resetting firewall
+# - name: Resetting firewall
 #  ufw:
 #    state: reset
 #  when: ufw_reset

@@ -1,4 +1,8 @@
 ---
+- name: Install required package
+  apt:
+    name: "{{ rvm_required }}"
+    update_cache: true
 
 - name: Detect rvm binary
   stat: path='{{ rvm1_rvm }}'
@@ -10,7 +14,7 @@
 
 - name: Detect current rvm version
   command: '{{ rvm1_rvm}} version'
-  changed_when: False
+  changed_when: false
   register: rvm_current_version
   when: rvm_binary.stat.exists
 
@@ -23,19 +27,25 @@
 
 - name: Import GPG keys
   command: 'gpg --keyserver {{ rvm1_gpg_key_server }} --recv-keys {{ rvm1_gpg_keys }}'
-  changed_when: False
-  check_mode: False
+  changed_when: false
+  check_mode: false
   when: not ansible_check_mode and rvm1_gpg_keys != '' and not rvm_binary.stat.exists
   register: gpg_result
   until: gpg_result.rc == 0
   retries: 5
   delay: 5
-  ignore_errors: True
+  ignore_errors: true
 
-#- name: Import GPG keys the other way
-#  shell: curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-#  when: not ansible_check_mode and rvm1_gpg_keys != '' and (not gpg_result.skipped and gpg_result.rc != 0) and not rvm_binary.stat.exists
-#  tags: skip_ansible_lint
+- name: test
+  set_fact:
+    gpg_result:
+      rc: 0
+  when: gpg_result.skipped is defined and gpg_result.skipped
+
+- name: Import GPG keys the other way
+  shell: curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+  when: not ansible_check_mode and rvm1_gpg_keys != '' and gpg_result.rc != 0 and not rvm_binary.stat.exists
+  tags: skip_ansible_lint
 
 - name: Install rvm
   command: >
@@ -45,7 +55,7 @@
 
 - name: Update rvm
   shell: '{{ rvm1_rvm }} get {{ rvm1_rvm_version }} && {{ rvm1_rvm }} reload'
-  changed_when: False
+  changed_when: false
   when: rvm_binary.stat.exists and rvm1_rvm_check_for_updates
 
 - name: Configure rvm

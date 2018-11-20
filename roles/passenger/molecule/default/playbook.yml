@@ -1,0 +1,6 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - { role: rvm, rvm1_install_flags: '--auto-dotfiles' }
+    - role: passenger

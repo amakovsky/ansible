@@ -2,7 +2,7 @@
 - name: Install haproxy
   apt:
     name: haproxy
-    update_cache: yes
+    update_cache: true
 
 - name: Copy galera configuration
   template:
@@ -12,5 +12,5 @@
 
 - name: enable haproxy
   systemd:
-    enabled: yes
+    enabled: true
     name: haproxy

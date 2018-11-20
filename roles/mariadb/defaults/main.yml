@@ -1,19 +1,18 @@
 ---
-
 mariadb_upstream_version: '10.1'
 
 mariadb_mysqld_bind_address: 'localhost'
 mariadb_mysqld_port: 3306
 mariadb_mysqld_root_password: 'pleasepickabetterpassword'
-mariadb_mysqld_retsart_on_config_change: True
+mariadb_mysqld_retsart_on_config_change: true
 
-mariadb_mysqld_backup: False
+mariadb_mysqld_backup: false
 mariadb_mysqld_backup_weekly_backup_day: 6
 mariadb_mysqld_backup_createdb: 'yes'
 
 mariadb_mysqld_dependencies:
   - 'python-mysqldb'
-  - '{{ "automysqlbackup" if mariadb_mysqld_backup | bool else [] }}'
+#  - '{{ "automysqlbackup" if mariadb_mysqld_backup | bool else [] }}'
 
 mariadb_default_client_config:
   - 'default-character-set = utf8'

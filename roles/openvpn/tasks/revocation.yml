@@ -6,7 +6,7 @@
   file:
     path: "{{ openvpn_base_dir }}/{{item}}-{{ansible_hostname}}.ovpn"
     state: absent
-    force: yes
+    force: true
   with_items: '{{ openvpn_revoke_these_certs }}'
 
 - name: revoke certificates
@@ -20,12 +20,12 @@
   file:
     path: "{{ openvpn_key_dir }}/{{ item }}.key"
     state: absent
-    force: yes
+    force: true
   with_items: '{{ openvpn_revoke_these_certs }}'
 
 - name: remove client csr
   file:
     path: "{{ openvpn_key_dir }}/{{ item }}.csr"
     state: absent
-    force: yes
+    force: true
   with_items: '{{ openvpn_revoke_these_certs }}'
