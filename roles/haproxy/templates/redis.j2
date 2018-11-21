@@ -82,3 +82,21 @@ listen redis-postprocess-TCP-6379
                       server redis{{ loop.index }} {{ item }}:6379 maxconn 1024 check inter 1s
     {% endfor %}
 {% endif %}
+
+listen postgres-TCP-5432
+    bind *:5432
+    mode tcp
+    option tcplog
+    option tcp-check
+    {% for item in groups['stage'] %}
+                      server stage{{ loop.index }} {{ item }}:5432 maxconn 1024 check inter 1s
+    {% endfor %}
+
+listen elastics-TCP-9200
+    bind *:9200
+    mode tcp
+    option tcplog
+    option tcp-check
+    {% for item in groups['stage'] %}
+                      server stage{{ loop.index }} {{ item }}:9200 maxconn 1024 check inter 1s
+    {% endfor %}

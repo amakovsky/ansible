@@ -90,6 +90,11 @@
   register: add_tab
   notify: restart vpnserver
 
+- name: start vpnserver
+  systemd:
+    state: started
+    name: vpnserver
+
 - name: netplan apply
   command: netplan apply
   when: add_tab is changed and ansible_distribution_release == 'bionic'
@@ -97,10 +102,7 @@
 - name: networking apply
   systemd:
     state: restarted
-    name: nerworking
+    name: networking
   when: add_tab is changed and ansible_distribution_release != 'bionic'
 
-- name: start vpnserver
-  systemd:
-    state: started
-    name: vpnserver
+

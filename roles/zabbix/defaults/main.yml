@@ -38,8 +38,8 @@ another_port: false
 zabbix_port: 10050
 
 zabbix_postgresql_config_options:
-  - option: shared_preload_libraries
-    value: 'pg_partman_bgw, pg_stat_statements'
+#  - option: shared_preload_libraries
+#    value: 'pg_partman_bgw, pg_stat_statements'
   - option: pg_stat_statements.max
     value: '10000'
   - option: pg_stat_statements.track
