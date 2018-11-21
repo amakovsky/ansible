@@ -24,5 +24,5 @@ production:
   newrelic: true
   replication:
     class: SimpleStrategy
-    replication_factor: 1
+    replication_factor: 2
 # durable_writes: false
