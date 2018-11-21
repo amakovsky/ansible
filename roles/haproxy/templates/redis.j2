@@ -48,7 +48,7 @@ defaults
 #---------------------------------------------------------------------
 # HAProxy statistics backend
 #---------------------------------------------------------------------
-listen haproxy-monitoring
+listen haproxy-http
   bind    *:80
   mode    http
   stats   enable
@@ -58,6 +58,10 @@ listen haproxy-monitoring
   stats   realm             Haproxy\ Statistics
   stats   auth              admin:GaQuu7auch2exoh
   stats   admin             if TRUE
+  balance roundrobin
+{% for item in groups['web'] %}
+  server web{{ loop.index }} {{ item }}:80 check
+{% endfor %}
 
 {% if groups['redis'] is defined %}
 listen redis-postprocess-TCP-6379

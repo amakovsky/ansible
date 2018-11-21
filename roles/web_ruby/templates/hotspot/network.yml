@@ -1,13 +1,16 @@
 common: &common
   vpn:
     enabled: true
-    server: hub.the-karma.com
+    server:
+      - hub1.gettwifi.com
+      - hub2.gettwifi.com
+      - hub3.gettwifi.com
     #servers:
     #  scanner: hub2.the-karma.com
-    gateway_ip: "172.22.0.1"
+    gateway_ip: "172.20.0.1"
     netmask: 16
-    fetch_host: "fetch.karmawifi.ru"
-    fetch_ip: "172.22.0.2"
+    fetch_host: "fetch.gettwifi.com"
+    fetch_ip: "172.20.0.2"
     #sniffr_ip: "172.22.0.2"
     #log_collect_port: 2514
     #fetch_setup: true

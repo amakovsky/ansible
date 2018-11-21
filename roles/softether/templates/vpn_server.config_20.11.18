@@ -35,7 +35,7 @@ declare root
 		declare Listener0
 		{
 			bool DisableDos false
-			bool Enabled true
+			bool Enabled false
 			uint Port 443
 		}
 		declare Listener1
@@ -47,7 +47,7 @@ declare root
 		declare Listener2
 		{
 			bool DisableDos false
-			bool Enabled false
+			bool Enabled true
 			uint Port 8443
 		}
 	}
@@ -172,10 +172,10 @@ declare root
 			uint64 LastLoginTime 1536301348166
 			uint NumLogin 1
 			bool Online true
-			uint RadiusRetryInterval 500
-			byte RadiusSecret {{ radius_var.radius_secret }}
-            string RadiusServerName {{ radius_server }}
-            uint RadiusServerPort 17781
+			bool RadiusConvertAllMsChapv2AuthRequestToEap false
+			string RadiusRealm $
+			uint RadiusRetryInterval 0
+			uint RadiusServerPort 1812
 			string RadiusSuffixFilter $
 			bool RadiusUsePeapInsteadOfEap false
 			byte SecurePassword bpw3X/O5E8a6G6ccnl4uXmDtkwI=
@@ -183,141 +183,6 @@ declare root
 
 			declare AccessList
 			{
-				declare 1
-				{
-					bool Active true
-					bool CheckDstMac false
-					bool CheckSrcMac false
-					bool CheckTcpState false
-					uint Delay 0
-					string DestIpAddress 172.20.0.0
-					uint DestPortEnd 0
-					uint DestPortStart 0
-					string DestSubnetMask 255.255.255.0
-					string DestUsername $
-					bool Discard false
-					bool Established false
-					bool IsIPv6 false
-					uint Jitter 0
-					uint Loss 0
-					string Note Allow$20AP-Server
-					uint Priority 1
-					uint Protocol 0
-					string RedirectUrl $
-					string SrcIpAddress 0.0.0.0
-					uint SrcPortEnd 0
-					uint SrcPortStart 0
-					string SrcSubnetMask 0.0.0.0
-					string SrcUsername Access$20Points
-				}
-				declare 2
-				{
-					bool Active true
-					bool CheckDstMac false
-					bool CheckSrcMac false
-					bool CheckTcpState false
-					uint Delay 0
-					string DestIpAddress 0.0.0.0
-					uint DestPortEnd 0
-					uint DestPortStart 0
-					string DestSubnetMask 0.0.0.0
-					string DestUsername Access$20Points
-					bool Discard false
-					bool Established false
-					bool IsIPv6 false
-					uint Jitter 0
-					uint Loss 0
-					string Note Allow$20Server-AP
-					uint Priority 2
-					uint Protocol 0
-					string RedirectUrl $
-					string SrcIpAddress 172.20.0.0
-					uint SrcPortEnd 0
-					uint SrcPortStart 0
-					string SrcSubnetMask 255.255.255.0
-					string SrcUsername $
-				}
-				declare 3
-				{
-					bool Active true
-					bool CheckDstMac false
-					bool CheckSrcMac false
-					bool CheckTcpState false
-					uint Delay 0
-					string DestIpAddress 172.20.0.0
-					uint DestPortEnd 0
-					uint DestPortStart 0
-					string DestSubnetMask 255.255.0.0
-					string DestUsername $
-					bool Discard true
-					bool Established false
-					bool IsIPv6 false
-					uint Jitter 0
-					uint Loss 0
-					string Note Deny$20AP-NET
-					uint Priority 10
-					uint Protocol 0
-					string RedirectUrl $
-					string SrcIpAddress 0.0.0.0
-					uint SrcPortEnd 0
-					uint SrcPortStart 0
-					string SrcSubnetMask 0.0.0.0
-					string SrcUsername Access$20Points
-				}
-				declare 4
-				{
-					bool Active true
-					bool CheckDstMac false
-					bool CheckSrcMac false
-					bool CheckTcpState false
-					uint Delay 0
-					string DestIpAddress 0.0.0.0
-					uint DestPortEnd 0
-					uint DestPortStart 0
-					string DestSubnetMask 0.0.0.0
-					string DestUsername Access$20Points
-					bool Discard true
-					bool Established false
-					bool IsIPv6 false
-					uint Jitter 0
-					uint Loss 0
-					string Note Deny$20NET-AP
-					uint Priority 11
-					uint Protocol 0
-					string RedirectUrl $
-					string SrcIpAddress 172.20.0.0
-					uint SrcPortEnd 0
-					uint SrcPortStart 0
-					string SrcSubnetMask 255.255.0.0
-					string SrcUsername $
-				}
-				declare 5
-				{
-					bool Active true
-					bool CheckDstMac false
-					bool CheckSrcMac false
-					bool CheckTcpState false
-					uint Delay 0
-					string DestIpAddress 0.0.0.0
-					uint DestPortEnd 5678
-					uint DestPortStart 5678
-					string DestSubnetMask 0.0.0.0
-					string DestUsername stark
-					bool Discard true
-					bool Established false
-					bool IsIPv6 false
-					uint Jitter 0
-					uint Loss 0
-					string Note stark$20drop$20discovery
-					uint Priority 200
-					uint Protocol 17
-					string RedirectUrl $
-					string SrcIpAddress 0.0.0.0
-					uint SrcPortEnd 0
-					uint SrcPortStart 0
-					string SrcSubnetMask 0.0.0.0
-					string SrcUsername $
-				}
 			}
 			declare AdminOption
 			{
@@ -377,7 +242,7 @@ declare root
 				uint PACKET_LOG_TCP 0
 				uint PACKET_LOG_TCP_CONN 1
 				uint PACKET_LOG_UDP 0
-				bool SavePacketLog false
+				bool SavePacketLog true
 				bool SaveSecurityLog true
 				uint SecurityLogSwitchType 4
 			}
@@ -458,15 +323,15 @@ declare root
 					string DhcpDomainName $
 					bool DhcpEnabled true
 					uint DhcpExpireTimeSpan 7200
-					string DhcpGatewayAddress 172.20.0.1
-					string DhcpLeaseIPEnd 172.20.0.200
-					string DhcpLeaseIPStart 172.20.0.100
-					string DhcpPushRoutes 172.20.0.0/255.255.0.0/172.20.0.1
+					string DhcpGatewayAddress 172.22.0.1
+					string DhcpLeaseIPEnd 172.22.0.200
+					string DhcpLeaseIPStart 172.22.0.10
+					string DhcpPushRoutes 172.22.0.0/255.255.0.0/172.22.0.1
 					string DhcpSubnetMask 255.255.0.0
 				}
 				declare VirtualHost
 				{
-					string VirtualHostIp 172.20.0.1
+					string VirtualHostIp 172.22.0.1
 					string VirtualHostIpSubnetMask 255.255.0.0
 					string VirtualHostMacAddress 00-AC-C8-A0-C6-20
 				}
@@ -488,118 +353,23 @@ declare root
 				}
 				declare GroupList
 				{
-					declare Access$20Points
-					{
-						string Note $
-						string RealName $
-
-						declare Policy
-						{
-							bool Access true
-							bool ArpDhcpOnly false
-							uint AutoDisconnect 0
-							bool CheckIP true
-							bool CheckIPv6 false
-							bool CheckMac false
-							bool DHCPFilter false
-							bool DHCPForce false
-							bool DHCPNoServer true
-							bool DHCPv6Filter false
-							bool DHCPv6NoServer false
-							bool FilterIPv4 false
-							bool FilterIPv6 false
-							bool FilterNonIP false
-							bool FixPassword true
-							uint MaxConnection 32
-							uint MaxDownload 0
-							uint MaxIP 0
-							uint MaxIPv6 0
-							uint MaxMac 0
-							uint MaxUpload 0
-							bool MonitorPort false
-							uint MultiLogins 0
-							bool NoBridge true
-							bool NoBroadcastLimiter false
-							bool NoIPv6DefaultRouterInRA false
-							bool NoIPv6DefaultRouterInRAWhenIPv6 false
-							bool NoQoS false
-							bool NoRouting false
-							bool NoRoutingV6 false
-							bool NoSavePassword false
-							bool NoServer false
-							bool NoServerV6 false
-							bool PrivacyFilter true
-							bool RAFilter false
-							bool RSandRAFilter false
-							uint TimeOut 20
-							uint VLanId 0
-						}
-						declare Traffic
-						{
-							declare RecvTraffic
-							{
-								uint64 BroadcastBytes 1242646068467
-								uint64 BroadcastCount 16710151323
-								uint64 UnicastBytes 461405756567
-								uint64 UnicastCount 4607299209
-							}
-							declare SendTraffic
-							{
-								uint64 BroadcastBytes 47966003035
-								uint64 BroadcastCount 381611735
-								uint64 UnicastBytes 478802641113
-								uint64 UnicastCount 4096413210
-							}
-						}
-					}
 				}
 				declare IPAccessControlList
 				{
 				}
 				declare UserList
 				{
-					declare *
+					declare admin
 					{
-						string AuthRadiusUsername $
-						uint AuthType 4
-						uint64 CreatedTime 1439900587662
-						uint64 ExpireTime 0
-						string GroupName Access$20Points
-						uint64 LastLoginTime 1534985142055
-						string Note $
-						uint NumLogin 2884428
-						string RealName $
-						uint64 UpdatedTime 1439900587662
-
-						declare Traffic
-						{
-							declare RecvTraffic
-							{
-								uint64 BroadcastBytes 1242646068467
-								uint64 BroadcastCount 16710151323
-								uint64 UnicastBytes 461405756567
-								uint64 UnicastCount 4607299209
-							}
-							declare SendTraffic
-							{
-								uint64 BroadcastBytes 47966003035
-								uint64 BroadcastCount 381611735
-								uint64 UnicastBytes 478802641113
-								uint64 UnicastCount 4096413210
-							}
-						}
-					}
-					declare data
-					{
-						byte AuthNtLmSecureHash aMpSpDjAeOJXUUahkUAxLQ==
-						byte AuthPassword WCdyItChdXqjNyuFS0p7ZLdc8Oo=
+						byte AuthNtLmSecureHash 5BJ0SURlCNfLDZcZL+IZCg==
+						byte AuthPassword 3jc7IVNnK/m7chQTbijs249m1CA=
 						uint AuthType 1
 						uint64 CreatedTime 1536301281379
 						uint64 ExpireTime 0
 						uint64 LastLoginTime 1536301348166
 						string Note $
 						uint NumLogin 1
-						string RealName $
+						string RealName admin
 						uint64 UpdatedTime 1536301281379
 
 						declare Traffic
@@ -620,147 +390,23 @@ declare root
 							}
 						}
 					}
-					declare karmaoffice
-					{
-						byte AuthNtLmSecureHash t/Hh2FFY6xPTMvGAif95xw==
-						byte AuthPassword nvh539pTpC78TcwW2G7aUxva2ZM=
-						uint AuthType 1
-						uint64 CreatedTime 1492734553964
-						uint64 ExpireTime 0
-						uint64 LastLoginTime 1533505642571
-						string Note $
-						uint NumLogin 477
-						string RealName $
-						uint64 UpdatedTime 1492734553964
-
-						declare Traffic
-						{
-							declare RecvTraffic
-							{
-								uint64 BroadcastBytes 38440495524
-								uint64 BroadcastCount 351123441
-								uint64 UnicastBytes 5114908886
-								uint64 UnicastCount 33088667
-							}
-							declare SendTraffic
-							{
-								uint64 BroadcastBytes 6788510
-								uint64 BroadcastCount 151126
-								uint64 UnicastBytes 1111645246
-								uint64 UnicastCount 14973735
-							}
-						}
-					}
-					declare stark
-					{
-						byte AuthNtLmSecureHash U+zRcqB3oNeJ2RFWJwXyxA==
-						byte AuthPassword K1I5O39MUh/8lO7qmEgvlLeHZto=
-						uint AuthType 1
-						uint64 CreatedTime 1510895431947
-						uint64 ExpireTime 0
-						uint64 LastLoginTime 1534976865232
-						string Note $
-						uint NumLogin 25
-						string RealName $
-						uint64 UpdatedTime 1512343879453
-
-						declare Traffic
-						{
-							declare RecvTraffic
-							{
-								uint64 BroadcastBytes 7698578
-								uint64 BroadcastCount 91385
-								uint64 UnicastBytes 160903563
-								uint64 UnicastCount 150045
-							}
-							declare SendTraffic
-							{
-								uint64 BroadcastBytes 526588
-								uint64 BroadcastCount 1886
-								uint64 UnicastBytes 7468424
-								uint64 UnicastCount 107528
-							}
-						}
-					}
-					declare tim
-					{
-						byte AuthNtLmSecureHash HUTJI1lesKJn49fo4r78Kw==
-						byte AuthPassword 51vUtkbw98VSGqEeXlWYpoAiOfE=
-						uint AuthType 1
-						uint64 CreatedTime 1529390329196
-						uint64 ExpireTime 0
-						uint64 LastLoginTime 1534977537969
-						string Note $
-						uint NumLogin 32
-						string RealName $
-						uint64 UpdatedTime 1529390329196
-
-						declare Traffic
-						{
-							declare RecvTraffic
-							{
-								uint64 BroadcastBytes 93970281
-								uint64 BroadcastCount 987645
-								uint64 UnicastBytes 610990081
-								uint64 UnicastCount 694345
-							}
-							declare SendTraffic
-							{
-								uint64 BroadcastBytes 3955749
-								uint64 BroadcastCount 24519
-								uint64 UnicastBytes 58213216
-								uint64 UnicastCount 408441
-							}
-						}
-					}
-					declare vizoria
-					{
-						byte AuthNtLmSecureHash bro+iz91vRPKLiHFJRbdpg==
-						byte AuthPassword 94bnr3m13ZuiqkKLfw2JCs2Hcsc=
-						uint AuthType 1
-						uint64 CreatedTime 1439900171694
-						uint64 ExpireTime 0
-						uint64 LastLoginTime 1534911457869
-						string Note $
-						uint NumLogin 956
-						string RealName Vladislav$20Izoria
-						uint64 UpdatedTime 1439900171694
-
-						declare Traffic
-						{
-							declare RecvTraffic
-							{
-								uint64 BroadcastBytes 1326150540
-								uint64 BroadcastCount 10326293
-								uint64 UnicastBytes 9563729330
-								uint64 UnicastCount 10848322
-							}
-							declare SendTraffic
-							{
-								uint64 BroadcastBytes 15929909
-								uint64 BroadcastCount 77283
-								uint64 UnicastBytes 1107131820
-								uint64 UnicastCount 8631713
-							}
-						}
-					}
 				}
 			}
 			declare Traffic
 			{
 				declare RecvTraffic
 				{
-					uint64 BroadcastBytes 57291421101
-					uint64 BroadcastCount 507483976
-					uint64 UnicastBytes 696346861140
-					uint64 UnicastCount 5728755925
+					uint64 BroadcastBytes 64618
+					uint64 BroadcastCount 1032
+					uint64 UnicastBytes 153132
+					uint64 UnicastCount 2094
 				}
 				declare SendTraffic
 				{
-					uint64 BroadcastBytes 1401402200786
-					uint64 BroadcastCount 18112217316
-					uint64 UnicastBytes 863358482015
-					uint64 UnicastCount 6684664415
+					uint64 BroadcastBytes 84934
+					uint64 BroadcastCount 1344
+					uint64 UnicastBytes 76044
+					uint64 UnicastCount 1138
 				}
 			}
 		}

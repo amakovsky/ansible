@@ -3,8 +3,8 @@ passenger_nginx_dir: /opt/nginx
 nginx_configs_folder: "{{ passenger_nginx_dir }}/conf"
 nginx_bindir: /usr/sbin
 passenger_template:
-  #  - src: 'nginx'
-  #    dest: '/etc/init.d/nginx'
+#  - src: 'nginx'
+#    dest: '/etc/init.d/nginx'
   - src: 'nginx.service'
     dest: '/lib/systemd/system/nginx.service'
   - src: 'nginx.conf.j2'
@@ -12,7 +12,7 @@ passenger_template:
 
 nginx_global_config_options:
   - option: user
-    value: "{{ web_user }}"
+    value: "{{ nginx_user }}"
   - option: pid
     value: '/run/nginx.pid'
   - option: worker_processes
@@ -25,11 +25,9 @@ nginx_global_config_options:
 nginx_dir:
   - /var/log/nginx
 
-web_user: www-data
+nginx_user: www-data
 update_nginx: false
 
 passenger_required:
   - libcurl4-openssl-dev
-  - libssl-dev
-
-zabbix_nginx_vts: true
+  - libssl-devll
