@@ -41,6 +41,12 @@ ufw_rules:
     from_ip:
       - 10.135.0.0/16
     to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 5601
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ inventory_hostname }}"
 
 postgresql_global_config_options:
   - option: unix_socket_directories

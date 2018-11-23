@@ -19,4 +19,8 @@
 #    - zabbix
 #    - s3cmd
 #    - web_ruby
-    - dns
+#    - dns
+    - common
+    - ufw
+    - softether
+    - user

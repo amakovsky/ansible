@@ -30,4 +30,4 @@ update_nginx: false
 
 passenger_required:
   - libcurl4-openssl-dev
-  - libssl-devll
+  - libssl-dev

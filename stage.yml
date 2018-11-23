@@ -10,5 +10,9 @@
     - ufw
     - user
     - postgresql
-    - elasticsearch
-    - zabbix
+    - docker
+    - elk
+    - sniffr
+#    - elasticsearch
+#    - kibana
+#    - zabbix

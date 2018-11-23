@@ -91,3 +91,5 @@ ruby_configs:
     template:
       - src: 'hotspot/portals/example.yml'
         dest: 'example.yml'
+      - src: 'hotspot/portals/gettwifi.yml'
+        dest: 'gettwifi.yml'

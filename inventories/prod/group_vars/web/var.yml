@@ -95,6 +95,8 @@ ruby_configs:
     template:
       - src: 'hotspot/portals/example.yml'
         dest: 'example.yml'
+      - src: 'hotspot/portals/gettwifi.yml'
+        dest: 'gettwifi.yml'
 web_cron:
   - name: "Scheduler ticks"
     minute: "{{ ansible_play_hosts.index(inventory_hostname) }}-59/{{ ansible_play_hosts | length }}"
