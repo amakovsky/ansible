@@ -1,6 +1,6 @@
 ---
 radius_conf: "{{ inventory_dir }}/group_vars/radius/vault.yml"
-radius_server: "{{ groups['radius'][1] }}"
+radius_server: "{{ groups['radius'][0] }}"
 
 softether_srcdir: vpnserver
 softether_bindir: /usr/local
@@ -62,6 +62,18 @@ ufw_rules:
       - 172.20.0.0/16
   - rule: 'allow'
     port: 5432
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+      - 172.20.0.0/16
+  - rule: 'allow'
+    port: 37008
+    proto: 'udp'
+    from_ip:
+      - 10.135.0.0/16
+      - 172.20.0.0/16
+  - rule: 'allow'
+    port: 6379
     proto: 'tcp'
     from_ip:
       - 10.135.0.0/16

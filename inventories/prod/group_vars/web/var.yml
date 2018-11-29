@@ -27,6 +27,7 @@ local_user:
     shell: /bin/bash
     allow_key:
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9ekjWWGmeAACPWwfyq2p7DiIwBSQ8TxfKWt/Jlv2BjOH4KxrMkcxvAqvgVXkQZEfR0f+KtbM9Kp1f7ug52XNsZMXe2gB7u3D7g6qyWcXqbudCji7sPOypcp7j72KxOCH6zVOuDeC6BSbH34CZYi+oTsOW8G7jWtVxYe4h7hV+teqVHFGf1P1ThbLAx5pqD4MTjkjaV/lf6Lm8uX/5pNX7Bzegxd8S6feDnKl/ylMwJs2DPNf10AGa1YwILJZJcWbW9rbsMzG0UbXbfgY2mrjFO8+aEPezPvzNNyEP6ob9sLBqkP8+QCb/DthqO7sGiRaxIJtZCucpGhRtxaYj7Yfb web@gettwifi.com'
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyyf5SJ2JZDZo0AEDVN+TeHt8a+XtqwAO1RbC52VB8vsQagohis5nL8YHXa2/k26gc/hvTuXk/OkjiGrSAhoY5lETy0t2MWczM5WNrdI8ncbV/irADohMxhuyQHJ9D9Zz0IBYOOLwjR3AJqU0DLSXoE5T0ruV7xtCp59y5+dwbhCJAf3+11nrE6ey/KtA70J/RmBpeOxTnbXm1/G2KQNdG2ND2nxiHCpG+CY70q6gPK8ZnjtwJlienpaOHLJTd5nsz3lsIPB1jp5HeUhQXB4rFMWrckaGLgboXX90Sog4hVBtu3vatVEvw1Igu+t0xn+pkFjHncltN1O1odhGPlgH/ vizoria@astralteam.com'
     groups:
       - rvm
 
@@ -93,10 +94,21 @@ ruby_configs:
         dest: 'vkontakte.yml'
   - dir: "portals"
     template:
-      - src: 'hotspot/portals/example.yml'
-        dest: 'example.yml'
       - src: 'hotspot/portals/gettwifi.yml'
         dest: 'gettwifi.yml'
+  - dir: "sms"
+    template:
+      - src: 'hotspot/sms/asterisk.yml'
+        dest: 'asterisk.yml'
+      - src: 'hotspot/sms/devinotelecom.yml'
+        dest: 'devinotelecom.yml'
+  - dir: "../vendor/mikrotik/cert"
+    template:
+      - src: 'hotspot/hotspot.gettwifi.com/certificate.crt'
+        dest: 'certificate.crt'
+      - src: 'hotspot/hotspot.gettwifi.com/private.key'
+        dest: 'private.key'
+
 web_cron:
   - name: "Scheduler ticks"
     minute: "{{ ansible_play_hosts.index(inventory_hostname) }}-59/{{ ansible_play_hosts | length }}"

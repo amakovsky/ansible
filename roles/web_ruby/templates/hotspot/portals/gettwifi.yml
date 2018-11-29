@@ -6,7 +6,7 @@ common: &common
     ap_dns_name: "hotspot.gettwifi.com"
     ap_certificate_password: "N0Ec2PbrlnBa"
     ap_https_redirect: false
-    fetch_host: "app.karmawifi.ru"
+    fetch_host: "auth.gettwifi.com"
     fetch_mode: "https"
     walled_garden: ["yandex", "google", "gettwifi"]
     directory: "gettwifi"
@@ -14,6 +14,9 @@ common: &common
     accounting: "off"
     scanner: true
     #terms_checkbox: true
+    #mailing_checkbox: true
+    #connection_tracking: true
+    #agree_terms_text: ""
     #mandatory_identification: true
     ym_counter: 23811418
 

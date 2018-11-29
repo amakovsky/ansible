@@ -4,7 +4,7 @@
   become: yes
   become_method: sudo
   become_user: root
-  serial: 1
+#  serial: 1
 
   roles:
 #    - common

@@ -65,7 +65,7 @@ listen haproxy-http
 
 {% if groups['redis'] is defined %}
 listen redis-postprocess-TCP-6379
-    bind 127.0.0.1:6379
+    bind *:6379
     mode tcp
     option tcplog
     option tcp-check

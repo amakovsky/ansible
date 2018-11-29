@@ -41,7 +41,7 @@ while read p; do
 	fi
 	find "${DIR}" -name "*.gz" -mtime +7 -exec rm -f {} \; 1>/dev/null 2>>/tmp/error.log
 	check_error
-done < ./backup_list.txt
+done < /root/backup/backup_list.txt
 
 if [[ ${state} -ne 0 ]]; then
    err=$(cat /tmp/error.log | sed 's/\"/ /g')

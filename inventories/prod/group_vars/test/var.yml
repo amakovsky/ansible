@@ -173,3 +173,10 @@ softether_template:
     dest: '/lib/systemd/system/vpnserver.service'
   - src: 'tap.yaml'
     dest: '/etc/netplan/tap.yaml'
+
+softether_config:
+  - src: 'vpn_server.config'
+    dest: '{{ softether_bindir }}/{{ softether_srcdir }}/vpn_server.config'
+
+radius_conf: "{{ inventory_dir }}/group_vars/radius/vault.yml"
+radius_server: "{{ groups['radius'][1] }}"
