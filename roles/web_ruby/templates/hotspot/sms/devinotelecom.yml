@@ -1,0 +1,14 @@
+common: &common
+  login: "the_karma"
+  password: "X]$)WaeKIr"
+  header: "TheKarma"
+  #header: "TESTSMS"
+
+development:
+  <<: *common
+
+test:
+  <<: *common
+
+production:
+  <<: *common

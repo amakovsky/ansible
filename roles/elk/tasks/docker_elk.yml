@@ -19,7 +19,7 @@
     name: elk
     image: "{{ docker_elk_image }}"
     state: started
-    restart_policy: yes
+    restart_policy: always
     ports:
     - '5601:5601'
     - '9200:9200'

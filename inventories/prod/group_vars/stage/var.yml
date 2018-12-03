@@ -1,0 +1,101 @@
+---
+local_user:
+  - name: user
+    password: 1128256asdf
+    password_lock: yes
+    home: /opt/www
+    shell: /bin/bash
+    allow_key:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZhRbftUDYmMGr3+YNWPD2Wfuo/suQ0OyUv/URW9Yb0/yiW2WZg6zNFLnQPklcLbWceOcctKnD78JatLAlGvcDcN/3SxG7jZQItRjFxQtBC6NnRrTq1pbL12zWpW7aUX8igpngcEDr9uKhuVV5bWwSzaVin1IZMGZsVLOu/Yg+cmnC7MaRrHXWf51pVRekdzgJCxNmdzuVr8FUDzY/N3CcBAVKRlP7ZbpfCHqXnzvEqINM3x4pkkHgCdEJ0q7Zf6j98cLNMAFPTnd2EVFt3RH8MO2DsbFArAvXXdAhTFjehEgp9/XRLHYKwgklL7+m8oLkqY+uG4xr49htOUe27P3B root@kali'
+
+postgresql_users:
+  - name: "{{ postgresql_user1 }}"
+    password: "{{ postgresql_user1_pass }}"
+
+postgresql_databases:
+  - name: scaner
+    owner: "{{ postgresql_user }}"
+
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 5432
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 9200
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 5601
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ inventory_hostname }}"
+
+postgresql_global_config_options:
+  - option: unix_socket_directories
+    value: '{{ postgresql_unix_socket_directories | join(",") }}'
+  - option: listen_addresses
+    value: '{{ inventory_hostname }}, localhost'
+  - option: shared_buffers
+    value: '{{ (ansible_memtotal_mb * 0.25)|int|abs }}MB'
+  - option: max_connections
+    value: '1000'
+  - option: shared_preload_libraries
+    value: 'pg_stat_statements'
+  - option: effective_io_concurrency
+    value: '6'
+  - option: seq_page_cost
+    value: '1.0'
+  - option: random_page_cost
+    value: '2.0'
+
+postgresql_hba_entries:
+  - { type: local, database: all, user: postgres, auth_method: peer }
+  - { type: local, database: all, user: all, auth_method: peer }
+  - { type: host, database: all, user: all, address: '127.0.0.1/32', auth_method: md5 }
+  - { type: host, database: all, user: all, address: '::1/128', auth_method: md5 }
+
+postgresql_python_library: python-psycopg2
+postgresql_user: postgres
+postgresql_group: postgres
+
+postgresql_unix_socket_directories:
+  - /var/run/postgresql
+
+es_instance_name: "stage1"
+es_data_dirs:
+  - "/opt/elasticsearch/data"
+es_log_dir: "/opt/elasticsearch/logs"
+es_config:
+  node.name: "stage1"
+  cluster.name: "custom-cluster"
+  discovery.zen.ping.unicast.hosts: "localhost:9301"
+  http.port: 9200
+  transport.tcp.port: 9301
+  node.data: false
+  node.master: true
+  bootstrap.memory_lock: true
+  network.host: 0.0.0.0
+es_scripts: false
+es_templates: false
+es_version_lock: false
+es_heap_size: 1g
+es_api_port: 9200
+es_enable_xpack: false

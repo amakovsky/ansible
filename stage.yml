@@ -1,0 +1,18 @@
+---
+- name: stage server
+  hosts: stage
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - common
+    - ufw
+    - user
+    - postgresql
+    - docker
+    - elk
+    - sniffr
+#    - elasticsearch
+#    - kibana
+#    - zabbix

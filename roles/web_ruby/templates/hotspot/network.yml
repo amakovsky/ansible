@@ -10,8 +10,14 @@ common: &common
     gateway_ip: "172.20.0.1"
     netmask: 16
     fetch_host: "fetch.gettwifi.com"
-    fetch_ip: "172.20.0.2"
-    #sniffr_ip: "172.22.0.2"
+    fetch_ip:
+      - "172.20.0.2"
+      - "172.20.0.4"
+      - "172.20.0.6"
+    sniffr_ip:
+      - "172.20.0.2"
+      - "172.20.0.4"
+      - "172.20.0.6"
     #log_collect_port: 2514
     #fetch_setup: true
   hotspot:

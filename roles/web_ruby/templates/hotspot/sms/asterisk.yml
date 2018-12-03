@@ -1,0 +1,30 @@
+common: &common
+  api_key: "e1e93df5645670d875dc022c7506c1ac84ce52a2fe700a7805081cc87fed2c7cdcee77d7ae79a1e4c73c09bb0c71e5c36b8f68b97e1c8f35935dfa8e74133a2a"
+  #add_code: '7'
+  templates:
+    multifon:
+      login: "{msisdn}@"
+      registration: "register => {msisdn}@multifon.ru:{password}:{msisdn}@sbc.megafon.ru:5060/{msisdn}"
+      peer: |
+        [{msisdn}]
+        dtmfmode=inband
+        username={msisdn}
+        type=peer
+        secret={password}
+        host=sbc.megafon.ru
+        fromuser={msisdn}
+        fromdomain=multifon.ru
+        port=5060
+        nat=no
+        context=karma
+        insecure=port,invite
+        qualify=200
+
+development:
+  <<: *common
+
+test:
+  <<: *common
+
+production:
+  <<: *common

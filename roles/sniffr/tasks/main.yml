@@ -25,10 +25,11 @@
     group: "{{ sniffr_group }}"
     mode: 0775
 
-- name: copy sniffr start script
+- name: copy sniffr scripts
   template:
-    src: 'sniffr.sh.j2'
-    dest: "{{ sniffr_dir }}/sniffr.sh"
-    owner: "{{ sniffr_user }}"
-    group: "{{ sniffr_group }}"
-    mode: '0770'
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  with_items: "{{ sniffr_template }}"

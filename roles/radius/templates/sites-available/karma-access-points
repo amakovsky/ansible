@@ -6,7 +6,7 @@ server karma_access_points {
   }
 
   client vpn_server {
-    ipaddr = {{ inventory_hostname }}/32
+    ipaddr = 10.135.0.0/16
     secret = {{ radius_secret }}
     nastype = other
   }
