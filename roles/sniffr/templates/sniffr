@@ -1,0 +1,12 @@
+{{ sniffr_dir }}/log/*.log {
+	su {{ sniffr_user }} {{ sniffr_group }}
+	daily
+	maxsize 5M
+	missingok
+	rotate 14
+	compress
+	delaycompress
+	notifempty
+	copytruncate
+	create 0644 {{ sniffr_user }} {{ sniffr_group }}
+}

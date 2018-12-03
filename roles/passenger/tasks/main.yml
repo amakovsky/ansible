@@ -76,7 +76,7 @@
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    mode: 0775
+    mode: 0644
   with_items: "{{ passenger_template }}"
   notify: restart nginx
 

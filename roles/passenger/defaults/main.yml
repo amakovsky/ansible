@@ -9,6 +9,10 @@ passenger_template:
     dest: '/lib/systemd/system/nginx.service'
   - src: 'nginx.conf.j2'
     dest: "{{ passenger_nginx_dir }}/conf/nginx.conf"
+  - src: 'nginx_logrotate'
+    dest: '/etc/logrotate.d/nginx'
+  - src: 'nginx_init'
+    dest: '/etc/init.d/nginx'
 
 nginx_global_config_options:
   - option: user
