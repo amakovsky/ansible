@@ -100,3 +100,12 @@ listen elastics-TCP-9200
     {% for item in groups['stage'] %}
                       server stage{{ loop.index }} {{ item }}:9200 maxconn 1024 check inter 1s
     {% endfor %}
+
+listen logstash-TCP-5044
+    bind *:5044
+    mode tcp
+    option tcplog
+    option tcp-check
+    {% for item in groups['stage'] %}
+                      server stage{{ loop.index }} {{ item }}:5044 maxconn 1024 check inter 1s
+    {% endfor %}

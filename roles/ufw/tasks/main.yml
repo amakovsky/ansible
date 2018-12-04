@@ -68,6 +68,5 @@
     state: enabled
   with_items:
     - { direction: incoming, policy: deny }
-    - { direction: forwarding, policy: deny }
     - { direction: outgoing, policy: allow }
   when: ufw_change is changed

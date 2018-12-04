@@ -12,7 +12,7 @@
     - postgresql
     - docker
     - elk
-    - sniffr
+#    - sniffr
 #    - elasticsearch
 #    - kibana
 #    - zabbix

@@ -78,6 +78,12 @@ ufw_rules:
     from_ip:
       - 10.135.0.0/16
       - 172.20.0.0/16
+  - rule: 'allow'
+    port: 5044
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+      - 172.20.0.0/16
 
 sniffr_dir: /var/www/sniffr
 sniffr_port: 37008
