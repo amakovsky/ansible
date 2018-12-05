@@ -10,7 +10,7 @@
     - python-botocore
     - python-boto3
 #    - awscli
-    - python3-pip
+    - python-pip
 
 - name: install pip-aws
   pip:
