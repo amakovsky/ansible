@@ -117,6 +117,26 @@ records:
       type: A
       last: 221.125
       rev: 135.10.in-addr.arpa
+    elk1:
+      forward: 10.135.106.184
+      type: A
+      last: 184.106
+      rev: 135.10.in-addr.arpa
+    elk2:
+      forward: 10.135.115.220
+      type: A
+      last: 220.115
+      rev: 135.10.in-addr.arpa
+    elk3:
+      forward: 10.135.124.34
+      type: A
+      last: 34.124
+      rev: 135.10.in-addr.arpa
+    kibana:
+      forward: 10.135.124.34
+      type: A
+      last: 34.124
+      rev: 135.10.in-addr.arpa
 
   gettwifi:
     "@":
