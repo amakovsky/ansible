@@ -4,6 +4,7 @@
     - common
     - ufw
     - elasticsearch
+    - zabbix
 
 - hosts: elastic_kibana
   become: true
@@ -13,3 +14,4 @@
     - elasticsearch
     - kibana
     - nginx
+    - zabbix

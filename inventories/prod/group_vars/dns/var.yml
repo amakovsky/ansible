@@ -137,6 +137,16 @@ records:
       type: A
       last: 34.124
       rev: 135.10.in-addr.arpa
+    chef:
+      forward: 10.135.124.182
+      type: A
+      last: 182.124
+      rev: 135.10.in-addr.arpa
+    test1:
+      forward: 10.135.124.182
+      type: A
+      last: 182.124
+      rev: 135.10.in-addr.arpa
 
   gettwifi:
     "@":
