@@ -1,9 +1,0 @@
----
-- name: nomad server
-  hosts: nomad
-  become: yes
-  become_method: sudo
-  become_user: root
-
-  roles:
-    - nomad

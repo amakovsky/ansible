@@ -1,6 +1,0 @@
-[Unit]
-Description=dns socket
-
-[Socket]
-ListenStream=53
-NoDelay=true

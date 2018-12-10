@@ -1,9 +1,0 @@
----
-- name: Get the worker join-token
-  command: docker swarm join-token --quiet worker
-  register: worker_token
-  delegate_to: "{{ groups['swarm'][0] }}"
-
-- name: Add Workers to the Swarm
-  shell: "docker swarm join --token {{ worker_token.stdout }} {{ groups['swarm'][0] }}"
-  tags: swarm

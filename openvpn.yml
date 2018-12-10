@@ -7,6 +7,5 @@
   roles:
     - common
     - ufw
-    - fail2ban
     - openvpn
     - zabbix

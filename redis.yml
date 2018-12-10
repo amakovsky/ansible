@@ -9,5 +9,4 @@
     - common
     - ufw
     - redis
-#    - beat
     - zabbix
