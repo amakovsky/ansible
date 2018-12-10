@@ -41,7 +41,7 @@
 
 [test]
 10.135.41.15
-10.135.5.140
+#10.135.5.140
 
 [node]
 10.135.125.221
@@ -55,3 +55,15 @@
 
 [stage]
 10.135.34.145
+
+[elastic_nodes]
+ds-elastic-01 ansible_ssh_host=10.135.106.184 private_ip=10.135.106.184
+ds-elastic-02 ansible_ssh_host=10.135.115.220 private_ip=10.135.115.220
+#ds-elastic-03 ansible_ssh_host= private_ip=
+
+[elastic_kibana]
+ds-kibana ansible_ssh_host=10.135.124.34 private_ip=10.135.124.34
+
+[elastic_cluster:children]
+elastic_nodes
+elastic_kibana

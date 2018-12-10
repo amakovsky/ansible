@@ -1,0 +1,17 @@
+- hosts: elastic_nodes
+  become: true
+  roles:
+    - common
+    - ufw
+    - elasticsearch
+    - zabbix
+
+- hosts: elastic_kibana
+  become: true
+  roles:
+    - common
+    - ufw
+    - elasticsearch
+    - kibana
+    - nginx
+    - zabbix

@@ -36,3 +36,24 @@
   systemd:
     enabled: true
     name: nginx
+
+- name: copy nginx configs
+  template:
+    src: 'nginx.host.j2'
+    dest: '/etc/nginx/sites-available/{{ item.value.url }}.conf'
+  with_dict: "{{ virtualhost }}"
+  register: change_conf
+  notify: restart nginx
+  when: virtualhost is defined
+#  no_log: true
+
+- name: link nginx config
+  file:
+    src: '/etc/nginx/sites-available/{{ item.value.url }}.conf'
+    dest: '/etc/nginx/sites-enabled/{{ item.value.url }}.conf'
+    state: link
+    force: yes
+  with_dict: "{{ virtualhost }}"
+  notify: restart nginx
+  no_log: true
+  when: virtualhost is defined

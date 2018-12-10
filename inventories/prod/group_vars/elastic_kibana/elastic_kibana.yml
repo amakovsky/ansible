@@ -1,0 +1,55 @@
+---
+
+# elasticsearch
+es_heap_size: 1g
+
+es_api_host: "127.0.0.1"
+es_custom_network_host: "_local_"
+
+es_custom_node_data: false
+es_custom_node_master: false
+es_custom_node_ingest: false
+
+# kibana
+kibana_major_version: "6.x"
+kibana_version: "6.4.3"
+
+# ufw
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ private_ip }}"
+  - rule: 'allow'
+    port: 443
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ private_ip }}"
+  - rule: 'allow'
+    port: 80
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ private_ip }}"
+  - rule: 'allow'
+    port: 9300
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ private_ip }}"
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ private_ip }}"
+
+virtualhost:
+  www:
+    url: kibana.gw.lan
+    upstream_proxy: "kibana"
+    upstream_proxy_port: 5601
+    index_file: index.php

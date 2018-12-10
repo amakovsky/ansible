@@ -1,6 +1,9 @@
 ---
+sniffr_user: user
+sniffr_group: sniffr
+
 local_user:
-  - name: user
+  - name: "{{ sniffr_user }}"
     password: 1128256asdf
     password_lock: yes
     home: /opt/www
@@ -43,6 +46,12 @@ ufw_rules:
     to_ip: "{{ inventory_hostname }}"
   - rule: 'allow'
     port: 5601
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ inventory_hostname }}"
+  - rule: 'allow'
+    port: 5044
     proto: 'tcp'
     from_ip:
       - 10.135.0.0/16

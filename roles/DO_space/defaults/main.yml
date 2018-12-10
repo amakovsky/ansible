@@ -10,5 +10,6 @@ upload_files:
 #  - asterisk-13-current.tar.gz
 #  - nomad_0.8.4_linux_amd64.zip
 #  - consul_1.2.2_linux_amd64.zip
-  - packer_1.2.5_linux_amd64.zip
-  - terraform_0.11.8_linux_amd64.zip
+#  - packer_1.2.5_linux_amd64.zip
+#  - terraform_0.11.8_linux_amd64.zip
+  - softether-vpnclient-v4.28-9669-beta-2018.09.11-linux-arm_eabi-32bit.tar.gz

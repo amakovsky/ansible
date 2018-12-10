@@ -20,7 +20,8 @@
 #    - s3cmd
 #    - web_ruby
 #    - dns
-    - common
-    - ufw
-    - softether
-    - user
+#    - common
+#    - ufw
+#    - softether
+#    - user
+    - DO_space
