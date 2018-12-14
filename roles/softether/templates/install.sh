@@ -10,6 +10,7 @@ TOCKEN=vM6dBSCxqfmDecXe4Z81
 TYPE=radius
 ACCOUNT=gettwifi
 IP=172.20.1.2
+GATEWAYIP=172.20.0.2
 ROOT_PASS=ZuCuequot3Chah5
 if [[ ! -d /usr/local/vpnclient ]]
 then
@@ -53,7 +54,7 @@ iface vpn_vpn inet manual
 pre-up ip tuntap add vpn_vpn mode tap user root
 pre-up ip addr add $IP/16 dev vpn_vpn
 up ip link set dev vpn_vpn up
-#    post-up ip route add 172.20.0.0/16 dev vpn_vpn
+post-up ip route add 172.20.0.0/16 dev vpn_vpn
 post-down ip link del dev vpn_vpn
 EOF
 
@@ -155,7 +156,7 @@ systemctl daemon-reload
 systemctl enable scanner.service
 grep -q fetchnew.gettwifi.com /etc/hosts
 if [[ ${?} -ne 0 ]]; then
-echo "172.20.0.2      fetchnew.gettwifi.com" >> /etc/hosts
+echo "${GATEWAYIP}      fetchnew.gettwifi.com" >> /etc/hosts
 fi
 crontab -l | grep -q '* * * * * cd /home/pi/scanner && ./heartbeat.py'
 if [[ ${?} -ne 0 ]]; then
