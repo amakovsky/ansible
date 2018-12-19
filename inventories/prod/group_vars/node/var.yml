@@ -42,6 +42,7 @@ virtualhost:
     dir: "/home/node/gettwifi---krispy-kreme/dist"
     upstream_proxy: "krispykreme_upstream"
     upstream_proxy_port: 3000
+    upstream_proxy_location: "/"
     index_file: index.php
     ssl_cert: "krispykreme.gettwifi.com"
   www2:
@@ -50,3 +51,11 @@ virtualhost:
     index_file: index.html
     upstream_proxy: "test_upstream"
     upstream_proxy_port: 4000
+    upstream_proxy_location: "/graphql"
+  www3:
+    url: camera.gettwifi.com
+#    dir: "/home/node/www/statistic-dashboard/build"
+    index_file: index.html
+    upstream_proxy: "camera_upstream"
+    upstream_proxy_port: 5000
+    upstream_proxy_location: "/snapshot"

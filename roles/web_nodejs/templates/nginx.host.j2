@@ -15,9 +15,13 @@ server {
 server {
     listen 443 ssl;
     server_name {{ item.value.url }} {% if item.value.www_host is defined and item.value.www_host %} www.{{ item.value.url }} {% endif %} ;
+{% if item.value.dir is defined %}
     root {{ item.value.dir }} ;
-
+{% endif %}
+{% if item.value.index_file is defined %}
     index {{ item.value.index_file }};
+{% endif %}
+
     access_log /var/log/nginx/{{ item.value.url }}.access.ssl.log;
     error_log /var/log/nginx/{{ item.value.url }}.error.ssl.log error;
     include expires.conf;
@@ -30,14 +34,18 @@ server {
   server_name {{ item.value.url }} {% if item.value.www_host is defined and item.value.www_host %} www.{{ item.value.url }} {% endif %} ;
   access_log /var/log/nginx/{{ item.value.url }}.log;
   error_log /var/log/nginx/{{ item.value.url }}.error.log error;
-  index {{ item.value.index_file }};
-  root {{ item.value.dir }} ;
+  {% if item.value.dir is defined %}
+      root {{ item.value.dir }} ;
+  {% endif %}
+  {% if item.value.index_file is defined %}
+      index {{ item.value.index_file }};
+  {% endif %}
 
   error_page 401 403 404 /404.html;
 {% endif %}
 
 {% if item.value.upstream_proxy is defined %}
-        location /graphql {
+        location {{ item.value.upstream_proxy_location }} {
                 try_files $uri @{{ item.value.upstream_proxy }};
         }
 
@@ -49,6 +57,7 @@ server {
                 proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         }
+{% if item.value.upstream_proxy_location != '/' %}
         location  / {
         try_files $uri $uri/ /{{ item.value.index_file }}$is_args$args;
         {% if item.value.auth is defined and item.value.auth %}
@@ -61,6 +70,7 @@ server {
                 auth_basic_user_file /var/www/.htpasswd_{{ item.value.url }};
         {% endif %}
    }
+{% endif %}
 {% else %}
    location / {
         try_files $uri $uri/ /{{ item.value.index_file }}$is_args$args;
