@@ -4,7 +4,7 @@
     name: haproxy
     update_cache: true
 
-- name: Copy galera configuration
+- name: Copy haproxy configuration
   template:
     src: "{{ haproxy_config }}"
     dest: /etc/haproxy/haproxy.cfg

@@ -22,6 +22,3 @@
 - name: install docker python
   pip:
     name: "{{ docker_pip_package }}"
-
-- include_tasks: "registrator.yml"
-  when: consul_docker_registrator

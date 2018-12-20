@@ -4,21 +4,6 @@
     name: ufw
     update_cache: true
 
-# - set_fact:
-#      war_files_list_of_dicts: |
-#          {% set res = [] -%}
-#          {% for key in with_dict.keys() -%}
-#             {% for value in war_files[key] -%}
-#              {% set ignored = res.extend([{'Server': key, 'WAR':value}]) -%}
-#             {%- endfor %}
-#          {%- endfor %}
-#          {{ res }}
-
-# - name: Resetting firewall
-#  ufw:
-#    state: reset
-#  when: ufw_reset
-
 - name: Delete OpenSSH rule
   shell: "ufw status numbered | grep IN |awk -F\"[][]\" '{print $2}'"
   register: ufw_rules_list

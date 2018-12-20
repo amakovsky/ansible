@@ -1,5 +1,5 @@
 ---
-access_key: VGKQEXC2RQ3A24XZLDXU
-secret_key: srDfud8kTGadwhx1oT7gUg+Io9bPM7+J2omHdllQPSQ
+access_key: " "
+secret_key: " "
 host_base: "ams3.digitaloceanspaces.com"
 host_bucket: "%(bucket)s.{{ host_base }}"
