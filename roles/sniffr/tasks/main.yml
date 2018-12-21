@@ -8,7 +8,7 @@
     name: libhiredis-dev
     update_cache: true
 
-- name: create snifr config
+- name: create snifr config dir
   file:
     path: "{{ sniffr_dir }}/log"
     state: directory

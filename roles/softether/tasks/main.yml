@@ -47,12 +47,6 @@
         state: directory
         mode: 0755
 
-    #    - name: Download softether source
-    #      get_url:
-    #        url: "{{ softether_source_url }}"
-    #        dest: /tmp/softether.tar.gz
-    #        mode: 0740
-
     - name: Extract softether
       unarchive:
         src: "{{ softether_source_url }}"

@@ -12,3 +12,5 @@ sniffr_template:
   - src: 'sniffr'
     dest: '/etc/logrotate.d/sniffr'
     mode: '0644'
+
+gitlab_private_token: " "
