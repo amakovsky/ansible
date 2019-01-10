@@ -24,11 +24,11 @@ common: &common
     gateway_ip: "10.7.0.1"
     netmask: 16
     # common: 16 # gateway_ip( place_id = 2 ): 192.168.2.1
-    ssid: "The Karma FREE"
+    ssid: "GettWiFi FREE"
   private:
     gateway_ip: "10.5.0.1"
     netmask: 16
-    ssid: "The Karma Private"
+    ssid: "GettWiFi Private"
 
 development:
   <<: *common

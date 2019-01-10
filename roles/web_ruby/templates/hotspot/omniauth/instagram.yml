@@ -1,10 +1,15 @@
 common: &common
   scope: 'basic likes relationships'
-  app_id: ''
-  app_secret: ''
+  user_search:
+    token: '177403578.3d7ad9f.f39094fe9b484c31ae9dc5b5a5993a11'
+  public_content:
+    app_id: '3d7ad9fc64ed404c9bddd91a4832f966'
+    #app_secret: '0d7ac95dfef144f6aca1d74d339483e1'
+  app_id: 'de6109fd2c58421eb387605a53dd45db'
+  app_secret: '8f8cab4cafb34f17bb3857decc3cd3e1'
 
 development:
   <<: *common
-    
+
 production:
   <<: *common

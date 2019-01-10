@@ -44,6 +44,24 @@
   become_user: "{{ web_user }}"
   become: yes
 
+- name: Create captive stub folder
+  file:
+    path: "{{ captive_folder }}"
+    state: directory
+    mode: 0775
+  become_user: "{{ web_user }}"
+  become: yes
+
+- name: Copy captive stub files
+  template:
+    src: "captive/{{ item }}"
+    dest: "{{ captive_folder }}/{{ item }}"
+  become_user: "{{ web_user }}"
+  become: yes
+  with_items:
+    - index.html
+    - favicon.ico
+
 - name: Copy  template
   template:
     src: "{{ item.1.src }}"
@@ -56,18 +74,25 @@
   block:
   - name: copy nginx configs
     template:
-      src: 'nginx.conf'
-      dest: '{{ nginx_configs_folder }}/sites-available/nginx.conf'
+      src: 'nginx/{{ item }}.conf'
+      dest: '{{ nginx_configs_folder }}/sites-available/{{ item }}.conf'
     notify: restart nginx
+    with_items:
+    - captive
+    - hotspot
 
   - name: link nginx config
     file:
-      src: '{{ nginx_configs_folder }}/sites-available/nginx.conf'
-      dest: '{{ nginx_configs_folder }}/sites-enabled/nginx.conf'
+      src: '{{ nginx_configs_folder }}/sites-available/{{ item }}.conf'
+      dest: '{{ nginx_configs_folder }}/sites-enabled/{{ item }}.conf'
       state: link
       force: yes
     notify: restart nginx
     no_log: true
+    with_items:
+    - captive
+    - hotspot
+
   when: virtual_hosts is defined
 
 - name: create monit config

@@ -6,11 +6,11 @@
   become_user: root
 
   roles:
-    - common
-    - ufw
-    - user
+    # - common
+    # - ufw
+    # - user
     - nginx
-    - nodejs
+    # - nodejs
     - letsencrypt
-    - zabbix
+    # - zabbix
     - web_nodejs

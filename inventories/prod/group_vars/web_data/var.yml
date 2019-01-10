@@ -89,7 +89,5 @@ ruby_configs:
         dest: 'vkontakte.yml'
   - dir: "portals"
     template:
-      - src: 'hotspot/portals/example.yml'
-        dest: 'example.yml'
       - src: 'hotspot/portals/gettwifi.yml'
         dest: 'gettwifi.yml'

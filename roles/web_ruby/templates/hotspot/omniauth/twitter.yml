@@ -1,13 +1,13 @@
 common: &common
   scope: 'user_birthday,email'
   embed_session_id: true
-  app_id: ''
-  app_secret: ''
+  app_id: 'rXry1eRF9AyBP25vskQ0g'
+  app_secret: 'MoSfy6i9B4SdyLudCNLJFCjVZgPZ6UkQa8XapuuY7c'
   post:
-    image_host: 'http://auth.hot-spot.by'
+    image_host: 'https://app.gettwifi.com'
 
 development:
   <<: *common
-  
+
 production:
-  <<: *common  
+  <<: *common

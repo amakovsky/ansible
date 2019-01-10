@@ -8,9 +8,9 @@
   roles:
     - common
     - ufw
-    - user
-    - rvm
-    - nodejs
+    # - user
+    # - rvm
+    # - nodejs
     - monit
     - web_ruby
     - zabbix

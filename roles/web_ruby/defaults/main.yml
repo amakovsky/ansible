@@ -46,3 +46,5 @@ web_user: web
 
 web_cron: []
 web_cron_vars: []
+
+captive_folder: /opt/www/captive

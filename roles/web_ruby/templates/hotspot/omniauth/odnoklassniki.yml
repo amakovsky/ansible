@@ -1,15 +1,18 @@
 common: &common
   scope: 'VALUABLE_ACCESS'
   embed_session_id: false
-  app_id: ''
-  app_secret: ''
+  app_id: '1150089472'
+  app_secret: 'F7A5A8F107368A8B18C16B89'
+  upload_banner:
+    token: 'tkn1QZci465gMs2SEnqkizHaxXtjvc9MznkwtwovgymshnTSwsvPeXvXFM7enFLzjmFCx'
+    group_id: '52347220787356'
   extra_options:
-    public_key: ''
+    public_key: 'CBAKPNIFEBABABABA'
   post:
-    image_host: 'http://auth.hot-spot.by'
+    image_host: 'https://app.gettwifi.com'
 
 development:
   <<: *common
-  
+
 production:
-  <<: *common  
+  <<: *common

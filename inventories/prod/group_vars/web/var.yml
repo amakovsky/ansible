@@ -102,7 +102,7 @@ ruby_configs:
         dest: 'asterisk.yml'
       - src: 'hotspot/sms/devinotelecom.yml'
         dest: 'devinotelecom.yml'
-  - dir: "../vendor/mikrotik/cert"
+  - dir: "../vendor/mikrotik/cert/hotspot.gettwifi.com"
     template:
       - src: 'hotspot/hotspot.gettwifi.com/certificate.crt'
         dest: 'certificate.crt'

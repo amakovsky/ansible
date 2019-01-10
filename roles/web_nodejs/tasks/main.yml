@@ -46,9 +46,9 @@
 - name: Generate new certificate if one doesn't exist.
   shell: certbot certonly --standalone --noninteractive --agree-tos \
            --email {{ certbot_admin_email | default('mak@gettwifi.com') }} \
-           -d {{ item.value.url | join(',') }}
+           -d {{ item.value.url }}
   with_dict: "{{ virtualhost }}"
-  when: letsencrypt_cert is changed
+  # when: letsencrypt_cert is changed
 
 
 - name: validate nginx conf

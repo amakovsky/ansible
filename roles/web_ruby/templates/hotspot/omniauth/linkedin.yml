@@ -1,12 +1,12 @@
 common: &common
   scope: 'r_basicprofile r_emailaddress w_share'
-  app_id: ''
-  app_secret: ''
+  app_id: '77xtop1b6q26kv'
+  app_secret: 'QBSieYcMBkoyHPQ0'
   post:
-    image_host: 'http://auth.hot-spot.by'
+    image_host: 'https://app.gettwifi.com'
 
 development:
   <<: *common
-    
+
 production:
-  <<: *common  
+  <<: *common

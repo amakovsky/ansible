@@ -52,6 +52,7 @@ virtualhost:
     upstream_proxy: "test_upstream"
     upstream_proxy_port: 4000
     upstream_proxy_location: "/graphql"
+    ssl_cert: "test.gettwifi.com"
   www3:
     url: camera.gettwifi.com
 #    dir: "/home/node/www/statistic-dashboard/build"
@@ -59,3 +60,19 @@ virtualhost:
     upstream_proxy: "camera_upstream"
     upstream_proxy_port: 5000
     upstream_proxy_location: "/snapshot"
+  www4:
+    url: export.gettwifi.com
+    dir: "/home/node/www/export-service/public"
+    index_file: index.html
+    upstream_proxy: "export_upstream"
+    upstream_proxy_port: 6000
+    upstream_proxy_location: "/"
+    ssl_cert: "export.gettwifi.com"
+  www5:
+    url: dashboard.gettwifi.com
+    dir: "/home/node/www/statistic-dashboard/build"
+    index_file: index.html
+    upstream_proxy: "dashboard_upstream"
+    upstream_proxy_port: 4000
+    upstream_proxy_location: "/graphql"
+    ssl_cert: "dashboard.gettwifi.com"

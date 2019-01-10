@@ -5,10 +5,10 @@ common: &common
     info_fields: 'name,email,birthday,devices,gender,link'
   embed_session_id: false
   auto_post: false
-  app_id: ''
-  app_secret: ''
+  app_id: '194150520733941'
+  app_secret: 'abbde9c1b29941e5c3ec03db3308d52f'
   post:
-    image_host: 'http://auth.hot-spot.by'
+    image_host: 'https://app.gettwifi.com'
 
 development:
   <<: *common
