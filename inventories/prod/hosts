@@ -1,56 +1,56 @@
 [openvpn]
-138.68.67.181 private_ip=10.135.16.158
+openvpn1 ansible_ssh_host=138.68.67.181 private_ip=10.135.16.158
 
 [dns]
-10.135.101.26
+ns1 ansible_ssh_host=10.135.101.26
 
 [zabbix]
-10.135.56.169
+zabbix ansible_ssh_host=10.135.56.169
 
 [gitlab]
-10.135.11.170 ansible_port=2222
+gitlab ansible_ssh_host=10.135.11.170 ansible_port=2222
 
 [gitlab-runner]
-10.135.94.37
+runner1 ansible_ssh_host=10.135.94.37
 
 [postgresql]
-10.135.72.192 postgresrep_role=master
-10.135.20.228 postgresrep_role=slave
+db-master ansible_ssh_host=10.135.72.192 postgresrep_role=master
+db-slave ansible_ssh_host=10.135.20.228 postgresrep_role=slave
 
 [redis]
-10.135.118.233
-10.135.118.227
-10.135.118.226
+redis1 ansible_ssh_host=10.135.118.233
+redis2 ansible_ssh_host=10.135.118.227
+redis3 ansible_ssh_host=10.135.118.226
 
 [cassandra]
-10.135.119.43
-10.135.119.68
-10.135.119.200
+cassandra1 ansible_ssh_host=10.135.119.43
+cassandra2 ansible_ssh_host=10.135.119.68
+cassandra3 ansible_ssh_host=10.135.119.200
 
 [asterisk]
-10.135.116.10
+asterisk ansible_ssh_host=10.135.116.10
 
 [radius]
-10.135.105.84 prefix=gw
-10.135.105.93 prefix=ad
+radius1 ansible_ssh_host=10.135.105.84 prefix=gw
+radius2 ansible_ssh_host=10.135.105.93 prefix=ad
 
 [softether]
-10.135.93.247
-10.135.121.54
-10.135.120.116
+hub1 ansible_ssh_host=10.135.93.247
+hub2 ansible_ssh_host=10.135.121.54
+hub3 ansible_ssh_host=10.135.120.116
 
 [node]
-10.135.125.221
+nodejs1 ansible_ssh_host=10.135.125.221
 
 [web]
-10.135.112.29
-10.135.124.179
+web1 ansible_ssh_host=10.135.112.29
+web2 ansible_ssh_host=10.135.124.179
 
 [web_data]
-10.135.68.78
+web-data1 ansible_ssh_host=10.135.68.78
 
 [stage]
-10.135.34.145
+stage2 ansible_ssh_host=10.135.34.145
 
 [elastic_nodes]
 ds-elastic-01 ansible_ssh_host=10.135.106.184 private_ip=10.135.106.184
