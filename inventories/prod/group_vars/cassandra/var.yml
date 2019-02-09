@@ -46,7 +46,7 @@ cassandra_global_config_options:
     regex: '.*'
     tab: '          '
   - option: listen_address
-    value: '{{ inventory_hostname }}'
+    value: '{{ ansible_ssh_host }}'
     regex: ''
     tab: ''
   - option: rpc_address
@@ -54,7 +54,7 @@ cassandra_global_config_options:
     regex: ''
     tab: ''
   - option: broadcast_rpc_address
-    value: '{{ inventory_hostname }}'
+    value: '{{ ansible_ssh_host }}'
     regex: ''
     tab: ''
   - option: endpoint_snitch
@@ -72,27 +72,27 @@ ufw_rules:
     proto: 'tcp'
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 7000
     proto: 'tcp'
     from_ip: "{{ [groups['cassandra'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 9042
     proto: 'tcp'
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 10050
     proto: 'tcp'
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 7199
     proto: 'tcp'
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"

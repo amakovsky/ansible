@@ -47,7 +47,7 @@ ufw_rules:
     proto: 'tcp'
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 80
     proto: 'tcp'

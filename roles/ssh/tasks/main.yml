@@ -12,6 +12,6 @@
     - {
       regexp: "^#ListenAddress 0.0.0.0",
 #      line: "ListenAddress {{ hostvars[inventory_hostname][interface_fact_var].ipv4.address }}"
-      line: "ListenAddress {{ inventory_hostname }}"
+      line: "ListenAddress {{ ansible_ssh_host }}"
     }
   notify: restart ssh

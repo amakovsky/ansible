@@ -7,7 +7,7 @@ ufw_rules:
     proto: 'tcp'
     from_ip:
       - 0.0.0.0/0
-#    to_ip: "{{ inventory_hostname }}"
+#    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 2222
     proto: 'tcp'
@@ -15,7 +15,7 @@ ufw_rules:
       - 10.135.0.0/16
 #    from_ip:
 #      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 80
     proto: 'tcp'
@@ -23,7 +23,7 @@ ufw_rules:
 #      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 443
     proto: 'tcp'
@@ -31,7 +31,7 @@ ufw_rules:
 #      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: "{{ gitlab_registry_port }}"
     proto: 'tcp'
@@ -39,11 +39,11 @@ ufw_rules:
 #      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 10050
     proto: 'tcp'
 #    from_ip: "{{ groups['zabbix'] }}"
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"

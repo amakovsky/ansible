@@ -25,7 +25,7 @@ postgresql_global_config_options:
   - option: unix_socket_directories
     value: '{{ postgresql_unix_socket_directories | join(",") }}'
   - option: listen_addresses
-    value: '{{ inventory_hostname }}, localhost'
+    value: '{{ ansible_ssh_host }}, localhost'
   - option: shared_buffers
     value: '{{ (ansible_memtotal_mb * 0.25)|int|abs }}MB'
   - option: max_connections

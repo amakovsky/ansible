@@ -20,11 +20,11 @@
     backup: true
     path: "/etc/netplan/{{ netplan_config }}"
     regexp: "{{ item.path }}"
-    line: "{{ item.regexp }}"
+    line: "{{ item.line }}"
   with_items:
-    - { path: "^.*{{ cloud.network.ethernets.eth0.nameservers.addresses[0] }}", regexp: "                - {{ groups['dns'][0] }}" }
-    - { path: "^.*{{ cloud.network.ethernets.eth0.nameservers.addresses[1] }}", regexp: "                - {{ groups['dns'][0] }}" }
-  when: cloud.network.ethernets.eth0.nameservers.addresses[0] != groups['dns'][0] and inventory_hostname != groups['dns'][0]
+    - { path: "^.*{{ cloud.network.ethernets.eth0.nameservers.addresses[0] }}", line: "                - {{ hostvars[groups['dns'][0]].ansible_ssh_host }}" }
+    - { path: "^.*{{ cloud.network.ethernets.eth0.nameservers.addresses[1] }}", line: "                - {{ hostvars[groups['dns'][0]].ansible_ssh_host }}" }
+  when: cloud.network.ethernets.eth0.nameservers.addresses[0] != hostvars[groups['dns'][0]].ansible_ssh_host and ansible_ssh_host != hostvars[groups['dns'][0]].ansible_ssh_host
   notify: netplan apply
 
 - name: edit netpaln config file for dns server
@@ -35,11 +35,12 @@
     line: "{{ item.regexp }}"
   with_items:
     - { path: "^.*{{ cloud.network.ethernets.eth0.nameservers.addresses[0] }}", regexp: "                - 127.0.0.1" }
-  when: cloud.network.ethernets.eth0.nameservers.addresses[0] != '127.0.0.1' and inventory_hostname == groups['dns'][0]
+  when: cloud.network.ethernets.eth0.nameservers.addresses[0] != '127.0.0.1' and ansible_ssh_host == hostvars[groups['dns'][0]].ansible_ssh_host
   notify: netplan apply
 
 - name: validate netpaln conf
-  command: netplan try --timeout 0
+  command: "/usr/sbin/netplan generate"
+#  shell: "/usr/sbin/netplan try"
   changed_when: false
 
 - name: netplan apply

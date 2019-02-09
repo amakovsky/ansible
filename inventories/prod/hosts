@@ -5,10 +5,10 @@ openvpn1 ansible_ssh_host=138.68.67.181 private_ip=10.135.16.158
 ns1 ansible_ssh_host=10.135.101.26
 
 [zabbix]
-zabbix ansible_ssh_host=10.135.56.169
+zabbix1 ansible_ssh_host=10.135.56.169
 
 [gitlab]
-gitlab ansible_ssh_host=10.135.11.170 ansible_port=2222
+gitlab1 ansible_ssh_host=10.135.11.170 ansible_port=2222
 
 [gitlab-runner]
 runner1 ansible_ssh_host=10.135.94.37
@@ -28,7 +28,7 @@ cassandra2 ansible_ssh_host=10.135.119.68
 cassandra3 ansible_ssh_host=10.135.119.200
 
 [asterisk]
-asterisk ansible_ssh_host=10.135.116.10
+asterisk1 ansible_ssh_host=10.135.116.10
 
 [radius]
 radius1 ansible_ssh_host=10.135.105.84 prefix=gw
