@@ -1,7 +1,7 @@
 default: &default
   hosts:
 {% for item in groups['cassandra'] %}
-  - {{ item }}
+  - {{ hostvars[item].ansible_ssh_host }}
 {% endfor %}
   port: 9042
   username: 'hotspot'

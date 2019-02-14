@@ -12,7 +12,7 @@ nginx_bindir: /usr/sbin
 postgrs_conf: "{{ inventory_dir }}/group_vars/postgresql/vault.yml"
 radius_conf: "{{ inventory_dir }}/group_vars/radius/vault.yml"
 cassandra_conf: "{{ inventory_dir }}/group_vars/cassandra/vault.yml"
-postgres_server: "{{ groups['postgresql'][0] }}"
+postgres_server: "{{ hostvars[groups['postgresql'][0]].ansible_ssh_host }}"
 web_user: web
 virtual_hosts: gettwifi.com
 

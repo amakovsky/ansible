@@ -1,13 +1,13 @@
 #!/bin/bash
 
-BASE_DIR=/opt/asterisk
+BASE_DIR={{ asterisk_optdir }}
 
-rasterisk -x "sip show peers" | awk -F"/" '{print $1}' | egrep '^[[:digit:]]{7,}' | grep -v nodds > $BASE_DIR/dds.txt
+/usr/sbin/rasterisk -x "sip show peers" | awk -F"/" '{print $1}' | egrep '^[[:digit:]]{7,}' | grep -v nodds > $BASE_DIR/dds.txt
 
 function asterisk_call()
 {
 	echo "Call $1 => $2"
-	rasterisk -x "channel originate SIP/$2@$1 extension wait@callback"
+	/usr/sbin/rasterisk -x "channel originate SIP/$2@$1 extension wait@callback"
 } 
 
 while read line
