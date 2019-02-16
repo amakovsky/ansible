@@ -103,10 +103,10 @@ ruby_configs:
       - src: 'hotspot/sms/devinotelecom.yml'
         dest: 'devinotelecom.yml'
   - dir: "../vendor/mikrotik/cert/hotspot.gettwifi.com"
-    template:
-      - src: 'hotspot/hotspot.gettwifi.com/certificate.crt'
+    file:
+      - src: 'hotspot.gettwifi.com/certificate.crt'
         dest: 'certificate.crt'
-      - src: 'hotspot/hotspot.gettwifi.com/private.key'
+      - src: 'hotspot.gettwifi.com/private.key'
         dest: 'private.key'
 
 web_cron:

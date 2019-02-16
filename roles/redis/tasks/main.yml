@@ -137,3 +137,10 @@
   with_items:
     - redis-server
     - redis-sentinel
+
+- name: set sysctl net.core.somaxconn
+  sysctl:
+    name: net.core.somaxconn
+    value: 65535
+    state: present
+    reload: yes

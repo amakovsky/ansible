@@ -7,11 +7,11 @@
 
   roles:
 #    - common
-#    - ufw
-#    - user
-#    - rvm
-#    - nodejs
+    - ufw
+    - user
+    - rvm
+    - nodejs
 #    - passenger
-#    - monit
+    - monit
     - web_ruby
-#    - zabbix
+    - zabbix
