@@ -12,9 +12,22 @@ stages:
   - pp
   - prod
   - docker-push-image
+  - deploy
 
-variables:
-  REGISTRY_BASE: ${CI_REGISTRY}/${CI_PROJECT_PATH_SLUG}
+.common_ci:
+  image: $CI_REGISTRY_IMAGE:build
+  stage: deploy
+  only:
+    - master
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - eval "$(ssh-agent -s)" && ansible-vault view files/rsa-keys/ansible | ssh-add - > /dev/null
+  when: manual
+
+update ssh:
+  extends: .common_ci
+  script:
+    - ansible-playbook -i inventories/prod/hosts ssh.yml
 
 lint:
   image: particlekit/ansible-lint
