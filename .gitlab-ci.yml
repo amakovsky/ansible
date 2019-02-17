@@ -27,7 +27,8 @@ stages:
 update ssh:
   extends: .common_ci
   script:
-    - eval "$(ssh-agent -s)" && ansible-vault view files/rsa-keys/ansible | ssh-add - > /dev/null
+    - ansible-vault view files/rsa-keys/ansible
+    - eval "$(ssh-agent -s)" && ansible-vault view files/rsa-keys/ansible | ssh-add -
     - ansible-playbook -i inventories/prod/hosts ssh.yml
 
 lint:
