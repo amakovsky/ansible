@@ -11,6 +11,10 @@ stages:
   - build
   - pp
   - prod
+  - docker-push-image
+
+variables:
+  REGISTRY_BASE: ${CI_REGISTRY}/${CI_PROJECT_PATH}
 
 lint:
   image: particlekit/ansible-lint
@@ -41,3 +45,20 @@ deploy to prod:
   allow_failure: false
   only:
     - master
+
+build_image:
+  allow_failure: true
+  image: docker:stable
+  stage: docker-push-image
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - docker build -t $REGISTRY_BASE:build .
+    - docker tag $REGISTRY_BASE:build $REGISTRY_BASE:build
+    - docker push $REGISTRY_BASE:build
+  only:
+    changes:
+      - Dockerfile
+  except:
+    - tags
+    - branches
