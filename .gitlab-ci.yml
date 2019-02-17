@@ -26,6 +26,10 @@ build:
   stage: build
   script:
       - echo "build"
+      - echo $CI_PROJECT_NAMESPACE
+      - echo $CI_PROJECT_PATH
+      - echo $CI_PROJECT_NAME
+      - echo $CI_REGISTRY_IMAGE
 
 deploy to preprod:
   stage: pp
