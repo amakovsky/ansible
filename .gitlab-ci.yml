@@ -19,14 +19,15 @@ stages:
   stage: deploy
   only:
     - master
-  before_script:
-#    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - eval "$(ssh-agent -s)" && ansible-vault view files/rsa-keys/ansible | ssh-add - > /dev/null
+#  before_script:
+##    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+#    - eval "$(ssh-agent -s)" && ansible-vault view files/rsa-keys/ansible | ssh-add - > /dev/null
   when: manual
 
 update ssh:
   extends: .common_ci
   script:
+    - eval "$(ssh-agent -s)" && ansible-vault view files/rsa-keys/ansible | ssh-add - > /dev/null
     - ansible-playbook -i inventories/prod/hosts ssh.yml
 
 lint:
