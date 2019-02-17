@@ -8,7 +8,7 @@ RUN \
   apt-get install -y software-properties-common && \
   apt-add-repository ppa:ansible/ansible && \
   apt-get update && \
-  apt-get install -y --force-yes ansible && \
+  apt-get install -y --allow-downgrades ansible && \
   echo ${vault_pass} > ~/.vault_pass.txt
 
 RUN mkdir /ansible

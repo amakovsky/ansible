@@ -57,9 +57,9 @@ build_image:
   before_script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
-    - docker build -t $REGISTRY_BASE:build .
-    - docker tag $REGISTRY_BASE:build $REGISTRY_BASE:build
-    - docker push $REGISTRY_BASE:build
+    - docker build -t $CI_REGISTRY_IMAGE:build .
+    - docker tag $CI_REGISTRY_IMAGE:build $REGISTRY_BASE:build
+    - docker push $CI_REGISTRY_IMAGE:build
   only:
     changes:
       - Dockerfile
