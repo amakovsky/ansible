@@ -27,7 +27,8 @@ stages:
 update ssh:
   extends: .common_ci
   script:
-    - ansible-vault view files/rsa-keys/ansible
+    - chmod 755 -R ${CI_PROJECT_DIR}
+#    - ansible-vault view files/rsa-keys/ansible
     - eval "$(ssh-agent -s)" && ansible-vault view files/rsa-keys/ansible | ssh-add -
     - ansible-playbook -i inventories/prod/hosts ssh.yml
 
@@ -45,6 +46,7 @@ build:
       - echo $CI_PROJECT_PATH
       - echo $CI_PROJECT_NAME
       - echo $CI_REGISTRY_IMAGE
+      - echo $CI_PROJECT_DIR
 
 deploy to preprod:
   stage: pp
