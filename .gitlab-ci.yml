@@ -59,6 +59,6 @@ build_image:
   only:
     changes:
       - Dockerfile
-  except:
-    - tags
-    - branches
+#  except:
+#    - tags
+#    - branches
