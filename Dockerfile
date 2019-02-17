@@ -1,4 +1,5 @@
 FROM ubuntu:latest
+
 USER root
 
 ENV ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt

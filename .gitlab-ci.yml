@@ -14,7 +14,7 @@ stages:
   - docker-push-image
 
 variables:
-  REGISTRY_BASE: ${CI_REGISTRY}/${CI_PROJECT_PATH}
+  REGISTRY_BASE: ${CI_REGISTRY}/${CI_PROJECT_PATH_SLUG}
 
 lint:
   image: particlekit/ansible-lint
