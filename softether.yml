@@ -9,7 +9,7 @@
     - common
     - ufw
     - softether
-#    - user
+    - user
     - monit
     - haproxy
     - sniffr
