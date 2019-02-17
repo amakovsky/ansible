@@ -1,6 +1,7 @@
 FROM ubuntu:latest
 
 USER root
+
 ARG vault_pass
 ENV ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt
 RUN \
