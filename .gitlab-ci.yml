@@ -20,7 +20,7 @@ stages:
   only:
     - master
   before_script:
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+#    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - eval "$(ssh-agent -s)" && ansible-vault view files/rsa-keys/ansible | ssh-add - > /dev/null
   when: manual
 
