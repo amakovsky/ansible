@@ -1,10 +1,3 @@
-#image: docker:stable
-#
-#variables:
-#  DOCKER_DRIVER: overlay2
-#
-#before_script:
-#- docker info
 
 stages:
   - test
@@ -14,23 +7,83 @@ stages:
   - docker-push-image
   - deploy
 
+variables:
+  ansible_key: --check --diff
+
 .common_ci:
   image: $CI_REGISTRY_IMAGE:build
   stage: deploy
   only:
     - master
-#  before_script:
-##    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-#    - eval "$(ssh-agent -s)" && ansible-vault view files/rsa-keys/ansible | ssh-add - > /dev/null
+  before_script:
+    - chmod 755 -R ${CI_PROJECT_DIR}
+    - eval "$(ssh-agent -s)" && ansible-vault view files/rsa-keys/ansible | ssh-add -
   when: manual
 
 update ssh:
   extends: .common_ci
   script:
-    - chmod 755 -R ${CI_PROJECT_DIR}
-#    - ansible-vault view files/rsa-keys/ansible
-    - eval "$(ssh-agent -s)" && ansible-vault view files/rsa-keys/ansible | ssh-add -
-    - ansible-playbook -i inventories/prod/hosts ssh.yml
+    - ansible-playbook -i inventories/prod/hosts ssh.yml ${ansible_key}
+
+asterisk:
+  extends: .common_ci
+  script:
+    - ansible-playbook -i inventories/prod/hosts asterisk.yml ${ansible_key}
+
+cassandra:
+  extends: .common_ci
+  script:
+    - ansible-playbook -i inventories/prod/hosts cassandra.yml ${ansible_key}
+
+dns:
+  extends: .common_ci
+  script:
+    - ansible-playbook -i inventories/prod/hosts dns.yml ${ansible_key}
+
+node:
+  extends: .common_ci
+  script:
+    - ansible-playbook -i inventories/prod/hosts node.yml ${ansible_key}
+
+openvpn:
+  extends: .common_ci
+  script:
+    - ansible-playbook -i inventories/prod/hosts openvpn.yml ${ansible_key}
+
+postgres:
+  extends: .common_ci
+  script:
+    - ansible-playbook -i inventories/prod/hosts postgres.yml ${ansible_key}
+
+radius:
+  extends: .common_ci
+  script:
+    - ansible-playbook -i inventories/prod/hosts radius.yml ${ansible_key}
+
+redis:
+  extends: .common_ci
+  script:
+    - ansible-playbook -i inventories/prod/hosts redis.yml ${ansible_key}
+
+stage:
+  extends: .common_ci
+  script:
+    - ansible-playbook -i inventories/prod/hosts stage.yml ${ansible_key}
+
+web:
+  extends: .common_ci
+  script:
+    - ansible-playbook -i inventories/prod/hosts web.yml ${ansible_key}
+
+web data:
+  extends: .common_ci
+  script:
+    - ansible-playbook -i inventories/prod/hosts web_data.yml ${ansible_key}
+
+zabbix:
+  extends: .common_ci
+  script:
+    - ansible-playbook -i inventories/prod/hosts zabbix-server.yml ${ansible_key}
 
 lint:
   image: particlekit/ansible-lint
