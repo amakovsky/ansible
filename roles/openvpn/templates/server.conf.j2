@@ -52,7 +52,7 @@ ifconfig-pool-persist ipp.txt
 {% endif %}
 push "route 10.135.0.0 255.255.0.0"
 {% if openvpn_set_dns %}
-push "dhcp-option DNS {{ groups['dns'][0] }}"
+push "dhcp-option DNS {{ hostvars[groups['dns'][0]].ansible_ssh_host }}"
 {%endif %}
 {% if openvpn_push is defined %}
 {% for opt in openvpn_push %}

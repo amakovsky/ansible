@@ -5,6 +5,7 @@ clients:
   - vlad
   - Yakovlev
   - kirill
+  - pavel
 
 ufw_rules:
   - rule: 'allow'

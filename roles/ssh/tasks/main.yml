@@ -15,13 +15,9 @@
 #      line: "ListenAddress {{ ansible_ssh_host }}"
 #    }
 #  notify: restart ssh
-
 - name: Set authorized key on servers for root
   authorized_key:
     user: root
     state: present
-    key: "{{ item }}"
-  with_items:
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDADO9BxJI7Cxkl06aw7MB5i91u3qKhrNOKPQTfDSMswEURAsSaHL7xfTLgYI85vhfJWbp481GJ4wjvMRthaxXx8hJcoSFiTJZnWnci8Mzby6gCOB/z02tN+fl/U0axY489pHXB84P3oOHh95qWm98GaG8EtKMsqbMURD2ywQ97U5d4ETft4fEh5paX4bL261M3SGJSoGPrfpXJ1Bsm/GX3zEkXbYksSzRb40kNSl+ImIpVr9vU+fQZJ3thYks1FzFLUENwkML/hMztJas6kP3yEvDI0M3R1jGnW7XGIkXwA5VP4vJG2q/8vnF8EqTmKyAKqVdCfofPHQ0D+XMygGdz ansible@gettwifi.com"
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRSsBepZh7W+DhmFX56lUqrqBjUbnqjks3phcJa1eq9pdg8e9LCkQzdGiHbYAb2CacKWsa79Sb2lhAOmFkMAHSrpqFNSGl+KB/UKx8W86lMVvplXUSDqEwxqXT6O3vK9BOApQMyubH2aEMRn1yrYXyRxrcwxzrOjBDIAkr28jKylTr5GfPnUnZvmGyFxkR/7Ws5ZjfV8wiGh+styBJavsqXRaW9ihQ/paOzsrgupw9KjSFQd2TfeZ8JFydj4Ac3t2/xyYGhnqw9O8XuOZed2ni7JQGi9Cj0ENcYf0Ps0dCYjotAGdLI/6P6rZDMIak8sqlv8fGrFJ5Yhy9DDH/d5eD user@DESKTOP-A0CFRML"
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyyf5SJ2JZDZo0AEDVN+TeHt8a+XtqwAO1RbC52VB8vsQagohis5nL8YHXa2/k26gc/hvTuXk/OkjiGrSAhoY5lETy0t2MWczM5WNrdI8ncbV/irADohMxhuyQHJ9D9Zz0IBYOOLwjR3AJqU0DLSXoE5T0ruV7xtCp59y5+dwbhCJAf3+11nrE6ey/KtA70J/RmBpeOxTnbXm1/G2KQNdG2ND2nxiHCpG+CY70q6gPK8ZnjtwJlienpaOHLJTd5nsz3lsIPB1jp5HeUhQXB4rFMWrckaGLgboXX90Sog4hVBtu3vatVEvw1Igu+t0xn+pkFjHncltN1O1odhGPlgH/ vizoria@astralteam.com"
+    exclusive: yes
+    key: "{{ root_ssh|map(attribute='publish_ssh_key')|join('\n') }}"

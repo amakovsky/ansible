@@ -8,9 +8,9 @@
   roles:
     # - common
     # - ufw
-    # - user
-    - nginx
+    - user
+    #- nginx
     # - nodejs
-    - letsencrypt
+    #- letsencrypt
     # - zabbix
-    - web_nodejs
+    #- web_nodejs
