@@ -6,8 +6,7 @@ ufw_rules:
     port: 22
     proto: 'tcp'
     from_ip:
-      - 10.135.0.0/16
-    to_ip: "{{ ansible_ssh_host }}"
+      - 0.0.0.0/0
   - rule: 'allow'
     port: 10050
     proto: 'tcp'
