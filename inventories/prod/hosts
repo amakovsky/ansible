@@ -42,6 +42,10 @@ hub3 ansible_ssh_host=10.135.120.116
 [node]
 nodejs1 ansible_ssh_host=10.135.125.221
 
+[js]
+js1 ansible_ssh_host=10.135.132.39
+js2 ansible_ssh_host=10.135.0.178
+
 [web]
 web1 ansible_ssh_host=10.135.112.29
 web2 ansible_ssh_host=10.135.124.179

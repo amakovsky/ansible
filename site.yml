@@ -1,0 +1,7 @@
+---
+- name: load project variable
+  include_vars:
+    file: "vars/{{ role_item }}.yml"
+- name: run project role
+  include_role:
+    name: nodejs_project

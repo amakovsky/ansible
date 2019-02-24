@@ -1,0 +1,4 @@
+---
+git_repo: "k.gribanov/dashboard.git"
+git_branch: "master"
+folder: "/var/www/test.gettwifi.com"

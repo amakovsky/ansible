@@ -1,44 +1,24 @@
+sentinel: &sentinel
+  sentinels:
+  {% for item in groups['redis'] %}
+  - :host: {{ hostvars[item].ansible_ssh_host }}
+      :port: 26379
+  {% endfor %}
+    :role: :master
+
 common: &common
   sidekiq:
     url: 'redis://mymaster/0'
-    sentinels:
-      - :host: "10.135.118.233"
-        :port: 26379
-      - :host: "10.135.118.227"
-        :port: 26379
-      - :host: "10.135.118.226"
-        :port: 26379
-    :role: :master
+    <<: *sentinel
   session:
     url: 'redis://mymaster/1'
-    sentinels:
-      - :host: "10.135.118.233"
-        :port: 26379
-      - :host: "10.135.118.227"
-        :port: 26379
-      - :host: "10.135.118.226"
-        :port: 26379
-    :role: :master
+    <<: *sentinel
   cache:
     url: 'redis://mymaster/2'
-    sentinels:
-      - :host: "10.135.118.233"
-        :port: 26379
-      - :host: "10.135.118.227"
-        :port: 26379
-      - :host: "10.135.118.226"
-        :port: 26379
-    :role: :master
+    <<: *sentinel
   mutex:
     url: 'redis://mymaster/3'
-    sentinels:
-      - :host: "10.135.118.233"
-        :port: 26379
-      - :host: "10.135.118.227"
-        :port: 26379
-      - :host: "10.135.118.226"
-        :port: 26379
-    :role: :master
+    <<: *sentinel
     pool:
       size: 16
       timeout: 2

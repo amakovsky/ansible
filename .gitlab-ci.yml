@@ -85,6 +85,11 @@ zabbix:
   script:
     - ansible-playbook -i inventories/prod/hosts zabbix-server.yml ${ansible_key}
 
+project:
+  extends: .common_ci
+  script:
+    - ansible-playbook -i inventories/prod/hosts project.yml -e deploy_project=test.gettwifi.com
+
 lint:
   image: particlekit/ansible-lint
   stage: test

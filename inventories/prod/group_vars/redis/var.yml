@@ -1,5 +1,6 @@
 ---
-
+redis_sentinel_port: 26379
+redis_port: 6379
 ufw_rules:
   - rule: 'allow'
     port: 22
@@ -9,14 +10,14 @@ ufw_rules:
       - 10.135.0.0/16
     to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
-    port: 6379
+    port: "{{ redis_port }}"
     proto: 'tcp'
 #    from_ip: "{{ [groups['redis'], groups['web'], hostvars[groups['openvpn'][0]].private_ip] |flatten }}"
     from_ip:
       - 10.135.0.0/16
     to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
-    port: 26379
+    port: "{{ redis_sentinel_port }}"
     proto: 'tcp'
 #    from_ip: "{{ [groups['redis'], groups['web'], hostvars[groups['openvpn'][0]].private_ip] |flatten }}"
     from_ip:
