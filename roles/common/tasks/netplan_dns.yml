@@ -5,11 +5,14 @@
     dest: "/tmp/{{ inventory_hostname }}{{ netplan_config }}"
     flat: true
   changed_when: false
+  check_mode: no
 
 - name: load netplan file
   include_vars:
     file: "/tmp/{{ inventory_hostname }}{{ netplan_config }}"
     name: cloud
+#  ignore_errors: '{{ ansible_check_mode }}'
+  check_mode: no
 
 # - debug:
 #    msg: "{{ item }}"
@@ -26,6 +29,7 @@
     - { path: "^.*{{ cloud.network.ethernets.eth0.nameservers.addresses[1] }}", line: "                - {{ hostvars[groups['dns'][0]].ansible_ssh_host }}" }
   when: cloud.network.ethernets.eth0.nameservers.addresses[0] != hostvars[groups['dns'][0]].ansible_ssh_host and ansible_ssh_host != hostvars[groups['dns'][0]].ansible_ssh_host
   notify: netplan apply
+#  ignore_errors: '{{ ansible_check_mode }}'
 
 - name: edit netpaln config file for dns server
   lineinfile:
@@ -37,6 +41,7 @@
     - { path: "^.*{{ cloud.network.ethernets.eth0.nameservers.addresses[0] }}", regexp: "                - 127.0.0.1" }
   when: cloud.network.ethernets.eth0.nameservers.addresses[0] != '127.0.0.1' and ansible_ssh_host == hostvars[groups['dns'][0]].ansible_ssh_host
   notify: netplan apply
+#  ignore_errors: '{{ ansible_check_mode }}'
 
 - name: validate netpaln conf
   command: "/usr/sbin/netplan generate"

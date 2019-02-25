@@ -43,3 +43,9 @@ host    {{ db.name }}    {{ db.owner }}  {{ item }}/32 md5
 {% endfor %}
 {% endfor %}
 {% endif %}
+
+{% for item in postgresql_users %}
+{% if item.db is defined %}
+host    {{ item.db }}    {{ item.name }}  10.135.0.0/16 md5
+{% endif %}
+{% endfor %}
