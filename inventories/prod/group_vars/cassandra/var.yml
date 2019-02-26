@@ -42,7 +42,7 @@ cassandra_global_config_options:
     regex: ''
     tab: ''
   - option: '- seeds'
-    value: "{{ lookup('flattened', groups['cassandra']) }}"
+    value: "{{ lookup('flattened', [groups['cassandra'] | map('extract',hostvars,'ansible_ssh_host') | list])}}"
     regex: '.*'
     tab: '          '
   - option: listen_address
