@@ -1,1 +1,3 @@
 ---
+- name: restart sniffr
+  command: monit restart sniffr

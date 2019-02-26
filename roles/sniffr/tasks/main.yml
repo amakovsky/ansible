@@ -24,6 +24,7 @@
     owner: "{{ sniffr_user }}"
     group: "{{ sniffr_group }}"
     mode: 0775
+  notify: restart sniffr
 
 - name: copy sniffr scripts
   template:

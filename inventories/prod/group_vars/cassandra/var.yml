@@ -76,7 +76,7 @@ ufw_rules:
   - rule: 'allow'
     port: 7000
     proto: 'tcp'
-    from_ip: "{{ [groups['cassandra'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
+    from_ip: "{{ [groups['cassandra'] | map('extract',hostvars,'ansible_ssh_host') | list, hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
     to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 9042
