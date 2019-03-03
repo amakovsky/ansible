@@ -85,6 +85,11 @@ zabbix:
   script:
     - ansible-playbook -i inventories/prod/hosts zabbix-server.yml ${ansible_key}
 
+elk:
+  extends: .common_ci
+  script:
+    - ansible-playbook -i inventories/prod/hosts elk.yml ${ansible_key}
+
 project:
   extends: .common_ci
   script:

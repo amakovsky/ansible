@@ -60,7 +60,7 @@ listen haproxy-http
   stats   admin             if TRUE
   balance roundrobin
 {% for item in groups['web'] %}
-  server web{{ loop.index }} {{ item }}:80 check
+  server web{{ loop.index }} {{ hostvars[item].ansible_ssh_host }}:80 check
 {% endfor %}
 
 {% if groups['redis'] is defined %}
@@ -79,7 +79,7 @@ listen redis-postprocess-TCP-6379
     tcp-check send QUIT\r\n
     tcp-check expect string +OK
     {% for item in groups['redis'] %}
-                      server redis{{ loop.index }} {{ item }}:6379 maxconn 1024 check inter 1s
+                      server redis{{ loop.index }} {{ hostvars[item].ansible_ssh_host }}:6379 maxconn 1024 check inter 1s
     {% endfor %}
 {% endif %}
 
@@ -89,7 +89,7 @@ listen postgres-TCP-5432
     option tcplog
     option tcp-check
     {% for item in groups['stage'] %}
-                      server stage{{ loop.index }} {{ item }}:5432 maxconn 1024 check inter 1s
+                      server stage{{ loop.index }} {{ hostvars[item].ansible_ssh_host }}:5432 maxconn 1024 check inter 1s
     {% endfor %}
 
 listen elastics-TCP-9200
@@ -98,7 +98,7 @@ listen elastics-TCP-9200
     option tcplog
     option tcp-check
     {% for item in groups['stage'] %}
-                      server stage{{ loop.index }} {{ item }}:9200 maxconn 1024 check inter 1s
+                      server stage{{ loop.index }} {{ hostvars[item].ansible_ssh_host }}:9200 maxconn 1024 check inter 1s
     {% endfor %}
 
 listen logstash-TCP-5044
@@ -107,5 +107,5 @@ listen logstash-TCP-5044
     option tcplog
     option tcp-check
     {% for item in groups['stage'] %}
-                      server stage{{ loop.index }} {{ item }}:5044 maxconn 1024 check inter 1s
+                      server stage{{ loop.index }} {{ hostvars[item].ansible_ssh_host }}:5044 maxconn 1024 check inter 1s
     {% endfor %}

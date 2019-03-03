@@ -3,4 +3,4 @@ network:
   renderer: networkd
   ethernets:
     tap_aphub:
-      addresses: [ 172.20.0.2/16 ]
+      addresses: [ "172.20.0.{{ 2|int + 2 * ansible_play_hosts.index(inventory_hostname) }}/16" ]
