@@ -1,0 +1,6 @@
+---
+#contents: "{{ lookup('file', '{{ folder }}/foo.txt') }}"
+#  ignore_errors: True
+#
+#- ramsize: '"{{ contents }}" + 1'
+#  when: contents < "2"

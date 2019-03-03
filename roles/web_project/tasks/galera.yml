@@ -1,0 +1,11 @@
+---
+- name: Include lb_galera vars files
+  include_vars:
+    file: "{{ lb_galera_conf_dir }}"
+    name: galera
+
+- name: add host
+  lineinfile:
+    path: /etc/hosts
+    line: '{{ galera.virt_ip }}    {{ db_host }}'
+    state: present

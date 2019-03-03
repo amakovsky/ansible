@@ -1,0 +1,18 @@
+---
+gitlab: "gitlab.likvi.com"
+contents: 0
+green_blue: false
+enable_npm: false
+change_permissions: false
+SSL: false
+index_file: index.php
+php_migr: false
+project: new.uremont.com
+root_folder: "{{ folder }}"
+lb_galera_conf_dir: "{{ inventory_dir }}/group_vars/lb_galera/var.yml"
+galera_enable: false
+
+
+glusterfs_default_release: ""
+glusterfs_ppa_use: yes
+glusterfs_ppa_version: "3.13"

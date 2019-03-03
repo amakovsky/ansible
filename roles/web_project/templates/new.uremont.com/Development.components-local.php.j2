@@ -1,0 +1,53 @@
+<?php
+/**
+ * User: Dmitriy Vospennikov
+ * Date: 27.03.18
+ * Time: 10:24
+ */
+
+return [
+    'db'          => [
+            'dsn'                 => 'mysql:host={{ envar[type].db_host }};dbname={{ envar[type].db_name }}',
+            'username'            => '{{ envar[type].db_user }}',
+            'password'            => '{{ envar[type].db_pass }}',
+            'charset'             => 'utf8mb4',
+            'tablePrefix'         => '',
+            'enableSchemaCache'   => true,
+            'schemaCacheDuration' => 0,
+    ],
+    'old_db' => [
+            'dsn'                 => 'mysql:host={{ envar[type].old_db_host }};dbname={{ envar[type].old_db_name }}',
+            'username'            => '{{ envar[type].old_db_user }}',
+            'password'            => '{{ envar[type].old_db_pass }}',
+            'charset'             => 'utf8mb4',
+            'tablePrefix'         => '',
+            'enableSchemaCache'   => true,
+            'schemaCacheDuration' => 0,
+    ],
+   'redis' => [
+           'hostname' => '{{ redis }}',
+           'port'     => 6379,
+           'database' => 0,
+    ],
+    'mailer'      => [
+        'useFileTransport'  => true,
+        'fileTransportPath' => '@runtime/mail/instant',
+    ],
+    'queueMailer' => [
+        'useFileTransport'  => true,
+        'fileTransportPath' => '@runtime/mail/queue',
+    ],
+    'smsProvider'     => [
+        'class'      => 'common\components\sms\MtsProvider',
+        'url'        => 'http://www.mcommunicator.ru/m2m/m2m_api.asmx/',
+        'login'      => '79778040995',
+        'password'   => 'qwer4454',
+        'originator' => 'UREMONT',
+    ],
+    'amocrmProvider' => [
+        'class' => 'common\components\amocrm\FileAmoCrmProvider',
+    ],
+    'roistatProvider' => [
+        'class' => 'common\components\roistat\FileRoistatProvider',
+    ],
+];

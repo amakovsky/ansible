@@ -1,0 +1,120 @@
+---
+- name: install forever
+  npm:
+    name: forever
+    global: yes
+
+- name: install yarn
+  npm:
+    name: yarn
+    global: yes
+
+- name: install npm in notifier
+  shell: npm i
+  args:
+    chdir: "{{ folder }}/node-notifier"
+#    chdir: "{{ root_folder }}/link/node-notifier"
+  become_user: "{{ local_user }}"
+  tags: skip_ansible_lint
+#  when: cloned is changed
+
+- name: delete robots.txt
+  file:
+    path: "{{ item }}"
+    state: absent
+    force: yes
+  with_items:
+    - "{{ folder }}/frontend/node_modules/"
+    - "{{ folder }}/frontend/yarn.lock"
+  ignore_errors: True
+
+
+- name: install nodejs in frontend
+  shell: HUSKY_SKIP_INSTALL=true yarn
+  args:
+    chdir: "{{ folder }}/frontend"
+#    chdir: "{{ root_folder }}/link/frontend"
+  become_user: "{{ local_user }}"
+#  when: cloned is changed
+  tags: skip_ansible_lint
+
+- name: build nodejs in frontend
+  shell: yarn build
+  args:
+    chdir: "{{ folder }}/frontend"
+#    chdir: "{{ root_folder }}/link/frontend"
+  become_user: "{{ local_user }}"
+  tags: skip_ansible_lint
+#  when: cloned is changed
+
+- name: restart nodejs in frontend on port 3500{{ build_folder }}
+  shell: PORT=3500{{ build_folder }} forever restart ./scripts/start.js || PORT=3500{{ build_folder }} forever start ./scripts/start.js
+  args:
+    chdir: "{{ folder }}/frontend"
+  become_user: "{{ local_user }}"
+  tags: skip_ansible_lint
+#  when: cloned is changed
+
+- name: install nodejs in admin
+  shell: HUSKY_SKIP_INSTALL=true yarn
+  args:
+    chdir: "{{ folder }}/admin"
+#    chdir: "{{ root_folder }}/link/frontend"
+  become_user: "{{ local_user }}"
+  tags: skip_ansible_lint
+#  when: cloned is changed
+
+- name: build nodejs in admin
+  shell: yarn build
+  args:
+    chdir: "{{ folder }}/admin"
+#    chdir: "{{ root_folder }}/link/frontend"
+  become_user: "{{ local_user }}"
+  tags: skip_ansible_lint
+#  when: cloned is changed
+
+- name: link project to folder {{ folder }}
+  file:
+    src: '{{ folder }}'
+    dest: '{{ root_folder }}/link'
+    state: link
+    force: yes
+#  notify: restart nginx
+
+- name: restart forever for notifier
+  shell: forever stop ./server.js && forever start ./server.js || forever start ./server.js
+#  shell: forever restart ./server.js || forever start ./server.js
+  args:
+#    chdir: "{{ folder }}/node-notifier"
+    chdir: "{{ root_folder }}/link/node-notifier"
+  become_user: "{{ local_user }}"
+  tags: skip_ansible_lint
+#  when: cloned is changed
+
+
+
+#- name: restart forever for admin
+#  shell: forever restart ./scripts/start.js || forever start ./scripts/start.js
+#  args:
+#    chdir: "{{ folder }}/admin"
+#  become_user: "{{ local_user }}"
+##  when: cloned is changed
+
+- name: open port for notifier
+  ufw:
+    rule: allow
+    port: 3000
+    proto: tcp
+
+- name: Check that you can connect (GET) to a node front
+  uri:
+    url: http://localhost:3500{{ build_folder }}
+  register: node_result
+  until: node_result is succeeded
+  retries: 5
+  delay: 10
+  failed_when: node_result is failure
+
+#- name: Check that you can connect (GET) to a notifier
+#  uri:
+#    url: https://notifier.uservice.io:3000

@@ -1,0 +1,50 @@
+---
+#- name: stop service queue
+#  systemd:
+#    name: yii-queue@1.service
+#    state: stopped
+##    daemon_reload: yes
+##  run_once: true
+#
+#- name: copy queue config configs
+#  template:
+#    src: "{{ project }}/yii.service.j2"
+#    dest: "/etc/systemd/system/yii-queue@.service"
+#    mode: 0744
+#
+#
+#
+##- name: enable service queue
+##  systemd:
+##    name: yii-queue@1.service
+##    enabled: yes
+##  run_once: true
+#
+#- name: check service queue started
+#  systemd:
+#    name: yii-queue@1.service
+#    state: started
+#    daemon_reload: yes
+#  run_once: true
+- name: copy site configs
+  template:
+    src: "{{ project }}/yii.service.j2"
+    dest: "/etc/systemd/system/yii-queue@.service"
+    mode: 0744
+
+- name: start service queue
+  systemd:
+    name: "yii-queue@1.service"
+#    name: "yii-queue@{{ item }}.service"
+    state: restarted
+    daemon_reload: yes
+#  run_once: true
+#  with_sequence: start=1 end=3
+
+- name: enable service queue
+  systemd:
+    name: "yii-queue@1.service"
+#    name: "yii-queue@{{ item }}.service"
+    enabled: yes
+#  run_once: true
+#  with_sequence: start=1 end=3
