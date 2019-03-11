@@ -101,34 +101,34 @@ lint:
   script:
       - ansible-lint all.yml
 
-build:
-  stage: build
-  script:
-      - echo "build"
-      - echo $CI_PROJECT_NAMESPACE
-      - echo $CI_PROJECT_PATH
-      - echo $CI_PROJECT_NAME
-      - echo $CI_REGISTRY_IMAGE
-      - echo $CI_PROJECT_DIR
+#build:
+#  stage: build
+#  script:
+#      - echo "build"
+#      - echo $CI_PROJECT_NAMESPACE
+#      - echo $CI_PROJECT_PATH
+#      - echo $CI_PROJECT_NAME
+#      - echo $CI_REGISTRY_IMAGE
+#      - echo $CI_PROJECT_DIR
 
-deploy to preprod:
-  stage: pp
-  when: on_success
-  script:
-    - echo "deploy to preprod"
-  except:
-    - master
+#deploy to preprod:
+#  stage: pp
+#  when: on_success
+#  script:
+#    - echo "deploy to preprod"
+#  except:
+#    - master
 
 
-deploy to prod:
-  stage: prod
-#  when: manual
-  when: on_success
-  script:
-    - echo "deploy to prod"
-  allow_failure: false
-  only:
-    - master
+#deploy to prod:
+#  stage: prod
+##  when: manual
+#  when: on_success
+#  script:
+#    - echo "deploy to prod"
+#  allow_failure: false
+#  only:
+#    - master
 
 build_image:
   allow_failure: true
@@ -138,11 +138,7 @@ build_image:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
     - docker build -t $CI_REGISTRY_IMAGE:build --build-arg vault_pass=${vault_pass} .
-#    - docker tag $CI_REGISTRY_IMAGE:build $REGISTRY_BASE:build
     - docker push $CI_REGISTRY_IMAGE:build
   only:
     changes:
       - Dockerfile
-#  except:
-#    - tags
-#    - branches
