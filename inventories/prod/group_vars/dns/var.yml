@@ -173,17 +173,17 @@ ufw_rules:
     proto: 'tcp'
     from_ip:
       - 0.0.0.0/0
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 53
     proto: 'udp'
     from_ip:
       - 0.0.0.0/0
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 10050
     proto: 'tcp'
 #    from_ip: "{{ groups['zabbix'] }}"
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"

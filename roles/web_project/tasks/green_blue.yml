@@ -1,0 +1,30 @@
+---
+- name: read state green_blue
+  command: /bin/cat '{{ folder }}/foo.txt'
+  register: details
+  ignore_errors: True
+  failed_when: False
+  changed_when: False
+
+- name: set variable contents
+  set_fact:
+    contents: "{{ details.stdout |int }}"
+  when: details.rc == 0
+
+- name: add number project
+  set_fact:
+    build_folder: "{{ contents|int + 1 }}"
+  when:  contents is version(green_blue_count, 'lt')
+
+- name: number project equal 1
+  set_fact:
+    build_folder: 1
+  when: contents is version(green_blue_count, 'ge')
+
+- name: save name project folder
+  set_fact:
+    root_folder: "{{ folder }}"
+
+- name: set variable folder
+  set_fact:
+    folder: "{{ folder }}/{{ SSL_domain }}-{{ build_folder }}"

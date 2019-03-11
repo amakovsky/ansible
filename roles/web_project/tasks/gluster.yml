@@ -1,0 +1,39 @@
+- name: create folder for static files
+  file:
+    path: "/bricks/{{ gluster_brick_name }}"
+    state: directory
+    mode: 0775
+
+- stat:
+    path: "/bricks/{{ gluster_brick_name }}/{{ item.name }}"
+  register: stats_collection
+  with_items: "{{ static_folder }}"
+
+- debug: var="{{ item }}"
+  with_items: stats_collection.results
+
+- name: create folder for gluster brick
+  file:
+    path: "/bricks/{{ gluster_brick_name }}/{{ item.item.name }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+  when: item.stat.isdir  is not defined
+  with_items: "{{ stats_collection.results }}"
+
+- name: create gluster volume with multiple bricks
+  gluster_volume:
+    state: present
+    replicas: 2
+    name: "{{ gluster_volume_name }}_{{ item.name }}"
+    force: yes
+    bricks: "/bricks/{{ gluster_brick_name }}/{{ item.name }}"
+    cluster: "{{ groups['glusterfs'] | join(',') }}"
+  when: inventory_hostname == groups[hostvars[inventory_hostname].group_names[0]][1]
+  run_once: true
+  with_items: "{{ static_folder }}"
+
+#  when: create_gluster_storage
+#  delegate_to: "{{ item }}"
+#  with_items: "{{ groups['glusterfs'] }}"

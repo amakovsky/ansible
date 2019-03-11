@@ -1,0 +1,10 @@
+---
+- name: play book for upgrade servers
+  hosts: cassandra
+  become: yes
+  become_method: sudo
+  become_user: root
+  serial: 1
+
+  roles:
+    - upgrade

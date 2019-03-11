@@ -21,15 +21,15 @@ redis_global_config_options:
   - option: protected-mode
     value: 'no'
   - option: bind
-    value: '{{ inventory_hostname }} 127.0.0.1'
+    value: '{{ ansible_ssh_host }} 127.0.0.1'
 
 redis_slave_config_options:
   - option: slaveof
-    value: "{{ groups['redis'][0] }} 6379"
+    value: "{{ hostvars[groups['redis'][0]].ansible_ssh_host }} 6379"
 
 sentinel_global_config_options:
   - option: bind
-    value: '{{ inventory_hostname }} 127.0.0.1'
+    value: '{{ ansible_ssh_host }} 127.0.0.1'
   - option: supervised
     value: 'systemd'
   - option: daemonize

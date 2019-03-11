@@ -3,7 +3,7 @@
 openvpn_base_dir: /etc/openvpn
 openvpn_key_dir: /etc/openvpn/keys
 openvpn_port: 1194
-openvpn_server_hostname: "{{inventory_hostname}}"
+openvpn_server_hostname: "{{ansible_ssh_host}}"
 openvpn_proto: udp
 openvpn_dualstack: true
 openvpn_rsa_bits: 2048

@@ -4,7 +4,7 @@
     name: ufw
     update_cache: true
 
-- name: Delete OpenSSH rule
+- name: get ufw rule
   shell: "ufw status numbered | grep IN |awk -F\"[][]\" '{print $2}'"
   register: ufw_rules_list
   when: ufw_reset

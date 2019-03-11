@@ -84,10 +84,9 @@
 
 - name: Set authorized key for
   authorized_key:
-    user: "{{ item.0.name }}"
+    user: "{{ item.name }}"
     state: present
-    key: "{{ item.1 }}"
-  with_subelements:
-    - "{{ local_user | selectattr('allow_key', 'defined') | list }}"
-    - allow_key
-  no_log: true
+    exclusive: yes
+    key: "{{ item.allow_key | join('\n') }}"
+  with_items: "{{ local_user }}"
+  when: item.allow_key is defined

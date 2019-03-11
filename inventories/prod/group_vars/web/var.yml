@@ -12,7 +12,7 @@ nginx_bindir: /usr/sbin
 postgrs_conf: "{{ inventory_dir }}/group_vars/postgresql/vault.yml"
 radius_conf: "{{ inventory_dir }}/group_vars/radius/vault.yml"
 cassandra_conf: "{{ inventory_dir }}/group_vars/cassandra/vault.yml"
-postgres_server: "{{ groups['postgresql'][0] }}"
+postgres_server: "{{ hostvars[groups['postgresql'][0]].ansible_ssh_host }}"
 web_user: web
 virtual_hosts: gettwifi.com
 
@@ -53,7 +53,7 @@ ufw_rules:
     proto: 'tcp'
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
 
 ruby_project_folder: /opt/www/hotspot
 ruby_shared_folders: "{{ ruby_project_folder }}/shared"
@@ -106,7 +106,7 @@ ruby_shared:
     template:
       - src: 'hotspot/hotspot.gettwifi.com/certificate.crt'
         dest: 'certificate.crt'
-      - src: 'hotspot/hotspot.gettwifi.com/private.key'
+      - src: 'hotspot.gettwifi.com/private.key'
         dest: 'private.key'
   - dir: "public"
     template:

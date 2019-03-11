@@ -1,6 +1,6 @@
 ---
 postgrs_conf: "{{ inventory_dir }}/group_vars/postgresql/vault.yml"
-postgres_server: "{{ groups['postgresql'][0] }}"
+postgres_server: "{{ hostvars[groups['postgresql'][0]].ansible_ssh_host }}"
 
 ufw_rules:
   - rule: 'allow'
@@ -8,7 +8,7 @@ ufw_rules:
     proto: 'tcp'
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: "{{ karma_access_points_auth_port }}"
     proto: 'udp'
@@ -49,7 +49,7 @@ ufw_rules:
     proto: 'tcp'
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
 
 radius_template:
   - dir: mods-available

@@ -1,0 +1,14 @@
+module.exports = {
+{% if SSL %}
+    API_URL: 'https://{{ front_api_name }}',
+    LOCAL_API_URL: 'https://{{ front_name }}',
+{% else %}
+    API_URL: 'http://{{ front_api_name }}',
+    LOCAL_API_URL: 'http://{{ front_name }}',
+{% endif %}
+    SOCKET_URL: '{{ socket_name }}:3000',
+    REDIS_HOST: '{{ redis }}',
+    REDIS_PORT: '6379',
+    COUNTRY_CODE: '7',
+    GAZPROM_URL: 'gazprom',
+};

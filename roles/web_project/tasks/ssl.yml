@@ -1,0 +1,16 @@
+---
+#- name: Copy ssl cert
+#  copy: src=../../files/{{ SSL_domain }} dest=/etc/nginx/ssl/
+#  notify: restart nginx
+
+- name: Copy ssl cert
+  copy: src=../../files/{{ item.value.ssl_cert }} dest=/etc/nginx/ssl/
+  notify: restart nginx
+  with_dict: "{{ virtualhost }}"
+  no_log: true
+
+- name: create dhparam
+  openssl_dhparam:
+    path: /etc/nginx/ssl/dhparams.pem
+    size: 2048
+  notify: restart nginx

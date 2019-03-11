@@ -1,0 +1,119 @@
+{% if item.value.upstream_proxy is defined %}
+upstream {{ item.value.upstream_proxy }} {
+        server localhost:{{ item.value.upstream_proxy_port }};
+}
+{% endif %}
+{% if item.value.ssl_cert is defined  %}
+server {
+    listen 80;
+    server_name {{ item.value.url }} {% if item.value.www_host is defined and item.value.www_host %} www.{{ item.value.url }} {% endif %} ;
+    access_log /var/log/nginx/{{ item.value.url }}.access.log;
+    error_log /var/log/nginx/{{ item.value.url }}.error.log error;
+    rewrite     ^   https://{{ item.value.url }}$request_uri? permanent;
+}
+
+server {
+    listen 443 ssl;
+    server_name {{ item.value.url }} {% if item.value.www_host is defined and item.value.www_host %} www.{{ item.value.url }} {% endif %} ;
+{% if item.value.dir is defined %}
+    root {{ item.value.dir }} ;
+{% endif %}
+{% if item.value.index_file is defined %}
+    index {{ item.value.index_file }};
+{% endif %}
+
+    access_log /var/log/nginx/{{ item.value.url }}.access.ssl.log;
+    error_log /var/log/nginx/{{ item.value.url }}.error.ssl.log error;
+    include expires.conf;
+    ssl_certificate	/etc/letsencrypt/live/{{ item.value.ssl_cert }}/fullchain.pem;
+    ssl_certificate_key	/etc/letsencrypt/live/{{ item.value.ssl_cert }}/privkey.pem;
+    ssl_dhparam /etc/nginx/ssl/dhparams.pem;
+{% else %}
+server {
+  listen 80;
+  server_name {{ item.value.url }} {% if item.value.www_host is defined and item.value.www_host %} www.{{ item.value.url }} {% endif %} ;
+  access_log /var/log/nginx/{{ item.value.url }}.log;
+  error_log /var/log/nginx/{{ item.value.url }}.error.log error;
+  {% if item.value.dir is defined %}
+      root {{ item.value.dir }} ;
+  {% endif %}
+  {% if item.value.index_file is defined %}
+      index {{ item.value.index_file }};
+  {% endif %}
+
+  error_page 401 403 404 /404.html;
+{% endif %}
+
+{% if item.value.upstream_proxy is defined %}
+        location {{ item.value.upstream_proxy_location }} {
+                try_files $uri @{{ item.value.upstream_proxy }};
+        }
+
+        location @{{ item.value.upstream_proxy }} {
+                proxy_redirect off;
+                proxy_http_version 1.1;
+                proxy_pass http://{{ item.value.upstream_proxy }};
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+{% if item.value.upstream_proxy_location != '/' %}
+        location  / {
+        try_files $uri $uri/ /{{ item.value.index_file }}$is_args$args;
+        {% if item.value.auth is defined and item.value.auth %}
+        satisfy  any;
+                allow  94.159.26.242/32;
+                allow  185.114.138.214/32;
+                allow  10.0.0.0/8;
+                deny   all;
+        	    auth_basic           "closed site";
+                auth_basic_user_file /var/www/.htpasswd_{{ item.value.url }};
+        {% endif %}
+   }
+{% endif %}
+{% else %}
+   location / {
+        try_files $uri $uri/ /{{ item.value.index_file }}$is_args$args;
+        {% if item.value.auth is defined and item.value.auth %}
+        satisfy  any;
+                allow  94.159.26.242/32;
+                allow  185.114.138.214/32;
+                allow  10.0.0.0/8;
+                deny   all;
+        	    auth_basic           "closed site";
+                auth_basic_user_file /var/www/.htpasswd_{{ item.value.url }};
+        {% endif %}
+   }
+
+
+   location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass {{ php_proxy }};
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+        fastcgi_param  QUERY_STRING     $query_string;
+        fastcgi_param  REQUEST_METHOD   $request_method;
+        fastcgi_param  CONTENT_TYPE     $content_type;
+        fastcgi_param  CONTENT_LENGTH   $content_length;
+        fastcgi_intercept_errors        on;
+        fastcgi_ignore_client_abort     off;
+        fastcgi_connect_timeout 60;
+        fastcgi_send_timeout 180;
+        fastcgi_read_timeout 180;
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 4 256k;
+        fastcgi_busy_buffers_size 256k;
+        fastcgi_temp_file_write_size 256k;
+    }
+
+
+
+{% endif %}
+
+    location ~ /\.ht { deny  all; }
+    location ~ /\.git { deny  all; }
+    location ^~ /.git/ { deny all; }
+
+}

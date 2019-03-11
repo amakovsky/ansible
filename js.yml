@@ -1,0 +1,16 @@
+---
+- name: nodejs server
+  hosts: js
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - common
+    - ufw
+    - user
+    - nginx
+    - nodejs
+    #- letsencrypt
+    - zabbix
+    #- web_nodejs

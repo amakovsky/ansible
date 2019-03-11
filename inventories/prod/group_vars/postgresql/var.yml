@@ -8,6 +8,20 @@ postgresql_users:
     password: "{{ ad_hotspot_user_pass }}"
   - name: "{{ ad_radius_user }}"
     password: "{{ ad_radius_user_pass }}"
+  - name: cabinet_owner
+    password: "{{ cabinet_owner_pass }}"
+    db: cabinet
+    priv: ALL
+  - name: cabinet_writer
+    password: "{{ cabinet_writer_pass }}"
+    db: cabinet
+
+postgresql_privilegies:
+  - db: cabinet
+    privs: SELECT,INSERT
+    objs: ALL_IN_SCHEMA
+    roles: cabinet_writer
+    grant_option: False
 
 postgresql_databases:
   - name: gw_hotspot
@@ -20,6 +34,8 @@ postgresql_databases:
     owner: "{{ gw_radius_user }}"
   - name: gw_radius_access_points
     owner: "{{ gw_radius_user }}"
+    lc_collate: "C.UTF-8"
+    lc_ctype: "C.UTF-8"
   - name: ad_hotspot
     owner: "{{ ad_hotspot_user }}"
   - name: ad_radius_users_mikrotik
@@ -30,6 +46,7 @@ postgresql_databases:
     owner: "{{ ad_radius_user }}"
   - name: ad_radius_access_points
     owner: "{{ ad_radius_user }}"
+  - name: cabinet
 
 postgresql_external_connect:
   - 89.108.106.171
@@ -43,7 +60,7 @@ ufw_rules:
 #      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 5432
     proto: 'tcp'
@@ -51,7 +68,7 @@ ufw_rules:
 #    from_ip: "{{ [groups['radius'], groups['postgresql'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 5432
     proto: 'tcp'
@@ -65,13 +82,13 @@ ufw_rules:
 #    from_ip: "{{ groups['zabbix'] }}"
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
 
 postgresql_global_config_options:
   - option: unix_socket_directories
     value: '{{ postgresql_unix_socket_directories | join(",") }}'
   - option: listen_addresses
-    value: '{{ansible_default_ipv4.address}}, {{ inventory_hostname }}, localhost'
+    value: '{{ansible_default_ipv4.address}}, {{ ansible_ssh_host }}, localhost'
   - option: shared_buffers
     value: '{{ (ansible_memtotal_mb * 0.25)|int|abs }}MB'
   - option: max_connections

@@ -8,7 +8,7 @@
   with_items:
     - {
       regexp: "dns-nameservers*",
-      line: "dns-nameservers {{ groups['dns'][0] }} 67.207.67.3"
+      line: "dns-nameservers {{ hostvars[groups['dns'][0]].ansible_ssh_host }} 67.207.67.3"
     }
   when: inventory_hostname != groups['dns'][0]
   register: change_dns
@@ -42,7 +42,7 @@
   with_items:
     - {
       regexp: "^nameserver*",
-      line: "nameserver {{ groups['dns'][0] }}"
+      line: "nameserver {{ hostvars[groups['dns'][0]].ansible_ssh_host }}"
     }
   when: inventory_hostname != groups['dns'][0] and change_dns is changed
 

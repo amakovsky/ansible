@@ -1,17 +1,23 @@
 ---
-- name: Update SSH configuration to be more secure.
-  replace:
-    path: /etc/ssh/sshd_config
-    regexp: "{{ item.regexp }}"
-    replace: "{{ item.line }}"
-  with_items:
-    - {
-      regexp: "^PasswordAuthentication yes",
-      line: "PasswordAuthentication no"
-    }
-    - {
-      regexp: "^#ListenAddress 0.0.0.0",
-#      line: "ListenAddress {{ hostvars[inventory_hostname][interface_fact_var].ipv4.address }}"
-      line: "ListenAddress {{ inventory_hostname }}"
-    }
-  notify: restart ssh
+#- name: Update SSH configuration to be more secure.
+#  replace:
+#    path: /etc/ssh/sshd_config
+#    regexp: "{{ item.regexp }}"
+#    replace: "{{ item.line }}"
+#  with_items:
+#    - {
+#      regexp: "^PasswordAuthentication yes",
+#      line: "PasswordAuthentication no"
+#    }
+#    - {
+#      regexp: "^#ListenAddress 0.0.0.0",
+##      line: "ListenAddress {{ hostvars[inventory_hostname][interface_fact_var].ipv4.address }}"
+#      line: "ListenAddress {{ ansible_ssh_host }}"
+#    }
+#  notify: restart ssh
+- name: Set authorized key on servers for root
+  authorized_key:
+    user: root
+    state: present
+    exclusive: yes
+    key: "{{ root_ssh|map(attribute='publish_ssh_key')|join('\n') }}"

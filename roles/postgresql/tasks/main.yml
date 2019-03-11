@@ -34,10 +34,14 @@
     enabled: true
 
 # Configure PostgreSQL.
+
+- import_tasks: databases.yml
+  when: postgresrep_role is not defined or postgresrep_role != 'slave'
+
 - import_tasks: users.yml
   when: postgresrep_role is not defined or postgresrep_role != 'slave'
 
-- import_tasks: databases.yml
+- import_tasks: priv.yml
   when: postgresrep_role is not defined or postgresrep_role != 'slave'
 
 - import_tasks: backup.yml

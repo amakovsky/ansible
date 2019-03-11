@@ -1,0 +1,39 @@
+<?php
+
+return [
+    'urls' => [
+        'admin'           => '{{ admin_name }}',
+        'admin_api'       => '{{ admin_api_name }}',
+        'frontend_api'    => '{{ front_api_name }}',
+        'frontend'        => 'https://{{ front_name }}',
+    ],
+    'simplepay' => [
+        'outlet_id' => '{{ envar[type].simplepay_outlet_id }}',
+        'secret_key' => '{{ envar[type].simplepay_secret_key }}',
+        'secret_key_result' => '{{ envar[type].simplepay_secret_key_result }}',
+        'success_url'       => 'https://{{ front_name }}/payment/success',
+    ],
+
+    'instant_email'  => '{{ envar[type].instant_email | default('test@uremont.com') }}',
+    'notifier_email' => '{{ envar[type].notifier_email | default('notify@uremont.com') }}',
+    'ecommpay'        => [
+        'base_url' => 'https://paymentpage.ecommpay.com/payment',
+        'project_id' => '209',
+        'secret_key' => 'faccfa613bc1094e09b0c5de4de8d6ed740d1233907c9cc9adc1ea7bf8bb1a7c7392e7a3c0d9ed95e6ab4a314349fc3248a1571b7d301dd0f51dea56c726cf97',
+        'ips'   => [
+            '204.26.61.110',
+        ]
+    ],
+    'ecommpay_master'        => [
+        'base_url' => 'https://paymentpage.ecommpay.com/payment',
+        'project_id' => '236',
+        'secret_key' => '0cd339745fab2a7c7b444483e053910f7bd212a38154c070d4c7672ebe73b21ea5faee748303bee884ff85267b597fb6f2f2ab4384e33ee41d5b66890c0a5c43',
+        'ips'   => [
+            '204.26.61.110',
+        ]
+    ],
+    'bad_review_phones' => [
+        '89778040995',
+        '89255448309',
+        ]
+];

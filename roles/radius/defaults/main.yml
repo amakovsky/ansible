@@ -51,7 +51,7 @@ freeradius_include_options:
   - option: 'proxy_requests'
     value: 'proxy_requests  = no'
 
-postgres_server: "{{ groups['postgresql'][0] }}"
+postgres_server: "{{ hostvars[groups['postgresql'][0]].ansible_ssh_host }}"
 postgrs_conf:
 
 radius_secret: "nungeiThai6ieze"

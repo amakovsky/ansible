@@ -1,0 +1,105 @@
+---
+- name: create folder for static files
+  file:
+    path: "{{ root_folder }}/{{ item.name }}"
+    state: directory
+    mode: 0775
+  with_items:
+    - "{{ static_folder }}"
+  become: yes
+  become_user: "{{ local_user }}"
+
+#- name: create gluster storage
+#  block:
+#    - name: create folder for static files
+#      file:
+#        path: "/bricks/{{ gluster_brick_name }}"
+#        state: directory
+#        mode: 0775
+#
+#    - stat:
+#        path: "/bricks/{{ gluster_brick_name }}/{{ item.name }}"
+#      register: stats_collection
+#      with_items: "{{ static_folder }}"
+#
+#    - debug: var="{{ item }}"
+#      with_items: stats_collection.results
+#
+#    - name: create folder for gluster brick
+#      file:
+#        path: "/bricks/{{ gluster_brick_name }}/{{ item.item.name }}"
+#        state: directory
+#        owner: root
+#        group: root
+#        mode: 0775
+#      when: item.stat.isdir  is not defined
+#      with_items: "{{ stats_collection.results }}"
+#
+#    - name: create gluster volume with multiple bricks
+#      gluster_volume:
+#        state: present
+#        replicas: 2
+#        name: "{{ gluster_brick_name }}_{{ item.name }}"
+#        force: yes
+#        bricks: "/bricks/{{ gluster_brick_name }}/{{ item.name }}"
+#        cluster: "{{ groups['glusterfs'] | join(',') }}"
+#      when: inventory_hostname == groups[hostvars[inventory_hostname].group_names[0]][0]
+#      run_once: true
+#      with_items: "{{ static_folder }}"
+#  when: create_gluster_storage
+#  delegate_to: "{{ item }}"
+#  with_items: "{{ groups['glusterfs'] }}"
+
+#- include_tasks: "gluster.yml"
+#  when: create_gluster_storage
+#  delegate_host: "{{ gluster_item }}"
+#  with_items: "{{ groups['glusterfs'] }}"
+#  loop_control:
+#    loop_var: gluster_item
+
+- name: tasks for gluster
+  block:
+    - name: Add PPA for GlusterFS.
+      apt_repository:
+        repo: 'ppa:gluster/glusterfs-{{ glusterfs_ppa_version }}'
+        state: present
+        update_cache: yes
+      register: glusterfs_ppa_added
+      when: glusterfs_ppa_use
+
+    - name: Ensure GlusterFS is installed.
+      apt:
+        name: glusterfs-client
+        state: present
+        default_release: "{{ glusterfs_default_release }}"
+#      with_items:
+#        - glusterfs-client
+
+    - name: Mount gluster folder
+      mount:
+        path: "{{ root_folder }}/{{ item.name }}"
+        src: "{{ groups['glusterfs'][0] }}:/{{ gluster_volume_name }}_{{ item.name }}"
+        fstype: glusterfs
+        opts: defaults,_netdev
+        state: mounted
+      with_items: "{{ static_folder }}"
+  when: gluster_enable
+
+- name: change permission on gluster folder
+  file:
+    path: "{{ root_folder }}/{{ item.name }}"
+    state: directory
+    owner: "{{ local_user }}"
+    group: www-data
+    mode: 0775
+  with_items: "{{ static_folder }}"
+  run_once: true
+
+- name: link folder to project
+  file:
+    src: "{{ root_folder }}/{{ item.name }}"
+    dest: "{{ item.dest }}"
+    state: link
+    force: yes
+  with_items: "{{ static_folder }}"
+  when: item.dest is defined

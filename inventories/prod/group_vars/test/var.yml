@@ -73,7 +73,7 @@ ufw_rules:
     proto: 'tcp'
     from_ip:
       - 10.135.0.0/16
-    to_ip: "{{ inventory_hostname }}"
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 80
     proto: 'tcp'
@@ -97,7 +97,7 @@ postgresql_global_config_options:
   - option: unix_socket_directories
     value: '{{ postgresql_unix_socket_directories | join(",") }}'
   - option: listen_addresses
-    value: '{{ansible_default_ipv4.address}}, {{ inventory_hostname }}, localhost'
+    value: '{{ansible_default_ipv4.address}}, {{ ansible_ssh_host }}, localhost'
   - option: shared_buffers
     value: '{{ (ansible_memtotal_mb * 0.25)|int|abs }}MB'
   - option: max_connections

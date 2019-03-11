@@ -4,6 +4,7 @@
     url: https://repo.percona.com/apt/percona-release_0.1-6.{{ ansible_distribution_release }}_all.deb
     dest: /tmp/percona-release_0.1-6.{{ ansible_distribution_release }}_all.deb
     mode: 0740
+  check_mode: no
 
 - name: Install apt repo
   apt: deb="/tmp/percona-release_0.1-6.{{ ansible_distribution_release }}_all.deb"

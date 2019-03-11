@@ -1,0 +1,11 @@
+---
+gitlab: "gitlab.gettwifi.com"
+
+#certbot_admin_email: mak@gettwifi.com
+#virtualhost:
+#  www:
+#    url: krispykreme.gettwifi.com
+#    dir: "frontend/web"
+#    upstream_proxy: "krispykreme_upstream"
+#    index_file: index.php
+#    ssl_cert: "krispykreme.gettwifi.com"

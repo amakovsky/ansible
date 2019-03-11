@@ -1,0 +1,67 @@
+---
+#- name: Install mariadb-client
+#  apt:
+#    name: "{{ item }}"
+#    state: 'present'
+#    install_recommends: False
+#    update_cache: True
+#  with_items:
+#    - python-mysqldb
+#    - mysql-client
+
+- name: create local db for site
+  mysql_db:
+    name: "{{ envar[type].db_name }}"
+    state: present
+    collation:  utf8_general_ci
+    encoding: utf8
+  when: envar[type].db_host == "localhost"
+
+- name: create local user for site
+  mysql_user:
+    name: "{{ envar[type].db_user }}"
+    host: "{{ envar[type].db_allow }}"
+    password: "{{ envar[type].db_pass }}"
+    priv: "{{ envar[type].db_name }}.*:ALL"
+    state: present
+  when: envar[type].db_host == "localhost"
+
+- name: create db for site
+  mysql_db:
+    name: "{{ envar[type].db_name }}"
+    state: present
+    collation:  utf8_general_ci
+    encoding: utf8
+  when: envar[type].db_host != "localhost"
+  delegate_to: "{{ mysql_migr_server }}"
+  run_once: true
+
+- name: create local user for site
+  mysql_user:
+    name: "{{ envar[type].db_user }}"
+    host: "{{ envar[type].db_allow }}"
+    password: "{{ envar[type].db_pass }}"
+    priv: "{{ envar[type].db_name }}.*:ALL"
+    state: present
+  when: envar[type].db_host != "localhost"
+  delegate_to: "{{ mysql_migr_server }}"
+  run_once: true
+
+#- name: yii migration rbac
+#  shell: ./yii migrate --migrationPath=@yii/rbac/migrations --interactive=0
+#  args:
+#    chdir: "{{ folder }}"
+##  when: (first_run is changed) and run_migration and rbac_migr and inventory_hostname == groups[server][0]
+#  when: run_migration and rbac_migr
+#  run_once: true
+#  changed_when: false
+
+- name: run migration
+  shell: ./yii migrate --interactive=0
+  args:
+    chdir: "{{ folder }}"
+#  when: (cloned is changed) and run_migration and inventory_hostname == groups[server][0]
+  when: run_migration
+  run_once: true
+  changed_when: false
+  tags: skip_ansible_lint

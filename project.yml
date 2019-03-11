@@ -1,0 +1,21 @@
+---
+- name: play book for web
+  hosts: "{{ variable_host | default('js') }}"
+  become: yes
+  become_method: sudo
+  become_user: root
+  any_errors_fatal: true
+
+  tasks:
+    - name: set owner folder www
+      file:
+        path: /var/www/
+        state: directory
+        owner: "{{ web_user }}"
+        mode: 0755
+
+    - include_tasks: site.yml
+      with_items: "{{ deploy_project }}"
+      loop_control:
+        loop_var: role_item
+      when: deploy_project is defined

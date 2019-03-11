@@ -53,7 +53,7 @@
   become: yes
 
 - name: Copy captive stub files
-  template:
+  copy:
     src: "captive/{{ item }}"
     dest: "{{ captive_folder }}/{{ item }}"
   become_user: "{{ web_user }}"
@@ -69,6 +69,14 @@
   with_subelements:
     - "{{ ruby_shared | selectattr('template', 'defined') | list }}"
     - template
+
+- name: Copy  file
+  copy:
+    src: "{{ item.1.src }}"
+    dest: "{{ ruby_config_folders }}/{{ item.0.dir }}/{{ item.1.dest }}"
+  with_subelements:
+    - "{{ ruby_configs | selectattr('file', 'defined') | list }}"
+    - file
 
 - name: create nginx config
   block:
@@ -118,17 +126,17 @@
   become_user: "{{ web_user }}"
   become: yes
 
-- name: Configuring cron
-  cron:
-    name: "{{ item.name | default(omit) }}"
-    minute: "{{ item.minute | default(omit) }}"
-    hour: "{{ item.hour | default(omit) }}"
-    day: "{{ item.day | default(omit) }}"
-    job: "{{ item.job | default(omit) }}"
-  with_items: "{{ web_cron }}"
-  when: web_cron | length > 0
-  become_user: "{{ web_user }}"
-  become: yes
+#- name: Configuring cron
+#  cron:
+#    name: "{{ item.name | default(omit) }}"
+#    minute: "{{ item.minute | default(omit) }}"
+#    hour: "{{ item.hour | default(omit) }}"
+#    day: "{{ item.day | default(omit) }}"
+#    job: "{{ item.job | default(omit) }}"
+#  with_items: "{{ web_cron }}"
+#  when: web_cron | length > 0
+#  become_user: "{{ web_user }}"
+#  become: yes
 
 - name: Copy  template for logrotate
   template:

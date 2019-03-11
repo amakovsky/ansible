@@ -1,0 +1,14 @@
+---
+- name: Ansible delete file
+  file:
+    path: "{{ root_folder }}/foo.txt"
+    state: absent
+  changed_when: false
+
+- name: save build branch to file
+  lineinfile:
+    path: "{{ root_folder }}/foo.txt"
+    state: present
+    create: yes
+    line: "{{ build_folder }}"
+  changed_when: false

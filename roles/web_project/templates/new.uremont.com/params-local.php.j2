@@ -1,0 +1,39 @@
+<?php
+
+return [
+    'urls' => [
+        'admin'           => '{{ admin_name }}',
+        'admin_api'       => '{{ admin_api_name }}',
+        'frontend_api'    => '{{ front_api_name }}',
+        'frontend'        => '{{ front_name }}',
+    ],
+    'simplepay' => [
+        'outlet_id' => '{{ envar[type].simplepay_outlet_id }}',
+        'secret_key' => '{{ envar[type].simplepay_secret_key }}',
+        'secret_key_result' => '{{ envar[type].simplepay_secret_key_result }}',
+        'success_url'       => 'https://{{ front_name }}/payment/success',
+    ],
+
+    'instant_email'  => '{{ envar[type].instant_email | default('test@uremont.com') }}',
+    'notifier_email' => '{{ envar[type].notifier_email | default('notify@uremont.com') }}',
+    'ecommpay'        => [
+        'base_url' => 'https://paymentpage.ecommpay.com/payment',
+        'merchant_fail_url' => 'https://uservice.io/payment/fail',
+        'merchant_success_url' => 'https://uservice.io/payment/success',
+        'project_id' => '208',
+        'ips'        => [
+            '204.26.61.110',
+        ],
+        'secret_key' => '14c87cc34a8b8aaaa29be29d9fa45e5829dace97340e860d0694124a39ce673d068c807577fcb0386eaa46b0c901831ab49d250629156986fbdf44909b2869cf',
+    ],
+    'ecommpay_master'        => [
+        'base_url' => 'https://paymentpage.ecommpay.com/payment',
+        'merchant_fail_url' => 'https://uservice.io/payment/fail',
+        'merchant_success_url' => 'https://uservice.io/payment/success',
+        'project_id' => '208',
+        'ips'        => [
+            '204.26.61.110',
+        ],
+        'secret_key' => '14c87cc34a8b8aaaa29be29d9fa45e5829dace97340e860d0694124a39ce673d068c807577fcb0386eaa46b0c901831ab49d250629156986fbdf44909b2869cf',
+    ],
+];

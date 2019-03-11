@@ -1,0 +1,9 @@
+- name: create nginx config folder
+  file:
+    path: ~{{ local_user }}/nginx_backup
+    state: directory
+    mode: 0755
+
+- name: copy nginx configs
+  command: "cp /etc/nginx/sites-available/{{ item.value.url }}.conf  ~{{ local_user }}/nginx_backup"
+  with_dict: "{{ virtualhost }}"

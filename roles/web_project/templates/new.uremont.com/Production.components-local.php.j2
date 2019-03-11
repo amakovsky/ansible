@@ -1,0 +1,78 @@
+<?php
+/**
+ * User: Dmitriy Vospennikov
+ * Date: 27.03.18
+ * Time: 10:11
+ */
+
+return [
+    'db' => [
+            'dsn'                 => 'mysql:host={{ envar[type].db_host }};dbname={{ envar[type].db_name }}',
+            'username'            => '{{ envar[type].db_user }}',
+            'password'            => '{{ envar[type].db_pass }}',
+            'charset'             => 'utf8mb4',
+            'tablePrefix'         => '',
+            'enableSchemaCache'   => true,
+            'schemaCacheDuration' => 0,
+    ],
+    'old_db' => [
+            'dsn'                 => 'mysql:host={{ envar[type].old_db_host }};dbname={{ envar[type].old_db_name }}',
+            'username'            => '{{ envar[type].old_db_user }}',
+            'password'            => '{{ envar[type].old_db_pass }}',
+            'charset'             => 'utf8mb4',
+            'tablePrefix'         => '',
+            'enableSchemaCache'   => true,
+            'schemaCacheDuration' => 0,
+    ],
+    'redis' => [
+        'hostname' => '{{ redis }}',
+        'port'     => 6379,
+        'database' => 0,
+    ],
+    'mailer' => [
+        'class' => 'yii\swiftmailer\Mailer',
+        'transport' => [
+            'class' => 'Swift_SmtpTransport',
+            'host' => '{{ envar[type].mailer_host }}',
+            'username' => '{{ envar[type].mailer_username }}',
+            'password' => '{{ envar[type].mailer_password }}',
+            'port' => '{{ envar[type].mailer_port }}',
+            'encryption' => 'tls',
+        ],
+    ],
+    'queueMailer' => [
+        'class' => 'yii\swiftmailer\Mailer',
+        'transport' => [
+            'class' => 'Swift_SmtpTransport',
+            'host' => '{{ envar[type].queueMailer_host }}',
+            'username' => '{{ envar[type].queueMailer_username }}',
+            'password' => '{{ envar[type].queueMailer_password }}',
+            'port' => '{{ envar[type].queueMailer_port }}',
+            'encryption' => 'tls',
+        ],
+    ],
+    'smsProvider'     => [
+        'class'      => 'common\components\sms\MtsProvider',
+        'url'        => 'http://www.mcommunicator.ru/m2m/m2m_api.asmx/',
+        'login'      => '79778040995',
+        'password'   => 'qwer4454',
+        'originator' => 'UREMONT',
+    ],
+    'amocrmProvider' => [
+        'class' => 'common\components\amocrm\AmoCrmProvider',
+        'domen' => '{{ envar[type].ammocrm_domen | default('  ') }}',
+        'login' => '{{ envar[type].ammocrm_login | default('  ') }}',
+        'key' => '{{ envar[type].ammocrm_key | default('  ') }}',
+        'amocrm_id_funnel' => 1265781,
+        'amocrm_field_form_capture' => 'Отправить заявку',
+    ],
+    'roistatProvider' => [
+        'class' => 'common\components\roistat\RoistatProvider',
+        'url' => 'https://cloud.roistat.com/api/proxy/1.0',
+        'project_number' => '{{ envar[type].roistat_project | default('  ') }}',
+        'key' => '{{ envar[type].roistat_key | default('  ') }}',
+        'need_check_order_in_processing' => 1,
+        'need_check_order_in_processing_append' => 1,
+        'sync' => 0,
+    ],
+];

@@ -1,0 +1,7 @@
+module.exports = {
+{% if SSL %}
+    API_URL: 'https://{{ admin_api_name }}',
+{% else %}
+    API_URL: 'http://{{ admin_api_name }}',
+{% endif %}
+};
