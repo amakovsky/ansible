@@ -1,5 +1,5 @@
 ---
-asterisk_source_url: https://ams3.digitaloceanspaces.com/gettwifi/source/asterisk-13-current.tar.gz
+asterisk_source_url: https://ams3.digitaloceanspaces.com/gettwifi-src/asterisk-13-current.tar.gz
 asterisk_pre_requisites:
     - build-essential
     - libssl-dev

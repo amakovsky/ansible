@@ -57,10 +57,10 @@
 
 - name: create web folder
   file:
-    path: "{{ ruby_config_folders }}/{{ item.value }}"
+    path: "{{ ruby_shared_folders }}/{{ item.value }}"
     state: directory
     mode: 0775
-  with_dict: "{{ ruby_configs }}"
+  with_dict: "{{ ruby_shared }}"
   when: item.key == 'dir'
   become_user: "{{ web_user }}"
   become: yes
@@ -68,9 +68,9 @@
 - name: Copy  template
   template:
     src: "{{ item.1.src }}"
-    dest: "{{ ruby_config_folders }}/{{ item.0.dir }}/{{ item.1.dest }}"
+    dest: "{{ ruby_shared_folders }}/{{ item.0.dir }}/{{ item.1.dest }}"
   with_subelements:
-    - "{{ ruby_configs | selectattr('template', 'defined') | list }}"
+    - "{{ ruby_shared | selectattr('template', 'defined') | list }}"
     - template
 
 - name: copy nginx configs

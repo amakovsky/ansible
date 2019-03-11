@@ -1,6 +1,6 @@
 auto tap_aphub
 iface tap_aphub inet static
-      address 172.22.0.2
+      address {{ softether_tap_ip }}
       netmask 255.255.0.0
-      network 172.22.0.0
-      broadcast 172.22.255.255
+      network 172.20.0.0
+      broadcast 172.20.255.255

@@ -14,7 +14,7 @@ GATEWAYIP=172.20.0.2
 ROOT_PASS=ZuCuequot3Chah5
 if [[ ! -d /usr/local/vpnclient ]]
 then
-wget https://ams3.digitaloceanspaces.com/gettwifi/source/softether-vpnclient-v4.28-9669-beta-2018.09.11-linux-arm_eabi-32bit.tar.gz
+wget https://ams3.digitaloceanspaces.com/gettwifi-src/softether-vpnclient-v4.28-9669-beta-2018.09.11-linux-arm_eabi-32bit.tar.gz
 tar -xzvf softether-vpnclient-v4.28-9669-beta-2018.09.11-linux-arm_eabi-32bit.tar.gz -C /usr/local/
 rm softether-vpnclient-v4.28-9669-beta-2018.09.11-linux-arm_eabi-32bit.tar.gz
 cd /usr/local/vpnclient

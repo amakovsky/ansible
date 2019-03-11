@@ -1,11 +1,11 @@
 common: &common
-  server: "{{ groups['radius'][0] }}"
+  server: "{{ hostvars[groups['radius'][0]].public_ip }}"
   port: 17771
   acc_port: 17772
   secret: "{{ radius_var.radius_secret }}"
 
 development:
   <<: *common
-    
+
 production:
-  <<: *common  
+  <<: *common

@@ -4,7 +4,7 @@ radius_server: "{{ groups['radius'][0] }}"
 
 softether_srcdir: vpnserver
 softether_bindir: /usr/local
-softether_source_url: https://ams3.digitaloceanspaces.com/gettwifi/source/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
+softether_source_url: https://ams3.digitaloceanspaces.com/gettwifi-src/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
 
 softether_config:
   - src: 'vpn_server.config'

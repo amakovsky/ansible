@@ -51,9 +51,9 @@ ufw_rules:
     to_ip: "{{ inventory_hostname }}"
 
 ruby_project_folder: /opt/www/hotspot
-ruby_config_folders: "{{ ruby_project_folder }}/shared/config"
-ruby_configs:
-  - dir: ""
+ruby_shared_folders: "{{ ruby_project_folder }}/shared"
+ruby_shared:
+  - dir: "config"
     template:
       - src: 'hotspot/database.yml'
         dest: 'database.yml'
@@ -69,11 +69,11 @@ ruby_configs:
         dest: 'redis.yml'
       - src: 'hotspot/cequel.yml'
         dest: 'cequel.yml'
-#  - dir: "initializers"
-#    template:
-#      - src: 'hotspot/initializers/paperclip.rb'
-#        dest: 'paperclip.rb'
-  - dir: "omniauth"
+  - dir: "config/initializers"
+    template:
+      - src: 'hotspot/initializers/paperclip.rb'
+        dest: 'paperclip.rb'
+  - dir: "config/omniauth"
     template:
       - src: 'hotspot/omniauth/facebook.yml'
         dest: 'facebook.yml'
@@ -87,7 +87,7 @@ ruby_configs:
         dest: 'twitter.yml'
       - src: 'hotspot/omniauth/vkontakte.yml'
         dest: 'vkontakte.yml'
-  - dir: "portals"
+  - dir: "config/portals"
     template:
       - src: 'hotspot/portals/gettwifi.yml'
         dest: 'gettwifi.yml'

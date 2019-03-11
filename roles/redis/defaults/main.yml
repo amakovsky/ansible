@@ -5,7 +5,7 @@ redis_user: redis
 redis_datadir: /var/lib/redis
 redis_config_folder: /etc/redis
 redis_log_folders: /var/log/redis
-redis_source_url: https://ams3.digitaloceanspaces.com/gettwifi/source/redis-4.0.11.tar.gz
+redis_source_url: https://ams3.digitaloceanspaces.com/gettwifi-src/redis-4.0.11.tar.gz
 
 redis_configs:
   - redis.conf

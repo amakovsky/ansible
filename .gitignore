@@ -4,3 +4,5 @@
 #roles/consul
 #roles/nomad
 **__pycache__
+.valut-pass
+

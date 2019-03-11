@@ -3,9 +3,9 @@ gitlab: "gitlab.gettwifi.com"
 git_repo: "wifi/hotspot.git"
 git_branch: "master"
 ruby_project_folder: /opt/www/hotspot
-ruby_config_folders: "{{ ruby_project_folder }}/shared/config"
-ruby_configs:
-  - dir: ""
+ruby_shared_folders: "{{ ruby_project_folder }}/shared/config"
+ruby_shared:
+  - dir: "config"
     template:
       - src: 'hotspot/database.yml'
         dest: 'database.yml'
@@ -19,11 +19,11 @@ ruby_configs:
         dest: 'secrets.yml'
       - src: 'hotspot/redis.yml'
         dest: 'redis.yml'
-  - dir: "initializers"
+  - dir: "config/initializers"
     template:
       - src: 'hotspot/initializers/paperclip.rb'
         dest: 'paperclip.rb'
-  - dir: "omniauth"
+  - dir: "config/omniauth"
     template:
       - src: 'hotspot/omniauth/facebook.yml'
         dest: 'facebook.yml'
@@ -37,10 +37,14 @@ ruby_configs:
         dest: 'twitter.yml'
       - src: 'hotspot/omniauth/vkontakte.yml'
         dest: 'vkontakte.yml'
-  - dir: "portals"
+  - dir: "config/portals"
     template:
       - src: 'hotspot/portals/example.yml'
         dest: 'example.yml'
+  - dir: "public"
+    template:
+      - src: 'captive/favicon.ico'
+        dest: 'favicon.ico'
 
 web_user: web
 

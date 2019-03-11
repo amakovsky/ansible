@@ -3,4 +3,4 @@ network:
   renderer: networkd
   ethernets:
     tap_aphub:
-      addresses: [ 172.20.0.2/16 ]
+      addresses: [ "{{ softether_tap_ip }}/16" ]

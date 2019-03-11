@@ -9,7 +9,7 @@ hotspot_common: &hotspot_common
   username: "{{ postgresql_var.gw_hotspot_user }}"
   password: "{{ postgresql_var.gw_hotspot_user_pass }}"
   database: gw_hotspot
-  pool: 10
+  pool: 24
 
 radius_common: &radius_common
   <<: *common
