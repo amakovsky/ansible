@@ -10,6 +10,7 @@ nginx_configs_folder: "{{ passenger_nginx_dir }}/conf"
 passenger_nginx_dir: /opt/nginx
 nginx_bindir: /usr/sbin
 postgrs_conf: "{{ inventory_dir }}/group_vars/postgresql/vault.yml"
+s3_conf: "files/s3pass"
 radius_conf: "{{ inventory_dir }}/group_vars/radius/vault.yml"
 cassandra_conf: "{{ inventory_dir }}/group_vars/cassandra/vault.yml"
 postgres_server: "{{ hostvars[groups['postgresql'][0]].ansible_ssh_host }}"
@@ -102,14 +103,14 @@ ruby_shared:
         dest: 'asterisk.yml'
       - src: 'hotspot/sms/devinotelecom.yml'
         dest: 'devinotelecom.yml'
-  - dir: "vendor/mikrotik/cert/hotspot.gettwifi.com"
-    template:
-      - src: 'hotspot/hotspot.gettwifi.com/certificate.crt'
+  - dir: "../vendor/mikrotik/cert/hotspot.gettwifi.com"
+    file:
+      - src: 'hotspot.gettwifi.com/certificate.crt'
         dest: 'certificate.crt'
       - src: 'hotspot.gettwifi.com/private.key'
         dest: 'private.key'
-  - dir: "public"
-    template:
+  - dir: "../../captive"
+    file:
       - src: 'captive/favicon.ico'
         dest: 'favicon.ico'
 

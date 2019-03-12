@@ -4,6 +4,14 @@
     file: "{{ postgrs_conf }}"
     name: postgresql_var
 
+- name: Include s3 vars files
+  include_vars:
+    file: "{{ s3_conf }}"
+    name: s3
+
+#- debug:
+#    msg: "{{ s3 }}"
+
 - name: Include radius vars files
   include_vars:
     file: "{{ radius_conf }}"
@@ -73,9 +81,9 @@
 - name: Copy  file
   copy:
     src: "{{ item.1.src }}"
-    dest: "{{ ruby_config_folders }}/{{ item.0.dir }}/{{ item.1.dest }}"
+    dest: "{{ ruby_shared_folders }}/{{ item.0.dir }}/{{ item.1.dest }}"
   with_subelements:
-    - "{{ ruby_configs | selectattr('file', 'defined') | list }}"
+    - "{{ ruby_shared | selectattr('file', 'defined') | list }}"
     - file
 
 - name: create nginx config
