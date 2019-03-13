@@ -42,8 +42,8 @@ ruby_shared:
       - src: 'hotspot/portals/example.yml'
         dest: 'example.yml'
   - dir: "public"
-    template:
-      - src: 'captive/favicon.ico'
+    file:
+      - src: 'files/captive/favicon.ico'
         dest: 'favicon.ico'
 
 web_user: web

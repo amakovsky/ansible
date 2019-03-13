@@ -103,13 +103,13 @@ ruby_shared:
       - src: 'hotspot/sms/devinotelecom.yml'
         dest: 'devinotelecom.yml'
   - dir: "vendor/mikrotik/cert/hotspot.gettwifi.com"
-    template:
-      - src: 'hotspot/hotspot.gettwifi.com/certificate.crt'
+    file:
+      - src: 'files/hotspot.gettwifi.com/certificate.crt'
         dest: 'certificate.crt'
-      - src: 'hotspot.gettwifi.com/private.key'
+      - src: 'files/hotspot.gettwifi.com/private.key'
         dest: 'private.key'
   - dir: "public"
-    template:
+    file:
       - src: 'captive/favicon.ico'
         dest: 'favicon.ico'
 
