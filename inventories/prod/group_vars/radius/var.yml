@@ -1,6 +1,7 @@
 ---
 postgrs_conf: "{{ inventory_dir }}/group_vars/postgresql/vault.yml"
 postgres_server: "{{ hostvars[groups['postgresql'][0]].ansible_ssh_host }}"
+prefix: gw
 
 ufw_rules:
   - rule: 'allow'

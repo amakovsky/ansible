@@ -31,8 +31,8 @@ cassandra3 ansible_ssh_host=10.135.119.200
 asterisk1 ansible_ssh_host=10.135.116.10 private_ip=68.183.76.117
 
 [radius]
-radius1 ansible_ssh_host=10.135.105.84 prefix=gw public_ip=46.101.116.27
-radius2 ansible_ssh_host=10.135.105.93 prefix=ad public_ip=139.59.156.170
+radius1 ansible_ssh_host=10.135.105.84 public_ip=46.101.116.27
+radius2 ansible_ssh_host=10.135.105.93 public_ip=139.59.156.170
 
 [softether]
 hub1 ansible_ssh_host=10.135.93.247 softether_tap_ip=172.20.0.2
