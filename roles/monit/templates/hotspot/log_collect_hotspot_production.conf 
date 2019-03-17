@@ -1,9 +1,0 @@
-# Monit configuration for Log Collect : hotspot
-
-check process log_collect_hotspot_production0
-  with pidfile "/opt/www/hotspot/shared/tmp/pids/log_collect.pid"
-  start program = "/bin/su - web -c 'cd /opt/www/hotspot/current && /usr/local/rvm/bin/rvm default do bundle exec bin/log_collect production'" with timeout 30 seconds
-
-  stop program = "/bin/su - web -c 'kill `cat /opt/www/hotspot/shared/tmp/pids/log_collect.pid`'" with timeout 20 seconds
-  group hotspot-log-collect
-

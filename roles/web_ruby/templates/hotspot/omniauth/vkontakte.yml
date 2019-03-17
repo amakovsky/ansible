@@ -4,12 +4,12 @@ common: &common
   embed_session_id: true
   upload_banner:
     scope: 'email,wall,photos,offline'
-    token: '28d7c0745c604731d7447018d64e5fd0d48193a31edea6b55ad9f08f59a003d06bb80dc61d7835c5031ab'
-    group_id: '119952759'
-  app_id: '3610149'
-  app_secret: 'nsLVpImyZJwg85lF9dz5'
+    token: '{{ vkontakte_token }}'
+    group_id: '{{ vkontakte_group_id }}'
+  app_id: '{{ vkontakte_app_id }}'
+  app_secret: '{{ vkontakte_app_secret }}'
   post:
-    image_host: 'https://app.gettwifi.com'
+    image_host: '{{ post_image_host }}'
     wall_post_api: true
 
 development:

@@ -1,6 +1,6 @@
 common: &common
-  login: "the_karma"
-  password: "X]$)WaeKIr"
+  login: "{{ devinotelecom_login }}"
+  password: "{{ devinotelecom_password }}"
   header: "TheKarma"
   #header: "TESTSMS"
 

@@ -4,6 +4,14 @@
     file: "{{ postgrs_conf }}"
     name: postgresql_var
 
+- name: Include s3 vars files
+  include_vars:
+    file: "{{ s3_conf }}"
+    name: s3
+
+#- debug:
+#    msg: "{{ s3 }}"
+
 - name: Include radius vars files
   include_vars:
     file: "{{ radius_conf }}"
