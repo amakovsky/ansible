@@ -53,6 +53,10 @@ web2 ansible_ssh_host=10.135.124.179
 [web_data]
 web-data1 ansible_ssh_host=10.135.68.78
 
+[ruby:children]
+web
+web_data
+
 [stage]
 stage2 ansible_ssh_host=10.135.34.145
 

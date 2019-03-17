@@ -4,7 +4,7 @@ common: &common
 
   hotspot:
     ap_dns_name: "hotspot.gettwifi.com"
-    ap_certificate_password: "N0Ec2PbrlnBa"
+    ap_certificate_password: "{{ portal_ap_certificate_password }}"
     ap_https_redirect: false
     fetch_host: "auth.gettwifi.com"
     fetch_mode: "https"
