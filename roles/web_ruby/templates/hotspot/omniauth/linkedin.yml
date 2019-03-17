@@ -1,9 +1,9 @@
 common: &common
   scope: 'r_basicprofile r_emailaddress w_share'
-  app_id: '77xtop1b6q26kv'
-  app_secret: 'QBSieYcMBkoyHPQ0'
+  app_id: '{{ linkedin_app_id }}'
+  app_secret: '{{ linkedin_app_secret }}'
   post:
-    image_host: 'https://app.gettwifi.com'
+    image_host: '{{ post_image_host }}'
 
 development:
   <<: *common

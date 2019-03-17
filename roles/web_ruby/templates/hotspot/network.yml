@@ -11,14 +11,14 @@ common: &common
     netmask: 16
     fetch_host: "fetch.gettwifi.com"
     fetch_ip:
-      - "172.20.0.2"
-      - "172.20.0.4"
-      - "172.20.0.6"
-    sniffr_ip:
-      - "172.20.0.2"
-      - "172.20.0.4"
-      - "172.20.0.6"
-    #log_collect_port: 2514
+  {% for item in groups['softether'] %}
+    - "{{ hostvars[item].softether_tap_ip }}"
+  {% endfor %}
+  sniffr_ip:
+  {% for item in groups['softether'] %}
+    - "{{ hostvars[item].softether_tap_ip }}"
+  {% endfor %}
+  #log_collect_port: 2514
     #fetch_setup: true
   hotspot:
     gateway_ip: "10.7.0.1"

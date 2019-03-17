@@ -1,16 +1,16 @@
 options = {
   :storage        => :s3,
   :preserve_files => true,
-  :s3_host_name   => "ams3.digitaloceanspaces.com",
+  :s3_host_name   => "{{ s3.host_base }}",
   :s3_region      => "ams3",
   :bucket         => "gettwifi",
   :s3_options     => {
-    :endpoint         => "https://ams3.digitaloceanspaces.com",
+    :endpoint         => "https://{{ s3.host_base }}",
     :force_path_style => true
   },
   :s3_credentials => {
-    :access_key_id     => "WDNWPAMEIVDWQ2HCD4KI",
-    :secret_access_key => "BMEP314LAYKxPDd9SRTEioSPgkEfhv0EW8nyNVE6DE0"
+    :access_key_id     => "{{ s3.access_key }}",
+    :secret_access_key => "{{ s3.secret_key }}"
   }
 }
 

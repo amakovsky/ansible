@@ -1,6 +1,6 @@
 common: &common
-  username: vizoria@the-karma.com
-  api_key: umiOUEFolLBaXBUJ8qBi9g
+  username: {{ mandrill_username }}
+  api_key: {{ mandrill_api_key }}
 
 development:
   <<: *common

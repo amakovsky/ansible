@@ -144,3 +144,10 @@
     value: 65535
     state: present
     reload: yes
+
+- name: add a vm.overcommit_memory setting at the end of the sysctl.conf
+  sysctl:
+    name: vm.overcommit_memory
+    value: 1
+    state: present
+    reload: yes

@@ -1,15 +1,15 @@
 common: &common
   scope: 'VALUABLE_ACCESS'
   embed_session_id: false
-  app_id: '1150089472'
-  app_secret: 'F7A5A8F107368A8B18C16B89'
+  app_id: '{{ odnoklassniki_app_id }}'
+  app_secret: '{{ odnoklassniki_app_secret }}'
   upload_banner:
-    token: 'tkn1QZci465gMs2SEnqkizHaxXtjvc9MznkwtwovgymshnTSwsvPeXvXFM7enFLzjmFCx'
-    group_id: '52347220787356'
+    token: '{{ odnoklassniki_token }}'
+    group_id: '{{ odnoklassniki_group_id }}'
   extra_options:
-    public_key: 'CBAKPNIFEBABABABA'
+    public_key: '{{ odnoklassniki_public_key }}'
   post:
-    image_host: 'https://app.gettwifi.com'
+    image_host: '{{ post_image_host }}'
 
 development:
   <<: *common
