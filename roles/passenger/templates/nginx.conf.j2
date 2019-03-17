@@ -19,7 +19,9 @@ http {
     passenger_root /usr/local/rvm/gems/{{ ruby }}/gems/passenger-{{ passenger_version.stdout }};
     passenger_ruby /usr/local/rvm/gems/{{ ruby }}/wrappers/ruby;
 {% endfor %}
-
+    passenger_user_switching off;
+    passenger_default_user {{ web_user }};
+    passenger_default_group {{ web_user }};
     passenger_enabled on;
     passenger_max_pool_size 16;
     passenger_pool_idle_time 60;
