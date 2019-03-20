@@ -10,4 +10,4 @@
     - docker
     - ufw
     - gitlab
-    - zabbix
+#    - zabbix
