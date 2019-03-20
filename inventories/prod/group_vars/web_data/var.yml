@@ -24,6 +24,7 @@ local_user:
     shell: /bin/bash
     allow_key:
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9ekjWWGmeAACPWwfyq2p7DiIwBSQ8TxfKWt/Jlv2BjOH4KxrMkcxvAqvgVXkQZEfR0f+KtbM9Kp1f7ug52XNsZMXe2gB7u3D7g6qyWcXqbudCji7sPOypcp7j72KxOCH6zVOuDeC6BSbH34CZYi+oTsOW8G7jWtVxYe4h7hV+teqVHFGf1P1ThbLAx5pqD4MTjkjaV/lf6Lm8uX/5pNX7Bzegxd8S6feDnKl/ylMwJs2DPNf10AGa1YwILJZJcWbW9rbsMzG0UbXbfgY2mrjFO8+aEPezPvzNNyEP6ob9sLBqkP8+QCb/DthqO7sGiRaxIJtZCucpGhRtxaYj7Yfb web@gettwifi.com'
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDADO9BxJI7Cxkl06aw7MB5i91u3qKhrNOKPQTfDSMswEURAsSaHL7xfTLgYI85vhfJWbp481GJ4wjvMRthaxXx8hJcoSFiTJZnWnci8Mzby6gCOB/z02tN+fl/U0axY489pHXB84P3oOHh95qWm98GaG8EtKMsqbMURD2ywQ97U5d4ETft4fEh5paX4bL261M3SGJSoGPrfpXJ1Bsm/GX3zEkXbYksSzRb40kNSl+ImIpVr9vU+fQZJ3thYks1FzFLUENwkML/hMztJas6kP3yEvDI0M3R1jGnW7XGIkXwA5VP4vJG2q/8vnF8EqTmKyAKqVdCfofPHQ0D+XMygGdz ansible@gettwifi.com'
     groups:
       - rvm
 

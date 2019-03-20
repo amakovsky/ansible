@@ -26,7 +26,7 @@
     --docker-privileged \
     --docker-tlsverify=true \
     --docker-image 'docker:stable-dind' \
-    --docker-dns '10.135.101.26' \
+    --docker-dns '10.135.151.86' \
     --docker-volumes '/var/run/docker.sock:/var/run/docker.sock'"
     state: started
     restart_policy: no

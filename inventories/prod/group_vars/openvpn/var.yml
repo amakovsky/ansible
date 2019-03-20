@@ -2,10 +2,9 @@
 private_network: 10.135.0.0/16
 clients:
   - makovsky
-  - vlad
+  - makovsky2
   - Yakovlev
   - kirill
-  - pavel
 
 ufw_rules:
   - rule: 'allow'

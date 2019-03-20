@@ -5,8 +5,10 @@ web:
   environment:
     GITLAB_OMNIBUS_CONFIG: |
      external_url 'https://{{ gitlab_name }}'
-     letsencrypt['enable'] = true
+     letsencrypt['enable'] = false
      nginx['redirect_http_to_https'] = true
+     nginx['ssl_certificate'] = "/var/ssl/certificate.crt"
+     nginx['ssl_certificate_key'] = "/var/ssl/private.key"
      gitlab_rails['time_zone'] = 'Europe/Moscow'
      gitlab_rails['backup_upload_connection'] = {
         'provider' => 'AWS',
@@ -18,8 +20,10 @@ web:
      gitlab_rails['backup_upload_remote_directory'] = '{{ space_name }}'
      gitlab_rails['backup_keep_time'] = 1209600
      registry_external_url 'https://{{ gitlab_name }}:{{ gitlab_registry_port }}'
+     registry_nginx['ssl_certificate'] = "/var/ssl/certificate.crt"
+     registry_nginx['ssl_certificate_key'] = "/var/ssl/private.key"
      nginx['custom_gitlab_server_config'] = "allow 10.135.0.0/16;
-       deny all;
+       allow all;
 
        location ^~ /.well-known {
            root /opt/gitlab/embedded/service/gitlab-rails/public;

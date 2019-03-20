@@ -6,11 +6,11 @@
   become_user: root
 
   roles:
-#    - common
-#    - ufw
-#    - user
-#    - rvm
-#    - nodejs
-#    - monit
+    - common
+    - ufw
+    - user
+    - rvm
+    - nodejs
+    - monit
     - web_ruby
 #    - zabbix

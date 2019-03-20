@@ -1,0 +1,182 @@
+---
+dns_list_public: true
+rvm1_user: root
+rvm1_install_path: /usr/local/rvm
+rvm1_install_flags: '--auto-dotfiles'
+ruby_default: 'ruby-2.3.4'
+rvm1_rubies:
+  - '{{ ruby_default }}'
+rvm1_symlink_to: '/usr/local/bin'
+nginx_configs_folder: "{{ passenger_nginx_dir }}/conf"
+passenger_nginx_dir: /opt/nginx
+nginx_bindir: /usr/sbin
+postgresql_users:
+  - name: "{{ gw_hotspot_user }}"
+    password: "{{ gw_hotspot_user_pass }}"
+  - name: "{{ gw_radius_user }}"
+    password: "{{ gw_radius_user_pass }}"
+  - name: "{{ ad_hotspot_user }}"
+    password: "{{ ad_hotspot_user_pass }}"
+  - name: "{{ ad_radius_user }}"
+    password: "{{ ad_radius_user_pass }}"
+
+postgresql_databases:
+  - name: gw_hotspot
+    owner: "{{ gw_hotspot_user }}"
+  - name: gw_radius_users_mikrotik
+    owner: "{{ gw_radius_user }}"
+  - name: gw_radius_users_cisco
+    owner: "{{ gw_radius_user }}"
+  - name: gw_radius_users_chilli
+    owner: "{{ gw_radius_user }}"
+  - name: gw_radius_access_points
+    owner: "{{ gw_radius_user }}"
+  - name: ad_hotspot
+    owner: "{{ ad_hotspot_user }}"
+  - name: ad_radius_users_mikrotik
+    owner: "{{ ad_radius_user }}"
+  - name: ad_radius_users_cisco
+    owner: "{{ ad_radius_user }}"
+  - name: ad_radius_users_chilli
+    owner: "{{ ad_radius_user }}"
+  - name: ad_radius_access_points
+    owner: "{{ ad_radius_user }}"
+
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+  - rule: 'allow'
+    port: 443
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: 500
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: 4500
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: 1701
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ ansible_ssh_host }}"
+  - rule: 'allow'
+    port: 80
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+      - 172.20.0.0/16
+  - rule: 'allow'
+    port: 9200
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+      - 172.20.0.0/16
+  - rule: 'allow'
+    port: 5432
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+      - 172.20.0.0/16
+
+postgresql_global_config_options:
+  - option: unix_socket_directories
+    value: '{{ postgresql_unix_socket_directories | join(",") }}'
+  - option: listen_addresses
+    value: '{{ansible_default_ipv4.address}}, {{ ansible_ssh_host }}, localhost'
+  - option: shared_buffers
+    value: '{{ (ansible_memtotal_mb * 0.25)|int|abs }}MB'
+  - option: max_connections
+    value: '1000'
+  - option: shared_preload_libraries
+    value: 'pg_partman_bgw, pg_stat_statements'
+  - option: pg_partman_bgw.interval
+    value: '3600'
+  - option: pg_partman_bgw.dbname
+    value: 'hotspot'
+  - option: effective_io_concurrency
+    value: '6'
+  - option: seq_page_cost
+    value: '1.0'
+  - option: random_page_cost
+    value: '2.0'
+
+postgresrep_postgres_conf_lines:
+  - option: wal_level
+    value: 'hot_standby'
+  - option: max_wal_senders
+    value: '10'
+  - option: wal_keep_segments
+    value: '100'
+  - option: hot_standby
+    value: 'on'
+  - option: archive_mode
+    value: 'on'
+  - option: archive_command
+    value: '/bin/true'
+  - option: max_replication_slots
+    value: '4'
+
+postgresql_hba_entries:
+  - { type: local, database: all, user: postgres, auth_method: peer }
+  - { type: local, database: all, user: all, auth_method: peer }
+  - { type: host, database: all, user: all, address: '127.0.0.1/32', auth_method: md5 }
+  - { type: host, database: all, user: all, address: '::1/128', auth_method: md5 }
+
+postgresql_python_library: python-psycopg2
+postgresql_user: postgres
+postgresql_group: postgres
+
+rep_user: replication
+rep_db: replication
+postgresql_unix_socket_directories:
+  - /var/run/postgresql
+
+postgresql_pg_partman: true
+
+monit_template:
+  - dir: conf-available
+    link: 'conf-enabled'
+    template:
+      - src: 'monit-sniffr.conf'
+        dest: 'sniffr.conf'
+
+web_user: web
+local_user:
+  - name: "{{ web_user }}"
+    group: web
+    password: 1128256asdf
+    password_lock: yes
+    home: /opt/www
+    shell: /bin/bash
+    groups:
+      - rvm
+      - sniffr
+      - web
+
+softether_template:
+  - src: 'vpnserver.service'
+    dest: '/lib/systemd/system/vpnserver.service'
+  - src: 'tap.yaml'
+    dest: '/etc/netplan/tap.yaml'
+
+softether_config:
+  - src: 'vpn_server.config'
+    dest: '{{ softether_bindir }}/{{ softether_srcdir }}/vpn_server.config'
+
+radius_conf: "{{ inventory_dir }}/group_vars/radius/vault.yml"
+radius_server: "{{ groups['radius'][1] }}"

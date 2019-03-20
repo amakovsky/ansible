@@ -13,4 +13,4 @@
     - monit
     - haproxy
     - sniffr
-    - zabbix
+#    - zabbix

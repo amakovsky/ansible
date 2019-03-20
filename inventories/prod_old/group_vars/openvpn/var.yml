@@ -1,0 +1,15 @@
+---
+private_network: 10.135.0.0/16
+clients:
+  - makovsky
+  - vlad
+  - Yakovlev
+  - kirill
+  - pavel
+
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0

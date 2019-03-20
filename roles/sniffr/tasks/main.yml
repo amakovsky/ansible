@@ -18,7 +18,8 @@
 
 - name: Download and unarchive sniff
   unarchive:
-    src: "{{ sniffr_source }}&private_token={{ gitlab_private_token }}"
+    src: "{{ sniffr_source }}"
+#    src: "{{ sniffr_source }}&private_token={{ gitlab_private_token }}"
     dest: "{{ sniffr_dir }}"
     remote_src: true
     owner: "{{ sniffr_user }}"
