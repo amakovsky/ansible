@@ -13,9 +13,9 @@ records:
       last: 86.151
       rev: 135.10.in-addr.arpa
     zabbix:
-      forward: 10.135.56.169
+      forward: 10.135.153.94
       type: A
-      last: 169.56
+      last: 94.153
       rev: 135.10.in-addr.arpa
     runner1:
       forward: 10.135.94.37
@@ -68,14 +68,14 @@ records:
       last: 221.152
       rev: 135.10.in-addr.arpa
     asterisk:
-      forward: 10.135.116.10
+      forward: 10.135.154.152
       type: A
-      last: 10.116
+      last: 152.154
       rev: 135.10.in-addr.arpa
     web1:
-      forward: 10.135.112.29
+      forward: 10.135.120.73
       type: A
-      last: 29.112
+      last: 73.120
       rev: 135.10.in-addr.arpa
     web2:
       forward: 10.135.124.179
@@ -83,9 +83,9 @@ records:
       last: 179.124
       rev: 135.10.in-addr.arpa
     web-data1:
-      forward: 10.135.151.32
+      forward: 10.135.64.91
       type: A
-      last: 32.151
+      last: 91.64
       rev: 135.10.in-addr.arpa
     softether1:
       forward: 10.135.152.65
@@ -103,9 +103,9 @@ records:
       last: 116.120
       rev: 135.10.in-addr.arpa
     radius1:
-      forward: 10.135.105.84
+      forward: 10.135.154.128
       type: A
-      last: 84.105
+      last: 128.154
       rev: 135.10.in-addr.arpa
     radius2:
       forward: 10.135.105.93

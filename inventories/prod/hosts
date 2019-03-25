@@ -5,7 +5,7 @@ openvpn1 ansible_ssh_host=134.209.233.60 private_ip=10.135.53.47
 ns1 ansible_ssh_host=10.135.151.86
 
 [zabbix]
-zabbix1 ansible_ssh_host=10.135.127.10
+zabbix1 ansible_ssh_host=10.135.153.94
 
 [gitlab]
 gitlab1 ansible_ssh_host=10.135.144.182 ansible_port=2222
@@ -27,11 +27,11 @@ cassandra1 ansible_ssh_host=10.135.153.19
 cassandra2 ansible_ssh_host=10.135.62.172
 cassandra3 ansible_ssh_host=10.135.152.221
 
-#[asterisk]
-#asterisk1 ansible_ssh_host=10.135.116.10 private_ip=68.183.76.117
+[asterisk]
+asterisk1 ansible_ssh_host=10.135.154.152 private_ip=134.209.250.105
 
-#[radius]
-#radius1 ansible_ssh_host=10.135.105.84 public_ip=46.101.116.27
+[radius]
+radius1 ansible_ssh_host=10.135.154.128 public_ip=134.209.250.102
 #radius2 ansible_ssh_host=10.135.105.93 public_ip=139.59.156.170
 
 [softether]
@@ -46,15 +46,15 @@ hub1 ansible_ssh_host=10.135.152.65 softether_tap_ip=172.20.0.2
 #js1 ansible_ssh_host=10.135.132.39
 #js2 ansible_ssh_host=10.135.0.178
 
-#[web]
-#web1 ansible_ssh_host=10.135.112.29
+[web]
+web1 ansible_ssh_host=10.135.120.73
 #web2 ansible_ssh_host=10.135.124.179
 
 [web_data]
-web-data1 ansible_ssh_host=10.135.151.32
+web-data1 ansible_ssh_host=10.135.64.91
 
 [ruby:children]
-#web
+web
 web_data
 
 #[stage]

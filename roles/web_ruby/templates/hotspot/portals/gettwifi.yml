@@ -7,7 +7,7 @@ common: &common
     ap_certificate_password: "{{ portal_ap_certificate_password }}"
     ap_https_redirect: false
     fetch_host: "auth.gettwifi.com"
-    fetch_mode: "https"
+    fetch_mode: "http"
     walled_garden: ["yandex", "google", "gettwifi"]
     directory: "gettwifi"
     white_label: true

@@ -1,6 +1,8 @@
 ---
 radius_package:
   - 'freeradius=3.0.15-ppa1~xenial'
+
+radius_depend_package:
   - 'freeradius-postgresql'
 radius_config_dir: '/etc/freeradius'
 radius_template: []
