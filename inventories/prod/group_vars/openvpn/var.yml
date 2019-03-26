@@ -12,3 +12,8 @@ ufw_rules:
     proto: 'tcp'
     from_ip:
       - 0.0.0.0/0
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16

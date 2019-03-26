@@ -10,4 +10,4 @@
     - ufw
     - ssh
     - dns
-#    - zabbix
+    - zabbix
