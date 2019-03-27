@@ -36,11 +36,11 @@ radius1 ansible_ssh_host=10.135.154.128 public_ip=134.209.250.102
 
 [softether]
 hub1 ansible_ssh_host=10.135.152.65 softether_tap_ip=172.20.0.2
-#hub2 ansible_ssh_host=10.135.121.54 softether_tap_ip=172.20.0.4
-#hub3 ansible_ssh_host=10.135.120.116 softether_tap_ip=172.20.0.6
+hub2 ansible_ssh_host=10.135.102.26 softether_tap_ip=172.20.0.4
+hub3 ansible_ssh_host=10.135.51.218 softether_tap_ip=172.20.0.6
 
-#[node]
-#nodejs1 ansible_ssh_host=10.135.125.221
+[node]
+nodejs1 ansible_ssh_host=10.135.93.67
 
 #[js]
 #js1 ansible_ssh_host=10.135.132.39
@@ -57,8 +57,8 @@ web-data1 ansible_ssh_host=10.135.64.91
 web
 web_data
 
-#[stage]
-#stage2 ansible_ssh_host=10.135.34.145
+[stage]
+stage2 ansible_ssh_host=10.135.34.145
 
 #[elastic_nodes]
 #ds-elastic-01 ansible_ssh_host=10.135.106.184 private_ip=10.135.106.184

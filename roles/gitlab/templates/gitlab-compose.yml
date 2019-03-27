@@ -1,5 +1,5 @@
 web:
-  image: 'gitlab/gitlab-ee:latest'
+  image: 'gitlab/gitlab-ee:11.7.5-ee.0'
   restart: always
   hostname: '{{ gitlab_name }}'
   environment:
