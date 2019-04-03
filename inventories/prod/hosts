@@ -60,6 +60,9 @@ web_data
 [stage]
 stage2 ansible_ssh_host=10.135.34.145
 
+[spark]
+spark1 ansible_ssh_host=10.135.68.228
+
 #[elastic_nodes]
 #ds-elastic-01 ansible_ssh_host=10.135.106.184 private_ip=10.135.106.184
 #ds-elastic-02 ansible_ssh_host=10.135.115.220 private_ip=10.135.115.220
