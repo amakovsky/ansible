@@ -58,7 +58,7 @@ web
 web_data
 
 [stage]
-stage2 ansible_ssh_host=10.135.34.145
+stage1 ansible_ssh_host=10.135.33.236
 
 #[elastic_nodes]
 #ds-elastic-01 ansible_ssh_host=10.135.106.184 private_ip=10.135.106.184

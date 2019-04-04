@@ -15,12 +15,20 @@ postgresql_users:
   - name: cabinet_writer
     password: "{{ cabinet_writer_pass }}"
     db: cabinet
+  - name: gw_hotspot_reader
+    password: "Ai5ohd3waeng3bu"
+    db: gw_hotspot
 
 postgresql_privilegies:
   - db: cabinet
     privs: SELECT,INSERT
     objs: ALL_IN_SCHEMA
     roles: cabinet_writer
+    grant_option: False
+  - db: gw_hotspot
+    privs: SELECT
+    objs: ALL_IN_SCHEMA
+    roles: gw_hotspot_reader
     grant_option: False
 
 postgresql_databases:
