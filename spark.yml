@@ -1,0 +1,11 @@
+---
+- name: spark server
+  hosts: spark
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - common
+    - ufw
+    - java
