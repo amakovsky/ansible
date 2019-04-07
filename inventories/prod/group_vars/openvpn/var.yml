@@ -5,6 +5,8 @@ clients:
   - makovsky2
   - Yakovlev
   - kirill
+  - kkudelko
+  - yzaytsev
 
 ufw_rules:
   - rule: 'allow'
