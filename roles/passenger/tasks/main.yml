@@ -21,7 +21,7 @@
     - name: Install Passenger
       command: 'gem install passenger'
 
-    - name: create redis src folder
+    - name: create nginx-module-vts folder
       file:
         path: "/tmp/nginx-module-vts"
         state: directory

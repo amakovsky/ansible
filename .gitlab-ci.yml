@@ -142,3 +142,5 @@ build_image:
   only:
     changes:
       - Dockerfile
+    refs:
+      - master
