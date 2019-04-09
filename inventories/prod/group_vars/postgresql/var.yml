@@ -56,24 +56,12 @@ postgresql_databases:
     owner: "{{ ad_radius_user }}"
   - name: cabinet
 
-postgresql_external_connect:
-  - 89.108.106.171
-  - 89.108.86.192
+postgresql_external_connect: []
 
 ufw_rules:
   - rule: 'allow'
     port: 22
     proto: 'tcp'
-#    from_ip:
-#      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
-    from_ip:
-      - 10.135.0.0/16
-    to_ip: "{{ ansible_ssh_host }}"
-  - rule: 'allow'
-    port: 5432
-    proto: 'tcp'
-#    from_ip: "{{ [groups['postgresql'], groups['web'], groups['radius'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
-#    from_ip: "{{ [groups['radius'], groups['postgresql'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
     from_ip:
       - 10.135.0.0/16
     to_ip: "{{ ansible_ssh_host }}"
@@ -81,13 +69,11 @@ ufw_rules:
     port: 5432
     proto: 'tcp'
     from_ip:
-      - 89.108.106.171
-      - 89.108.86.192
-    to_ip: "{{ ansible_default_ipv4.address }}"
+      - 10.135.0.0/16
+    to_ip: "{{ ansible_ssh_host }}"
   - rule: 'allow'
     port: 10050
     proto: 'tcp'
-#    from_ip: "{{ groups['zabbix'] }}"
     from_ip:
       - 10.135.0.0/16
     to_ip: "{{ ansible_ssh_host }}"
