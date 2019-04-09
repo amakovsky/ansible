@@ -1,0 +1,145 @@
+---
+rvm1_user: root
+rvm1_install_path: /usr/local/rvm
+rvm1_install_flags: '--auto-dotfiles'
+ruby_default: 'ruby-2.3.4'
+rvm1_rubies:
+  - '{{ ruby_default }}'
+rvm1_symlink_to: '/usr/local/bin'
+nginx_configs_folder: "{{ passenger_nginx_dir }}/conf"
+passenger_nginx_dir: /opt/nginx
+nginx_bindir: /usr/sbin
+postgrs_conf: "{{ inventory_dir }}/group_vars/postgresql/vault.yml"
+s3_conf: "files/s3pass"
+radius_conf: "{{ inventory_dir }}/group_vars/radius/vault.yml"
+cassandra_conf: "{{ inventory_dir }}/group_vars/cassandra/vault.yml"
+postgres_server: "{{ hostvars[groups['postgresql'][0]].ansible_ssh_host }}"
+web_user: web
+virtual_hosts: gettwifi.com
+
+zabbix_nginx_vts: true
+
+local_user:
+  - name: "{{ web_user }}"
+#    group: web
+    password: 1128256asdf
+    password_lock: yes
+    home: /opt/www
+    shell: /bin/bash
+    allow_key:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9ekjWWGmeAACPWwfyq2p7DiIwBSQ8TxfKWt/Jlv2BjOH4KxrMkcxvAqvgVXkQZEfR0f+KtbM9Kp1f7ug52XNsZMXe2gB7u3D7g6qyWcXqbudCji7sPOypcp7j72KxOCH6zVOuDeC6BSbH34CZYi+oTsOW8G7jWtVxYe4h7hV+teqVHFGf1P1ThbLAx5pqD4MTjkjaV/lf6Lm8uX/5pNX7Bzegxd8S6feDnKl/ylMwJs2DPNf10AGa1YwILJZJcWbW9rbsMzG0UbXbfgY2mrjFO8+aEPezPvzNNyEP6ob9sLBqkP8+QCb/DthqO7sGiRaxIJtZCucpGhRtxaYj7Yfb web@gettwifi.com'
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyyf5SJ2JZDZo0AEDVN+TeHt8a+XtqwAO1RbC52VB8vsQagohis5nL8YHXa2/k26gc/hvTuXk/OkjiGrSAhoY5lETy0t2MWczM5WNrdI8ncbV/irADohMxhuyQHJ9D9Zz0IBYOOLwjR3AJqU0DLSXoE5T0ruV7xtCp59y5+dwbhCJAf3+11nrE6ey/KtA70J/RmBpeOxTnbXm1/G2KQNdG2ND2nxiHCpG+CY70q6gPK8ZnjtwJlienpaOHLJTd5nsz3lsIPB1jp5HeUhQXB4rFMWrckaGLgboXX90Sog4hVBtu3vatVEvw1Igu+t0xn+pkFjHncltN1O1odhGPlgH/ vizoria@astralteam.com'
+    groups:
+      - rvm
+
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+#    from_ip: "{{ [groups['gitlab-runner'], groups['web'], hostvars[groups['openvpn'][0]].private_ip] |flatten }}"
+    from_ip:
+      - 10.135.0.0/16
+  - rule: 'allow'
+    port: 443
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: 80
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ ansible_ssh_host }}"
+
+ruby_project_folder: /opt/www/hotspot
+ruby_shared_folders: "{{ ruby_project_folder }}/shared"
+ruby_shared:
+  - dir: "config"
+    template:
+      - src: 'hotspot/database.yml'
+        dest: 'database.yml'
+      - src: 'hotspot/mandrill.yml'
+        dest: 'mandrill.yml'
+      - src: 'hotspot/network.yml'
+        dest: 'network.yml'
+      - src: 'hotspot/radius.yml'
+        dest: 'radius.yml'
+      - src: 'hotspot/secrets.yml'
+        dest: 'secrets.yml'
+      - src: 'hotspot/redis.yml'
+        dest: 'redis.yml'
+      - src: 'hotspot/cequel.yml'
+        dest: 'cequel.yml'
+  - dir: "config/initializers"
+    template:
+      - src: 'hotspot/initializers/paperclip.rb'
+        dest: 'paperclip.rb'
+  - dir: "config/omniauth"
+    template:
+      - src: 'hotspot/omniauth/facebook.yml'
+        dest: 'facebook.yml'
+      - src: 'hotspot/omniauth/instagram.yml'
+        dest: 'instagram.yml'
+      - src: 'hotspot/omniauth/linkedin.yml'
+        dest: 'linkedin.yml'
+      - src: 'hotspot/omniauth/odnoklassniki.yml'
+        dest: 'odnoklassniki.yml'
+      - src: 'hotspot/omniauth/twitter.yml'
+        dest: 'twitter.yml'
+      - src: 'hotspot/omniauth/vkontakte.yml'
+        dest: 'vkontakte.yml'
+  - dir: "config/portals"
+    template:
+      - src: 'hotspot/portals/gettwifi.yml'
+        dest: 'gettwifi.yml'
+  - dir: "config/sms"
+    template:
+      - src: 'hotspot/sms/asterisk.yml'
+        dest: 'asterisk.yml'
+      - src: 'hotspot/sms/devinotelecom.yml'
+        dest: 'devinotelecom.yml'
+  - dir: "vendor/mikrotik/cert/hotspot.gettwifi.com"
+    file:
+      - src: 'hotspot.gettwifi.com/certificate.crt'
+        dest: 'certificate.crt'
+      - src: 'files/hotspot.gettwifi.com/private.key'
+        dest: 'private.key'
+  - dir: "../../captive"
+    file:
+      - src: 'captive/favicon.ico'
+        dest: 'favicon.ico'
+
+web_cron:
+  - name: "Scheduler ticks"
+    minute: "{{ ansible_play_hosts.index(inventory_hostname) }}-59/{{ ansible_play_hosts | length }}"
+    job: "cd {{ ruby_project_folder }}/current && bundle exec bin/sidekiq_pusher scheduler > /dev/null"
+  - name: "Cleaner ticks"
+    minute: "{{ ansible_play_hosts.index(inventory_hostname) }}-59/{{ ansible_play_hosts | length }}"
+    job: "cd {{ ruby_project_folder }}/current && bundle exec bin/sidekiq_pusher cleaner > /dev/null"
+  - name: "Integration tokens refresh"
+    minute: 0
+    hour: "{{ ansible_play_hosts.index(inventory_hostname) }}-23/{{ ansible_play_hosts | length }}"
+    job: "cd {{ ruby_project_folder }}/current && bundle exec bin/sidekiq_pusher integration_refresh > /dev/null"
+
+web_cron_vars:
+  - name: RAILS_ENV
+    value: production
+  - name: GEM_PATH
+    value: "{{ rvm1_install_path }}/gems/{{ ruby_default }}:{{ rvm1_install_path }}/gems/{{ ruby_default }}@global"
+  - name: PATH
+    value: "{{ rvm1_install_path }}/gems/{{ ruby_default }}/bin:{{ rvm1_install_path }}/gems/{{ ruby_default }}@global/bin:{{ rvm1_install_path }}/rubies/{{ ruby_default }}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/snap/bin:{{ rvm1_install_path }}/bin"
+
+monit_global_config_options:
+  - option: 'set httpd'
+    value: 'port 2812 and'
+  - option: 'use address'
+    value: 'localhost'
+  - option: 'allow'
+    value: 'localhost'
+  - option: 'include'
+    value: '/etc/monit/conf.d/hotspot/*.conf'

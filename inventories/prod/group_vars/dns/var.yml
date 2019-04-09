@@ -8,14 +8,14 @@ dns_list_public: false
 records:
   local:
     ns1:
-      forward: 10.135.101.26
+      forward: 10.135.151.86
       type: A
-      last: 26.101
+      last: 86.151
       rev: 135.10.in-addr.arpa
     zabbix:
-      forward: 10.135.56.169
+      forward: 10.135.153.94
       type: A
-      last: 169.56
+      last: 94.153
       rev: 135.10.in-addr.arpa
     runner1:
       forward: 10.135.94.37
@@ -23,9 +23,9 @@ records:
       last: 37.94
       rev: 135.10.in-addr.arpa
     db-master:
-      forward: 10.135.72.192
+      forward: 10.135.150.237
       type: A
-      last: 192.72
+      last: 237.150
       rev: 135.10.in-addr.arpa
     db-slave:
       forward: 10.135.20.228
@@ -33,9 +33,9 @@ records:
       last: 228.20
       rev: 135.10.in-addr.arpa
     openvpn1:
-      forward: 10.135.16.158
+      forward: 10.135.53.47
       type: A
-      last: 158.16
+      last: 47.53
       rev: 135.10.in-addr.arpa
     redis1:
       forward: 10.135.118.233
@@ -53,29 +53,29 @@ records:
       last: 226.118
       rev: 135.10.in-addr.arpa
     cassandra1:
-      forward: 10.135.119.43
+      forward: 10.135.153.19
       type: A
-      last: 43.119
+      last: 19.153
       rev: 135.10.in-addr.arpa
     cassandra2:
-      forward: 10.135.119.68
+      forward: 10.135.62.172
       type: A
-      last: 68.119
+      last: 172.62
       rev: 135.10.in-addr.arpa
     cassandra3:
-      forward: 10.135.119.200
+      forward: 10.135.152.221
       type: A
-      last: 200.119
+      last: 221.152
       rev: 135.10.in-addr.arpa
     asterisk:
-      forward: 10.135.116.10
+      forward: 10.135.154.152
       type: A
-      last: 10.116
+      last: 152.154
       rev: 135.10.in-addr.arpa
     web1:
-      forward: 10.135.112.29
+      forward: 10.135.120.73
       type: A
-      last: 29.112
+      last: 73.120
       rev: 135.10.in-addr.arpa
     web2:
       forward: 10.135.124.179
@@ -83,14 +83,14 @@ records:
       last: 179.124
       rev: 135.10.in-addr.arpa
     web-data1:
-      forward: 10.135.68.78
+      forward: 10.135.64.91
       type: A
-      last: 78.68
+      last: 91.64
       rev: 135.10.in-addr.arpa
     softether1:
-      forward: 10.135.93.247
+      forward: 10.135.152.65
       type: A
-      last: 247.93
+      last: 65.152
       rev: 135.10.in-addr.arpa
     softether2:
       forward: 10.135.121.54
@@ -103,9 +103,9 @@ records:
       last: 116.120
       rev: 135.10.in-addr.arpa
     radius1:
-      forward: 10.135.105.84
+      forward: 10.135.154.128
       type: A
-      last: 84.105
+      last: 128.154
       rev: 135.10.in-addr.arpa
     radius2:
       forward: 10.135.105.93
@@ -150,9 +150,9 @@ records:
 
   gettwifi:
     "@":
-      forward: 10.135.11.170
+      forward: 10.135.144.182
       type: A
-      last: 170.11
+      last: 182.144
       rev: 135.10.in-addr.arpa
 
 zones:

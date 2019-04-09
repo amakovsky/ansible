@@ -39,7 +39,7 @@ sentinel_global_config_options:
   - option: protected-mode
     value: 'no'
   - option: sentinel monitor
-    value: "mymaster {{ groups['redis'][0] }} 6379 2"
+    value: "mymaster {{ hostvars[groups['redis'][0]].ansible_ssh_host }} 6379 2"
   - option: sentinel failover-timeout
     value: "mymaster 10000"
   - option: sentinel down-after-milliseconds

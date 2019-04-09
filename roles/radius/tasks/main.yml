@@ -32,6 +32,11 @@
       command: dpkg --configure -a
   when: installed.failed is defined and installed.failed
 
+- name: Install radius depend
+  apt:
+    name: "{{ radius_depend_package }}"
+    state: present
+
 - name: Copy freeradius template
   template:
     src: "{{ item.0.dir }}/{{ item.1.src }}"

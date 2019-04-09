@@ -1,0 +1,189 @@
+---
+domain: gw.lan
+rev_domain: 135.10.in-addr.arpa
+host_name: ns1.{{ domain }}
+
+dns_list_public: false
+
+records:
+  local:
+    ns1:
+      forward: 10.135.101.26
+      type: A
+      last: 26.101
+      rev: 135.10.in-addr.arpa
+    zabbix:
+      forward: 10.135.56.169
+      type: A
+      last: 169.56
+      rev: 135.10.in-addr.arpa
+    runner1:
+      forward: 10.135.94.37
+      type: A
+      last: 37.94
+      rev: 135.10.in-addr.arpa
+    db-master:
+      forward: 10.135.72.192
+      type: A
+      last: 192.72
+      rev: 135.10.in-addr.arpa
+    db-slave:
+      forward: 10.135.20.228
+      type: A
+      last: 228.20
+      rev: 135.10.in-addr.arpa
+    openvpn1:
+      forward: 10.135.16.158
+      type: A
+      last: 158.16
+      rev: 135.10.in-addr.arpa
+    redis1:
+      forward: 10.135.118.233
+      type: A
+      last: 233.118
+      rev: 135.10.in-addr.arpa
+    redis2:
+      forward: 10.135.118.227
+      type: A
+      last: 227.118
+      rev: 135.10.in-addr.arpa
+    redis3:
+      forward: 10.135.118.226
+      type: A
+      last: 226.118
+      rev: 135.10.in-addr.arpa
+    cassandra1:
+      forward: 10.135.119.43
+      type: A
+      last: 43.119
+      rev: 135.10.in-addr.arpa
+    cassandra2:
+      forward: 10.135.119.68
+      type: A
+      last: 68.119
+      rev: 135.10.in-addr.arpa
+    cassandra3:
+      forward: 10.135.119.200
+      type: A
+      last: 200.119
+      rev: 135.10.in-addr.arpa
+    asterisk:
+      forward: 10.135.116.10
+      type: A
+      last: 10.116
+      rev: 135.10.in-addr.arpa
+    web1:
+      forward: 10.135.112.29
+      type: A
+      last: 29.112
+      rev: 135.10.in-addr.arpa
+    web2:
+      forward: 10.135.124.179
+      type: A
+      last: 179.124
+      rev: 135.10.in-addr.arpa
+    web-data1:
+      forward: 10.135.68.78
+      type: A
+      last: 78.68
+      rev: 135.10.in-addr.arpa
+    softether1:
+      forward: 10.135.93.247
+      type: A
+      last: 247.93
+      rev: 135.10.in-addr.arpa
+    softether2:
+      forward: 10.135.121.54
+      type: A
+      last: 121.54
+      rev: 135.10.in-addr.arpa
+    softether3:
+      forward: 10.135.120.116
+      type: A
+      last: 116.120
+      rev: 135.10.in-addr.arpa
+    radius1:
+      forward: 10.135.105.84
+      type: A
+      last: 84.105
+      rev: 135.10.in-addr.arpa
+    radius2:
+      forward: 10.135.105.93
+      type: A
+      last: 93.105
+      rev: 135.10.in-addr.arpa
+    nodejs1:
+      forward: 10.135.125.221
+      type: A
+      last: 221.125
+      rev: 135.10.in-addr.arpa
+    elk1:
+      forward: 10.135.106.184
+      type: A
+      last: 184.106
+      rev: 135.10.in-addr.arpa
+    elk2:
+      forward: 10.135.115.220
+      type: A
+      last: 220.115
+      rev: 135.10.in-addr.arpa
+    elk3:
+      forward: 10.135.124.34
+      type: A
+      last: 34.124
+      rev: 135.10.in-addr.arpa
+    kibana:
+      forward: 10.135.124.34
+      type: A
+      last: 34.124
+      rev: 135.10.in-addr.arpa
+    chef:
+      forward: 10.135.124.182
+      type: A
+      last: 182.124
+      rev: 135.10.in-addr.arpa
+    test1:
+      forward: 10.135.124.182
+      type: A
+      last: 182.124
+      rev: 135.10.in-addr.arpa
+
+  gettwifi:
+    "@":
+      forward: 10.135.11.170
+      type: A
+      last: 170.11
+      rev: 135.10.in-addr.arpa
+
+zones:
+  local:
+    name: gw.lan
+  gettwifi:
+    name: gitlab.gettwifi.com
+
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+#      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+  - rule: 'allow'
+    port: 53
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0
+    to_ip: "{{ ansible_ssh_host }}"
+  - rule: 'allow'
+    port: 53
+    proto: 'udp'
+    from_ip:
+      - 0.0.0.0/0
+    to_ip: "{{ ansible_ssh_host }}"
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+#    from_ip: "{{ groups['zabbix'] }}"
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ ansible_ssh_host }}"

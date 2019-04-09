@@ -1,0 +1,155 @@
+---
+postgresql_users:
+  - name: "{{ gw_hotspot_user }}"
+    password: "{{ gw_hotspot_user_pass }}"
+  - name: "{{ gw_radius_user }}"
+    password: "{{ gw_radius_user_pass }}"
+  - name: "{{ ad_hotspot_user }}"
+    password: "{{ ad_hotspot_user_pass }}"
+  - name: "{{ ad_radius_user }}"
+    password: "{{ ad_radius_user_pass }}"
+  - name: cabinet_owner
+    password: "{{ cabinet_owner_pass }}"
+    db: cabinet
+    priv: ALL
+  - name: cabinet_writer
+    password: "{{ cabinet_writer_pass }}"
+    db: cabinet
+
+postgresql_privilegies:
+  - db: cabinet
+    privs: SELECT,INSERT
+    objs: ALL_IN_SCHEMA
+    roles: cabinet_writer
+    grant_option: False
+
+postgresql_databases:
+  - name: gw_hotspot
+    owner: "{{ gw_hotspot_user }}"
+  - name: gw_radius_users_mikrotik
+    owner: "{{ gw_radius_user }}"
+  - name: gw_radius_users_cisco
+    owner: "{{ gw_radius_user }}"
+  - name: gw_radius_users_chilli
+    owner: "{{ gw_radius_user }}"
+  - name: gw_radius_access_points
+    owner: "{{ gw_radius_user }}"
+    lc_collate: "C.UTF-8"
+    lc_ctype: "C.UTF-8"
+  - name: ad_hotspot
+    owner: "{{ ad_hotspot_user }}"
+  - name: ad_radius_users_mikrotik
+    owner: "{{ ad_radius_user }}"
+  - name: ad_radius_users_cisco
+    owner: "{{ ad_radius_user }}"
+  - name: ad_radius_users_chilli
+    owner: "{{ ad_radius_user }}"
+  - name: ad_radius_access_points
+    owner: "{{ ad_radius_user }}"
+  - name: cabinet
+
+postgresql_external_connect:
+  - 89.108.106.171
+  - 89.108.86.192
+
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+#    from_ip:
+#      - "{{ hostvars[groups['openvpn'][0]].private_ip }}"
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ ansible_ssh_host }}"
+  - rule: 'allow'
+    port: 5432
+    proto: 'tcp'
+#    from_ip: "{{ [groups['postgresql'], groups['web'], groups['radius'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
+#    from_ip: "{{ [groups['radius'], groups['postgresql'], hostvars[groups['openvpn'][0]].private_ip]|flatten }}"
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ ansible_ssh_host }}"
+  - rule: 'allow'
+    port: 5432
+    proto: 'tcp'
+    from_ip:
+      - 89.108.106.171
+      - 89.108.86.192
+    to_ip: "{{ ansible_default_ipv4.address }}"
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+#    from_ip: "{{ groups['zabbix'] }}"
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ ansible_ssh_host }}"
+
+postgresql_global_config_options:
+  - option: unix_socket_directories
+    value: '{{ postgresql_unix_socket_directories | join(",") }}'
+  - option: listen_addresses
+    value: '{{ansible_default_ipv4.address}}, {{ ansible_ssh_host }}, localhost'
+  - option: shared_buffers
+    value: '{{ (ansible_memtotal_mb * 0.25)|int|abs }}MB'
+  - option: max_connections
+    value: '1000'
+  - option: shared_preload_libraries
+    value: 'pg_partman_bgw, pg_stat_statements'
+  - option: pg_partman_bgw.interval
+    value: '3600'
+  - option: pg_partman_bgw.dbname
+    value: 'hotspot'
+  - option: effective_io_concurrency
+    value: '6'
+  - option: seq_page_cost
+    value: '1.0'
+  - option: random_page_cost
+    value: '2.0'
+
+postgresrep_postgres_conf_lines:
+  - option: wal_level
+    value: 'hot_standby'
+  - option: max_wal_senders
+    value: '10'
+  - option: wal_keep_segments
+    value: '100'
+  - option: hot_standby
+    value: 'on'
+  - option: archive_mode
+    value: 'on'
+  - option: archive_command
+    value: '/bin/true'
+  - option: max_replication_slots
+    value: '4'
+
+postgresql_hba_entries:
+  - { type: local, database: all, user: postgres, auth_method: peer }
+  - { type: local, database: all, user: all, auth_method: peer }
+  - { type: host, database: all, user: all, address: '127.0.0.1/32', auth_method: md5 }
+  - { type: host, database: all, user: all, address: '::1/128', auth_method: md5 }
+
+postgresql_python_library: python-psycopg2
+postgresql_user: postgres
+postgresql_group: postgres
+
+rep_user: replication
+rep_db: replication
+postgresql_unix_socket_directories:
+  - /var/run/postgresql
+
+postgresql_pg_partman: true
+
+monit_template:
+  - dir: conf-available
+    link: 'conf-enabled'
+    template:
+      - src: 'monit-postgresql.conf'
+        dest: 'postgresql.conf'
+
+postgresql_backup_dir: "/root/backup"
+postgresql_cron:
+  - name: "create postgresql backup"
+    minute: "0"
+    hour: "2"
+    day: "*"
+    job: "{{ postgresql_backup_dir}}/backup.sh"
