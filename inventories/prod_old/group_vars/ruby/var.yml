@@ -1,0 +1,134 @@
+---
+rvm1_user: root
+rvm1_install_path: /usr/local/rvm
+rvm1_install_flags: '--auto-dotfiles'
+ruby_default: 'ruby-2.3.4'
+rvm1_rubies:
+  - '{{ ruby_default }}'
+rvm1_symlink_to: '/usr/local/bin'
+nginx_configs_folder: "{{ passenger_nginx_dir }}/conf"
+passenger_nginx_dir: /opt/nginx
+nginx_bindir: /usr/sbin
+postgrs_conf: "{{ inventory_dir }}/group_vars/postgresql/vault.yml"
+s3_conf: "files/s3pass"
+radius_conf: "{{ inventory_dir }}/group_vars/radius/vault.yml"
+cassandra_conf: "{{ inventory_dir }}/group_vars/cassandra/vault.yml"
+postgres_server: "{{ hostvars[groups['postgresql'][0]].ansible_ssh_host }}"
+web_user: web
+
+ruby_project_folder: /opt/www/hotspot
+ruby_shared_folders: "{{ ruby_project_folder }}/shared"
+ruby_shared:
+  - dir: "config"
+    template:
+      - src: 'hotspot/database.yml'
+        dest: 'database.yml'
+      - src: 'hotspot/mandrill.yml'
+        dest: 'mandrill.yml'
+      - src: 'hotspot/network.yml'
+        dest: 'network.yml'
+      - src: 'hotspot/radius.yml'
+        dest: 'radius.yml'
+      - src: 'hotspot/secrets.yml'
+        dest: 'secrets.yml'
+      - src: 'hotspot/redis.yml'
+        dest: 'redis.yml'
+      - src: 'hotspot/cequel.yml'
+        dest: 'cequel.yml'
+  - dir: "config/initializers"
+    template:
+      - src: 'hotspot/initializers/paperclip.rb'
+        dest: 'paperclip.rb'
+  - dir: "config/omniauth"
+    template:
+      - src: 'hotspot/omniauth/facebook.yml'
+        dest: 'facebook.yml'
+      - src: 'hotspot/omniauth/instagram.yml'
+        dest: 'instagram.yml'
+      - src: 'hotspot/omniauth/linkedin.yml'
+        dest: 'linkedin.yml'
+      - src: 'hotspot/omniauth/odnoklassniki.yml'
+        dest: 'odnoklassniki.yml'
+      - src: 'hotspot/omniauth/twitter.yml'
+        dest: 'twitter.yml'
+      - src: 'hotspot/omniauth/vkontakte.yml'
+        dest: 'vkontakte.yml'
+  - dir: "config/portals"
+    template:
+      - src: 'hotspot/portals/gettwifi.yml'
+        dest: 'gettwifi.yml'
+  - dir: "config/sms"
+    template:
+      - src: 'hotspot/sms/asterisk.yml'
+        dest: 'asterisk.yml'
+      - src: 'hotspot/sms/devinotelecom.yml'
+        dest: 'devinotelecom.yml'
+  - dir: "vendor/mikrotik/cert/hotspot.gettwifi.com"
+    file:
+      - src: 'hotspot.gettwifi.com/certificate.crt'
+        dest: 'certificate.crt'
+      - src: 'hotspot.gettwifi.com/private.key'
+        dest: 'private.key'
+  - dir: "../../captive"
+    file:
+      - src: 'captive/favicon.ico'
+        dest: 'favicon.ico'
+
+web_cron:
+  - name: "Scheduler ticks"
+    minute: "{{ ansible_play_hosts.index(inventory_hostname) }}-59/{{ ansible_play_hosts | length }}"
+    job: "cd {{ ruby_project_folder }}/current && bundle exec bin/sidekiq_pusher scheduler > /dev/null"
+  - name: "Cleaner ticks"
+    minute: "{{ ansible_play_hosts.index(inventory_hostname) }}-59/{{ ansible_play_hosts | length }}"
+    job: "cd {{ ruby_project_folder }}/current && bundle exec bin/sidekiq_pusher cleaner > /dev/null"
+  - name: "Integration tokens refresh"
+    minute: 0
+    hour: "{{ ansible_play_hosts.index(inventory_hostname) }}-23/{{ ansible_play_hosts | length }}"
+    job: "cd {{ ruby_project_folder }}/current && bundle exec bin/sidekiq_pusher integration_refresh > /dev/null"
+
+web_cron_vars:
+  - name: RAILS_ENV
+    value: production
+  - name: GEM_PATH
+    value: "{{ rvm1_install_path }}/gems/{{ ruby_default }}:{{ rvm1_install_path }}/gems/{{ ruby_default }}@global"
+  - name: PATH
+    value: "{{ rvm1_install_path }}/gems/{{ ruby_default }}/bin:{{ rvm1_install_path }}/gems/{{ ruby_default }}@global/bin:{{ rvm1_install_path }}/rubies/{{ ruby_default }}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/snap/bin:{{ rvm1_install_path }}/bin"
+
+monit_global_config_options:
+  - option: 'set httpd'
+    value: 'port 2812 and'
+  - option: 'use address'
+    value: 'localhost'
+  - option: 'allow'
+    value: 'localhost'
+  - option: 'include'
+    value: '/etc/monit/conf.d/hotspot/*.conf'
+
+post_image_host: 'https://app.gettwifi.com'
+asterisk_api_key: "a124e23da77d2a7365ee9cab015092543e328065a6bb5966810474e654fa13f202001a3b3c19740a66243137a20315bdbf7b1a7e74b266630666fc53a729607d"
+devinotelecom_login: "the_karma"
+devinotelecom_password: "X]$)WaeKIr"
+portal_ap_certificate_password: "N0Ec2PbrlnBa"
+vkontakte_token: '28d7c0745c604731d7447018d64e5fd0d48193a31edea6b55ad9f08f59a003d06bb80dc61d7835c5031ab'
+vkontakte_app_secret: 'nsLVpImyZJwg85lF9dz5'
+vkontakte_group_id: '119952759'
+vkontakte_app_id: '3610149'
+twitter_app_id: 'rXry1eRF9AyBP25vskQ0g'
+twitter_app_secret: 'MoSfy6i9B4SdyLudCNLJFCjVZgPZ6UkQa8XapuuY7c'
+odnoklassniki_app_secret: 'F7A5A8F107368A8B18C16B89'
+odnoklassniki_token: 'tkn1QZci465gMs2SEnqkizHaxXtjvc9MznkwtwovgymshnTSwsvPeXvXFM7enFLzjmFCx'
+odnoklassniki_public_key: 'CBAKPNIFEBABABABA'
+odnoklassniki_app_id: '1150089472'
+odnoklassniki_group_id: '52347220787356'
+linkedin_app_id: '77xtop1b6q26kv'
+linkedin_app_secret: 'QBSieYcMBkoyHPQ0'
+instagram_token: '177403578.3d7ad9f.f39094fe9b484c31ae9dc5b5a5993a11'
+instagram_public_content_app_id: '3d7ad9fc64ed404c9bddd91a4832f966'
+instagram_app_id: 'de6109fd2c58421eb387605a53dd45db'
+instagram_app_secret: '8f8cab4cafb34f17bb3857decc3cd3e1'
+facebook_app_id: '194150520733941'
+facebook_app_secret: 'abbde9c1b29941e5c3ec03db3308d52f'
+mandrill_username: vizoria@the-karma.com
+mandrill_api_key: umiOUEFolLBaXBUJ8qBi9g
+development_secret_key_base: 8c46dc99a95269589a9e6edda4079e3d325bd4e6c309af94e5bcaa7010274fee71c8e1e07e4d962bdb36225ba5edcea1aec8a0270a59fd129161b1b43b01c5d6
+production_secret_key_base: 8c46dc99a95269589a9e6edda4079e3d325bd4e6c309af94e5bcaa7010274fee71c8e1e07e4d962bdb36225ba5edcea1aec8a0270a59fd129161b1b43b01c5d6

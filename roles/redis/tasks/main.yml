@@ -56,6 +56,9 @@
       with_items:
         - "{{ redis_datadir }}"
   when: redis_available.stat.exists == true and recreate_cluster
+  notify:
+    - restart redis-server
+    - restart redis-sentinel
 
 - name: compile redis
   block:

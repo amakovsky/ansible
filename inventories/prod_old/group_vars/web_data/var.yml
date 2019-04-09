@@ -1,0 +1,93 @@
+---
+rvm1_user: root
+rvm1_install_path: /usr/local/rvm
+rvm1_install_flags: '--auto-dotfiles'
+ruby_default: 'ruby-2.3.4'
+rvm1_rubies:
+  - '{{ ruby_default }}'
+rvm1_symlink_to: '/usr/local/bin'
+nginx_configs_folder: "{{ passenger_nginx_dir }}/conf"
+passenger_nginx_dir: /opt/nginx
+nginx_bindir: /usr/sbin
+postgrs_conf: "{{ inventory_dir }}/group_vars/postgresql/vault.yml"
+radius_conf: "{{ inventory_dir }}/group_vars/radius/vault.yml"
+cassandra_conf: "{{ inventory_dir }}/group_vars/cassandra/vault.yml"
+postgres_server: "{{ hostvars[groups['postgresql'][0]].ansible_ssh_host }}"
+web_user: web
+
+local_user:
+  - name: "{{ web_user }}"
+#    group: web
+    password: 1128256asdf
+    password_lock: yes
+    home: /opt/www
+    shell: /bin/bash
+    allow_key:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9ekjWWGmeAACPWwfyq2p7DiIwBSQ8TxfKWt/Jlv2BjOH4KxrMkcxvAqvgVXkQZEfR0f+KtbM9Kp1f7ug52XNsZMXe2gB7u3D7g6qyWcXqbudCji7sPOypcp7j72KxOCH6zVOuDeC6BSbH34CZYi+oTsOW8G7jWtVxYe4h7hV+teqVHFGf1P1ThbLAx5pqD4MTjkjaV/lf6Lm8uX/5pNX7Bzegxd8S6feDnKl/ylMwJs2DPNf10AGa1YwILJZJcWbW9rbsMzG0UbXbfgY2mrjFO8+aEPezPvzNNyEP6ob9sLBqkP8+QCb/DthqO7sGiRaxIJtZCucpGhRtxaYj7Yfb web@gettwifi.com'
+    groups:
+      - rvm
+
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+  - rule: 'allow'
+    port: 443
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: 80
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ ansible_ssh_host }}"
+
+ruby_project_folder: /opt/www/hotspot
+ruby_shared_folders: "{{ ruby_project_folder }}/shared"
+ruby_shared:
+  - dir: "config"
+    template:
+      - src: 'hotspot/database.yml'
+        dest: 'database.yml'
+      - src: 'hotspot/mandrill.yml'
+        dest: 'mandrill.yml'
+      - src: 'hotspot/network.yml'
+        dest: 'network.yml'
+      - src: 'hotspot/radius.yml'
+        dest: 'radius.yml'
+      - src: 'hotspot/secrets.yml'
+        dest: 'secrets.yml'
+      - src: 'hotspot/redis.yml'
+        dest: 'redis.yml'
+      - src: 'hotspot/cequel.yml'
+        dest: 'cequel.yml'
+  - dir: "config/initializers"
+    template:
+      - src: 'hotspot/initializers/paperclip.rb'
+        dest: 'paperclip.rb'
+  - dir: "config/omniauth"
+    template:
+      - src: 'hotspot/omniauth/facebook.yml'
+        dest: 'facebook.yml'
+      - src: 'hotspot/omniauth/instagram.yml'
+        dest: 'instagram.yml'
+      - src: 'hotspot/omniauth/linkedin.yml'
+        dest: 'linkedin.yml'
+      - src: 'hotspot/omniauth/odnoklassniki.yml'
+        dest: 'odnoklassniki.yml'
+      - src: 'hotspot/omniauth/twitter.yml'
+        dest: 'twitter.yml'
+      - src: 'hotspot/omniauth/vkontakte.yml'
+        dest: 'vkontakte.yml'
+  - dir: "config/portals"
+    template:
+      - src: 'hotspot/portals/gettwifi.yml'
+        dest: 'gettwifi.yml'

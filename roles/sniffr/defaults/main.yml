@@ -4,7 +4,8 @@ sniffr_port: 37008
 sniffr_pass: 123456
 sniffr_user: web
 sniffr_group: sniffr
-sniffr_source: "https://gitlab.gettwifi.com/api/v4/projects/wifi%2Fsniffr/jobs/artifacts/master/download?job=build_app"
+#sniffr_source: "https://gitlab.gettwifi.com/api/v4/projects/wifi%2Fsniffr/jobs/artifacts/master/download?job=build_app"
+sniffr_source: "https://gettwifi-artf.ams3.digitaloceanspaces.com/sniffr.zip"
 sniffr_template:
   - src: 'sniffr.sh.j2'
     dest: '{{ sniffr_dir }}/sniffr.sh'

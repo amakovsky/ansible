@@ -6,15 +6,20 @@
   become_user: root
 
   roles:
-    - common
-    - ufw
-    - user
-    - postgresql
-    - docker
+#    - common
+#    - ufw
+#    - user
+#    - postgresql
+#    - docker
 #    - elk
-    - nginx
-    - zabbix
+#    - nginx
+#    - zabbix
 #    - sniffr
 #    - elasticsearch
 #    - kibana
 #    - zabbix
+    - common
+    - ufw
+    - user
+    - nginx
+    - nodejs

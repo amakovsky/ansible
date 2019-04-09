@@ -1,0 +1,43 @@
+---
+# luks
+#luks_size_mb: 266240 # 260GB
+luks_mount_point: /data
+luks_key: /var/log/ktmp
+
+# elasticsearch
+es_heap_size: 1g
+es_data_dirs: /data/elasticsearch
+
+es_api_host: "{{ private_ip }}"
+es_custom_network_host: "{{ private_ip }}" # "_site_"
+
+es_custom_node_data: true
+es_custom_node_master: true
+es_custom_node_ingest: true
+
+# ufw
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ private_ip }}"
+  - rule: 'allow'
+    port: 9200
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ private_ip }}"
+  - rule: 'allow'
+    port: 9300
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ private_ip }}"
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ private_ip }}"

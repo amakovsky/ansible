@@ -1,0 +1,89 @@
+---
+root_ssh:
+  - name: ansible
+    publish_ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDADO9BxJI7Cxkl06aw7MB5i91u3qKhrNOKPQTfDSMswEURAsSaHL7xfTLgYI85vhfJWbp481GJ4wjvMRthaxXx8hJcoSFiTJZnWnci8Mzby6gCOB/z02tN+fl/U0axY489pHXB84P3oOHh95qWm98GaG8EtKMsqbMURD2ywQ97U5d4ETft4fEh5paX4bL261M3SGJSoGPrfpXJ1Bsm/GX3zEkXbYksSzRb40kNSl+ImIpVr9vU+fQZJ3thYks1FzFLUENwkML/hMztJas6kP3yEvDI0M3R1jGnW7XGIkXwA5VP4vJG2q/8vnF8EqTmKyAKqVdCfofPHQ0D+XMygGdz ansible@gettwifi.com
+  - name: makovsky
+    publish_ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRSsBepZh7W+DhmFX56lUqrqBjUbnqjks3phcJa1eq9pdg8e9LCkQzdGiHbYAb2CacKWsa79Sb2lhAOmFkMAHSrpqFNSGl+KB/UKx8W86lMVvplXUSDqEwxqXT6O3vK9BOApQMyubH2aEMRn1yrYXyRxrcwxzrOjBDIAkr28jKylTr5GfPnUnZvmGyFxkR/7Ws5ZjfV8wiGh+styBJavsqXRaW9ihQ/paOzsrgupw9KjSFQd2TfeZ8JFydj4Ac3t2/xyYGhnqw9O8XuOZed2ni7JQGi9Cj0ENcYf0Ps0dCYjotAGdLI/6P6rZDMIak8sqlv8fGrFJ5Yhy9DDH/d5eD user@DESKTOP-A0CFRML
+  - name: vizoria
+    publish_ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyyf5SJ2JZDZo0AEDVN+TeHt8a+XtqwAO1RbC52VB8vsQagohis5nL8YHXa2/k26gc/hvTuXk/OkjiGrSAhoY5lETy0t2MWczM5WNrdI8ncbV/irADohMxhuyQHJ9D9Zz0IBYOOLwjR3AJqU0DLSXoE5T0ruV7xtCp59y5+dwbhCJAf3+11nrE6ey/KtA70J/RmBpeOxTnbXm1/G2KQNdG2ND2nxiHCpG+CY70q6gPK8ZnjtwJlienpaOHLJTd5nsz3lsIPB1jp5HeUhQXB4rFMWrckaGLgboXX90Sog4hVBtu3vatVEvw1Igu+t0xn+pkFjHncltN1O1odhGPlgH/ vizoria@astralteam.com
+  - name: gribanov
+    publish_ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZhRbftUDYmMGr3+YNWPD2Wfuo/suQ0OyUv/URW9Yb0/yiW2WZg6zNFLnQPklcLbWceOcctKnD78JatLAlGvcDcN/3SxG7jZQItRjFxQtBC6NnRrTq1pbL12zWpW7aUX8igpngcEDr9uKhuVV5bWwSzaVin1IZMGZsVLOu/Yg+cmnC7MaRrHXWf51pVRekdzgJCxNmdzuVr8FUDzY/N3CcBAVKRlP7ZbpfCHqXnzvEqINM3x4pkkHgCdEJ0q7Zf6j98cLNMAFPTnd2EVFt3RH8MO2DsbFArAvXXdAhTFjehEgp9/XRLHYKwgklL7+m8oLkqY+uG4xr49htOUe27P3B root@kali
+
+local_user:
+  - name: node
+    group: www-data
+    password: 1128256asdf
+#    password_lock: yes
+    home: /home/node
+    shell: /bin/bash
+    allow_key:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQChJLoOwnnepweOhvP7tefsqIFjh3wuLrLxTmLwkBwFhm25Gc9NThvn5GWjJkxlI3ZzV7I6aL2qZsc3zn8lcerq9uk3PiREtpQ/EuocNW+8ZGkERkravl6A4Q4m4y25DdR7EVYSXA8voMvloySDere3jUEsv3/0IeBGkokdHLU7ERdT9OX7ZQ7uAwnN4yT+tlyyAgUvgnJ8Qw/6VM8K4v/Yy8dsI26gqzwrdFLYaccUuUg36Go0XNnPcCbUoTsLcU8FZiDtR42H3AF75zws5VvyPPmdCIu9Ttze4PU9plN/3jvldqYSdFZw3Kymx1zI+bq4krPHo1IOmchtUh8p0UH39VXra5XLW3X7Rkx3MA8+g8f1Yn836+1Qm6t4ZgO654dB8j6L0yCDgbw9uF5sdeVEr7OPlsduaMDQ0qd+cIGwGujh5flTzDDeoZCyLtcDDmpSKrIsetBcInGaTpJbXPMNJ36y5/4i7FpSrGkbCiP9txflMPJ6bikBBdH9jmFtPh9kDbBNpX0hnc/FstE22aL2qFvYSOd1tDxYAWh3ohYHsZt96j1QOoH+Wq3nf+lKxHQ5gvow7lltnrGu33e7i009G1pM7/sKUG2+OvD+xHN/ye4ViZTJIkzLM8jzxH6tS+0iLBQtPmnawmdpYTiPIcMnybYjLWIpSzeWk1RMcTKr1Q== e.yakovlev@key-g.com'
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRSsBepZh7W+DhmFX56lUqrqBjUbnqjks3phcJa1eq9pdg8e9LCkQzdGiHbYAb2CacKWsa79Sb2lhAOmFkMAHSrpqFNSGl+KB/UKx8W86lMVvplXUSDqEwxqXT6O3vK9BOApQMyubH2aEMRn1yrYXyRxrcwxzrOjBDIAkr28jKylTr5GfPnUnZvmGyFxkR/7Ws5ZjfV8wiGh+styBJavsqXRaW9ihQ/paOzsrgupw9KjSFQd2TfeZ8JFydj4Ac3t2/xyYGhnqw9O8XuOZed2ni7JQGi9Cj0ENcYf0Ps0dCYjotAGdLI/6P6rZDMIak8sqlv8fGrFJ5Yhy9DDH/d5eD user@DESKTOP-A0CFRML'
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZhRbftUDYmMGr3+YNWPD2Wfuo/suQ0OyUv/URW9Yb0/yiW2WZg6zNFLnQPklcLbWceOcctKnD78JatLAlGvcDcN/3SxG7jZQItRjFxQtBC6NnRrTq1pbL12zWpW7aUX8igpngcEDr9uKhuVV5bWwSzaVin1IZMGZsVLOu/Yg+cmnC7MaRrHXWf51pVRekdzgJCxNmdzuVr8FUDzY/N3CcBAVKRlP7ZbpfCHqXnzvEqINM3x4pkkHgCdEJ0q7Zf6j98cLNMAFPTnd2EVFt3RH8MO2DsbFArAvXXdAhTFjehEgp9/XRLHYKwgklL7+m8oLkqY+uG4xr49htOUe27P3B root@kali'
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDenOYTsF4V3K+foiwzbrsPpsWoc1frEDAs/QB+J5w7r562rjK/rjjq7BOWAUZN6iQmFvaN+qBfQTEMEEFaB6il6mxiZMoT1TPCzIh5ZZAqw+Gc6+UeRklmAFy+QOZcv8C92SoHaqSdidN5HRcr/Qf+vO56w3Mdelc5KBajf8hFwM8YqHUV60Plgezz2AOD09bpZwNgaUuuBMj2TzPscZHLGglafbsZY4E/+0zJTSXV2T51pEqX3oUYHK4xgU/MR+l5ZaGxAf6t1aV0kyUVsOSWcblz8ZUgxJ/MJrwtgDPxwEsLuf09neEMw3pSP8MFeLcTa5PnrjOFvimarW3SbO1v u10101@u10101-MS-7751'
+    groups:
+      - sudo
+
+ufw_rules:
+  - rule: 'allow'
+    port: 22
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+  - rule: 'allow'
+    port: 443
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: 80
+    proto: 'tcp'
+    from_ip:
+      - 0.0.0.0/0
+  - rule: 'allow'
+    port: 10050
+    proto: 'tcp'
+    from_ip:
+      - 10.135.0.0/16
+    to_ip: "{{ ansible_ssh_host }}"
+
+virtualhost:
+  www:
+    url: krispykreme.gettwifi.com
+    dir: "/home/node/gettwifi---krispy-kreme/dist"
+    upstream_proxy: "krispykreme_upstream"
+    upstream_proxy_port: 3000
+    upstream_proxy_location: "/"
+    index_file: index.php
+    ssl_cert: "krispykreme.gettwifi.com"
+  www2:
+    url: test.gettwifi.com
+    dir: "/home/node/www/statistic-dashboard/build"
+    index_file: index.html
+    upstream_proxy: "test_upstream"
+    upstream_proxy_port: 4000
+    upstream_proxy_location: "/graphql"
+    ssl_cert: "test.gettwifi.com"
+  www3:
+    url: camera.gettwifi.com
+#    dir: "/home/node/www/statistic-dashboard/build"
+    index_file: index.html
+    upstream_proxy: "camera_upstream"
+    upstream_proxy_port: 5000
+    upstream_proxy_location: "/snapshot"
+  www4:
+    url: export.gettwifi.com
+    dir: "/home/node/www/export-service/public"
+    index_file: index.html
+    upstream_proxy: "export_upstream"
+    upstream_proxy_port: 6000
+    upstream_proxy_location: "/"
+    ssl_cert: "export.gettwifi.com"
+  www5:
+    url: dashboard.gettwifi.com
+    dir: "/home/node/www/statistic-dashboard/build"
+    index_file: index.html
+    upstream_proxy: "dashboard_upstream"
+    upstream_proxy_port: 4000
+    upstream_proxy_location: "/graphql"
+    ssl_cert: "dashboard.gettwifi.com"

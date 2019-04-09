@@ -1,0 +1,24 @@
+---
+
+# elasticsearch
+es_major_version: "6.x"
+es_version: "6.4.3"
+
+es_instance_name: ds
+es_enable_xpack: true
+es_action_auto_create_index: true
+es_xpack_features: []
+
+es_config:
+  cluster.name: "ds"
+  discovery.zen.ping.unicast.hosts: "{{ groups['elastic_cluster'] | map('extract', hostvars, ['private_ip']) | list }}"
+  discovery.zen.minimum_master_nodes: "{{ (1 + groups['elastic_nodes']|length / 2) | round(0,'floor') | int }}"
+  http.port: 9200
+  network.host: "{{ es_custom_network_host }}"
+  network.publish_host: "{{ private_ip }}"
+  transport.host: "{{ private_ip }}"
+  transport.tcp.port: 9300
+  bootstrap.memory_lock: true
+  node.data: "{{ es_custom_node_data }}"
+  node.master: "{{ es_custom_node_master }}"
+  node.ingest: "{{ es_custom_node_ingest }}"
