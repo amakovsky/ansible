@@ -1,4 +1,9 @@
 ---
+- name: Include s3 vars files
+  include_vars:
+    file: "{{ s3_conf }}"
+    name: s3
+
 - name: Install s3cmd programm
   apt:
     name: s3cmd

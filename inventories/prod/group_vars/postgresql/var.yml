@@ -147,3 +147,5 @@ postgresql_cron:
     hour: "2"
     day: "*"
     job: "{{ postgresql_backup_dir}}/backup.sh"
+
+s3_conf: "files/s3pass"

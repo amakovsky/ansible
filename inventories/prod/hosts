@@ -15,7 +15,7 @@ runner1 ansible_ssh_host=10.135.120.73
 
 [postgresql]
 db-master ansible_ssh_host=10.135.150.237 postgresrep_role=master
-#db-slave ansible_ssh_host=10.135.20.228 postgresrep_role=slave
+db-slave ansible_ssh_host=10.135.116.53 postgresrep_role=slave
 
 [redis]
 redis1 ansible_ssh_host=10.135.153.19

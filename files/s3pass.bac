@@ -1,0 +1,4 @@
+access_key: "WDNWPAMEIVDWQ2HCD4KI"
+secret_key: "BMEP314LAYKxPDd9SRTEioSPgkEfhv0EW8nyNVE6DE0"
+host_base: "ams3.digitaloceanspaces.com"
+host_bucket: "%(bucket)s.ams3.digitaloceanspaces.com"

@@ -36,7 +36,7 @@ while read p; do
     check_error
 #	echo `/usr/bin/du -hsx ${BACKUP}`;
     if test -e /usr/bin/s3cmd; then
-	    /usr/bin/s3cmd put ${BACKUP} s3://gettwifi-b/postgres/${p}/ 1>/dev/null 2>>/tmp/error.log
+	    /usr/bin/s3cmd put ${BACKUP} s3://{{ s3.backet }}/postgres/${p}/ 1>/dev/null 2>>/tmp/error.log
 	    check_error
 	fi
 	find "${DIR}" -name "*.gz" -mtime +7 -exec rm -f {} \; 1>/dev/null 2>>/tmp/error.log

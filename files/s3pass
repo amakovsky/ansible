@@ -1,4 +1,5 @@
-access_key: "WDNWPAMEIVDWQ2HCD4KI"
-secret_key: "BMEP314LAYKxPDd9SRTEioSPgkEfhv0EW8nyNVE6DE0"
+access_key: "XDDS2Z7R35GPNAXQDUC4"
+secret_key: "T3lY+enQti/4Mk9t7rk7vb2AVEMmDylfWve5KJ6iCaM"
 host_base: "ams3.digitaloceanspaces.com"
 host_bucket: "%(bucket)s.ams3.digitaloceanspaces.com"
+backet: "gettwifi-artf"
