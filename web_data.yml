@@ -13,4 +13,4 @@
     - nodejs
     - monit
     - web_ruby
-#    - zabbix
+    - zabbix

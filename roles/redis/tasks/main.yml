@@ -55,10 +55,11 @@
         mode: 0755
       with_items:
         - "{{ redis_datadir }}"
+      notify:
+        - restart redis-server
+        - restart redis-sentinel
   when: redis_available.stat.exists == true and recreate_cluster
-  notify:
-    - restart redis-server
-    - restart redis-sentinel
+
 
 - name: compile redis
   block:

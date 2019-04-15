@@ -1,16 +1,17 @@
 options = {
   :storage        => :s3,
   :preserve_files => true,
-  :s3_host_name   => "{{ s3.host_base }}",
-  :s3_region      => "ams3",
-  :bucket         => "{{ backet }}",
+  :s3_host_name   => "s3.eu-west-2.amazonaws.com",
+  :s3_region      => "eu-west-2",
+  :bucket         => "gettwifi",
+  :s3_protocol    => :https,
   :s3_options     => {
-    :endpoint         => "https://{{ s3.host_base }}",
+    :endpoint         => "https://s3.eu-west-2.amazonaws.com",
     :force_path_style => true
   },
   :s3_credentials => {
-    :access_key_id     => "{{ s3.access_key }}",
-    :secret_access_key => "{{ s3.secret_key }}"
+    :access_key_id     => "AKIAT7MHXCQ6JJ77JQWF",
+    :secret_access_key => "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"
   }
 }
 

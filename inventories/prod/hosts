@@ -18,9 +18,9 @@ db-master ansible_ssh_host=10.135.150.237 postgresrep_role=master
 db-slave ansible_ssh_host=10.135.116.53 postgresrep_role=slave
 
 [redis]
-redis1 ansible_ssh_host=10.135.153.19
-redis2 ansible_ssh_host=10.135.62.172
-redis3 ansible_ssh_host=10.135.152.221
+redis1 ansible_ssh_host=10.135.160.80
+redis2 ansible_ssh_host=10.135.4.224
+redis3 ansible_ssh_host=10.135.121.200
 
 [cassandra]
 cassandra1 ansible_ssh_host=10.135.153.19
