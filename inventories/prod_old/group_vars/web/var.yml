@@ -107,7 +107,7 @@ ruby_shared:
     file:
       - src: 'hotspot.gettwifi.com/certificate.crt'
         dest: 'certificate.crt'
-      - src: 'files/hotspot.gettwifi.com/private.key'
+      - src: 'hotspot.gettwifi.com/private.key'
         dest: 'private.key'
   - dir: "../../captive"
     file:

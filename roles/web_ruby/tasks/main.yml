@@ -28,9 +28,15 @@
     path: /etc/sudoers
     line: "{{ web_user }} ALL=(ALL) NOPASSWD: /usr/bin/monit unmonitor sidekiq_*, /usr/bin/monit monitor sidekiq_*, /bin/mv /tmp/monit.conf /opt/www/hotspot/shared/tmp/monit/sidekiq_*.conf, /usr/bin/monit reload"
 
-- name: Install common programm
+- name: Install libpq-dev programm
   apt:
     name: libpq-dev
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install imagemagick  programm
+  apt:
+    name: imagemagick
     update_cache: yes
     cache_valid_time: 3600
 
@@ -134,17 +140,17 @@
   become_user: "{{ web_user }}"
   become: yes
 
-#- name: Configuring cron
-#  cron:
-#    name: "{{ item.name | default(omit) }}"
-#    minute: "{{ item.minute | default(omit) }}"
-#    hour: "{{ item.hour | default(omit) }}"
-#    day: "{{ item.day | default(omit) }}"
-#    job: "{{ item.job | default(omit) }}"
-#  with_items: "{{ web_cron }}"
-#  when: web_cron | length > 0
-#  become_user: "{{ web_user }}"
-#  become: yes
+- name: Configuring cron
+  cron:
+    name: "{{ item.name | default(omit) }}"
+    minute: "{{ item.minute | default(omit) }}"
+    hour: "{{ item.hour | default(omit) }}"
+    day: "{{ item.day | default(omit) }}"
+    job: "{{ item.job | default(omit) }}"
+  with_items: "{{ web_cron }}"
+  when: web_cron | length > 0
+  become_user: "{{ web_user }}"
+  become: yes
 
 - name: Copy  template for logrotate
   template:
